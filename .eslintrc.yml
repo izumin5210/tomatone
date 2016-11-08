@@ -1,0 +1,34 @@
+env:
+  browser: true
+  commonjs: true
+  es6: true
+extends: airbnb
+parser: babel-eslint
+parserOptions:
+  ecmaFeatures:
+    experimentalObjectRestSpread: true
+    jsx: true
+  sourceType: module
+plugins:
+  - react
+rules:
+  # Override: https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v10.0.1/packages/eslint-config-airbnb-base/rules/style.js#L57-L59
+  quotes:
+    - error
+    - double
+  # Override: https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v10.0.1/packages/eslint-config-airbnb-base/rules/best-practices.js#L136-L137
+  no-multi-spaces:
+    - error
+    - exceptions:
+        ImportDeclaration: true
+  # Override: https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v10.0.1/packages/eslint-config-airbnb-base/rules/style.js#L117-L118
+  new-cap:
+    - error
+    - capIsNew: false
+  # Override: https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v10.0.1/packages/eslint-config-airbnb/rules/react.js#L171-L173
+  # react/require-extension rule is deprecated
+  react/require-extension: off
+  import/extensions:
+    - error
+    - js: never
+      jsx: never
