@@ -1,0 +1,27 @@
+{
+  "name": "tomatone",
+  "description": "Pluggable pomodoro timer",
+  "version": "0.0.1",
+  "author": {
+    "name": "Masayuki IZUMI",
+    "email": "masayuki@izumin.info",
+    "url": "https://github.com/izumin5210"
+  },
+  "bugs": {
+    "url": "https://github.com/izumin5210/tomatone/issues"
+  },
+  "homepage": "https://github.com/izumin5210/tomatone#readme",
+  "license": {
+    "type": "MIT",
+    "url": "http://izumin.mit-license.org/2015"
+  },
+  "main": "index.js",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/izumin5210/tomatone.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
