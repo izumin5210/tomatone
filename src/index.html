@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title><%= htmlWebpackPlugin.options.title %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+  <div id="container"></div>
+  <script>
+    {
+      const script = document.createElement('script');
+      const PORT = process.env.PORT || 8080;
+      script.src = ((process.env.HOT) ? `http://localhost:${PORT}/` : './') + "dist/renderer.js";
+      document.write(script.outerHTML);
+    }
+  </script>
+</body>
+</html>
