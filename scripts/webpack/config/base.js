@@ -1,25 +1,29 @@
-import validate from "webpack-validator";
 
 import path from "path";
 
-const config = validate({
+const config = {
   module: {
-    preLoaders: [
+    rules: [
       {
+        enforce: "pre",
         test: /\.jsx?$/,
-        loaders: ["eslint-loader"],
+        use: [
+          { loader: "eslint-loader" },
+        ],
         exclude: /node_modules/,
       },
-    ],
-    loaders: [
       {
         test: /\.jsx?$/,
-        loaders: ["babel-loader"],
+        use: [
+          { loader: "babel-loader" },
+        ],
         exclude: /node_modules/,
       },
       {
         test: /\.json$/,
-        loader: "json-loader",
+        use: [
+          { loader: "json-loader" },
+        ],
       },
     ]
   },
@@ -30,7 +34,7 @@ const config = validate({
   },
 
   resolve: {
-    extensions: ["", ".js", ".jsx", ".json"],
+    extensions: [".js", ".jsx", ".json"],
   },
 
   plugins: [
@@ -38,6 +42,6 @@ const config = validate({
 
   externals: [
   ],
-});
+};
 
 export default config;

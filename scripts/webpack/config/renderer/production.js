@@ -1,12 +1,11 @@
-import webpack  from "webpack";
-import merge    from "webpack-merge";
-import validate from "webpack-validator";
-import HtmlWebpackPlugin from "html-webpack-plugin";
+import webpack            from "webpack";
+import merge              from "webpack-merge";
+import HtmlWebpackPlugin  from "html-webpack-plugin";
 
 import baseConfig from "../base";
 
-const config = validate(merge(baseConfig, {
-  debug: false,
+
+const config = merge.smart(baseConfig, {
   devtool: 'cheap-module-source-map',
 
   entry: [
@@ -19,6 +18,11 @@ const config = validate(merge(baseConfig, {
   },
 
   plugins: [
+    new webpack.LoaderOptionsPlugin({
+      debug: false,
+      minimize: true,
+    }),
+
     new webpack.optimize.OccurrenceOrderPlugin(),
 
     new webpack.DefinePlugin({
@@ -41,6 +45,6 @@ const config = validate(merge(baseConfig, {
   ],
 
   target: "electron-renderer",
-}));
+});
 
 export default config;

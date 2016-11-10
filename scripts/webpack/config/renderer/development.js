@@ -1,13 +1,13 @@
 import webpack  from "webpack";
 import merge    from "webpack-merge";
-import validate from "webpack-validator";
 
 import baseConfig from "../base";
 
 const PORT = process.env.PORT || 8080;
 
-const config = validate(merge(baseConfig, {
-  debug: true,
+const publicPath = `http://localhost:${PORT}/dist/`;
+
+const config = merge.smart(baseConfig, {
   devtool: 'inline-source-map',
 
   entry: [
@@ -19,10 +19,15 @@ const config = validate(merge(baseConfig, {
 
   output: {
     filename: "bundle.js",
-    publicPath: `http://localhost:${PORT}/dist/`,
+    publicPath: publicPath,
   },
 
   plugins: [
+    new webpack.LoaderOptionsPlugin({
+      debug: true,
+      minimize: false,
+    }),
+
     new webpack.HotModuleReplacementPlugin(),
 
     new webpack.NoErrorsPlugin(),
@@ -33,6 +38,6 @@ const config = validate(merge(baseConfig, {
   ],
 
   target: "electron-renderer",
-}));
+});
 
 export default config;

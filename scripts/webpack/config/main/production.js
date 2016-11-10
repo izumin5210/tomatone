@@ -1,10 +1,9 @@
-import webpack  from "webpack";
-import merge    from "webpack-merge";
-import validate from "webpack-validator";
+import  webpack from "webpack";
+import  merge   from "webpack-merge";
 
 import baseConfig from "../base";
 
-const config = validate(merge(baseConfig, {
+const config = merge(baseConfig, {
   debug: false,
 
   entry: [
