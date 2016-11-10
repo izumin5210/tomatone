@@ -14,11 +14,11 @@ const config = validate(merge(baseConfig, {
     "react-hot-loader/patch",
     `webpack-hot-middleware/client?path=http://localhost:${PORT}/__webpack_hmr`,
     "babel-polyfill",
-    "./src/renderer/index",
+    "./src/index",
   ],
 
   output: {
-    filename: "renderer.js",
+    filename: "bundle.js",
     publicPath: `http://localhost:${PORT}/dist/`,
   },
 

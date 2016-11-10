@@ -11,11 +11,11 @@ const config = validate(merge(baseConfig, {
 
   entry: [
     "babel-polyfill",
-    "./src/renderer/index",
+    "./src/index",
   ],
 
   output: {
-    filename: "renderer.js",
+    filename: "bundle.js",
   },
 
   plugins: [
@@ -35,7 +35,8 @@ const config = validate(merge(baseConfig, {
     new HtmlWebpackPlugin({
       title: "tomatone",
       filename: "index.html",
-      inject: false
+      template: "src/index.html",
+      inject: true
     }),
   ],
 

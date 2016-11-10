@@ -7,13 +7,19 @@
 </head>
 <body>
   <div id="container"></div>
+  <!-- <% if (process.env.HOT) { %> -->
   <script>
     {
-      const script = document.createElement('script');
       const PORT = process.env.PORT || 8080;
-      script.src = ((process.env.HOT) ? `http://localhost:${PORT}/` : './') + "dist/renderer.js";
+      const distUrl = `http://localhost:${PORT}/dist`;
+
+      const script = document.createElement('script');
+      script.src = `${distUrl}/bundle.js`;
       document.write(script.outerHTML);
+
+      document.title = "tomatone";
     }
   </script>
+  <!-- <% } %> -->
 </body>
 </html>
