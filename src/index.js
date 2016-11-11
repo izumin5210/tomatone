@@ -5,6 +5,8 @@ import { AppContainer } from "react-hot-loader";
 
 import App from "./containers/App";
 
+import "./style.css";
+
 const rootEl = document.getElementById("container");
 
 render(

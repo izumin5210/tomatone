@@ -1,0 +1,13 @@
+:root {
+  /* stylelint-disable declaration-colon-space-after */
+
+  --gray-darker:    #333;
+  --gray-dark:      #555;
+  --gray:           #999;
+  --gray-light:     #ccc;
+  --gray-lighter:   #f0f0f0;
+  --gray-lightest:  #f9f9f9;
+  --white:          #fff;
+
+  /* stylelint-enable */
+}

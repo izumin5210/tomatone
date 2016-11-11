@@ -22,10 +22,37 @@ const config = merge.smart(baseConfig, {
     publicPath: publicPath,
   },
 
+  module: {
+    rules: [
+      {
+        test: /style\.css$/,
+        loaders: [
+          "style-loader",
+          { loader: "css-loader" },
+          { loader: "postcss-loader?sourceMap=inline" },
+        ],
+      }
+    ]
+  },
+
   plugins: [
     new webpack.LoaderOptionsPlugin({
       debug: true,
       minimize: false,
+      options: {
+        postcss: (bundle) => [
+          require("postcss-smart-import")({
+            addDependencyTo: bundle,
+            plugins: [
+              require("stylelint"),
+            ],
+          }),
+          require("postcss-custom-properties"),
+          require("postcss-apply"),
+          require("postcss-nesting"),
+          require("postcss-reporter"),
+        ],
+      },
     }),
 
     new webpack.HotModuleReplacementPlugin(),
