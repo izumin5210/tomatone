@@ -1,0 +1,13 @@
+:root {
+  /* stylelint-disable declaration-colon-space-after */
+
+  /* colors */
+  --color-text: var(--gray-dark);
+  --color-bg:   var(--white);
+
+  /* text */
+  --font-size-base:   16px;
+  --line-height-base: 1.8;
+
+  /* stylelint-enable */
+}
