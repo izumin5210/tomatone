@@ -1,0 +1,14 @@
+extends: stylelint-config-standard
+plugins:
+  - stylelint-selector-bem-pattern
+  - stylelint-declaration-use-variable
+rules:
+  sh-waqar/declaration-use-variable:
+    - "/color/"
+    - z-index
+    - font-size
+  plugin/selector-bem-pattern:
+    preset: bem
+    componentName: "^(?:[A-Z][a-z0-9]+)+$"
+    componentSelectors: "^\\.{componentName}(?:__[a-z][a-zA-Z0-9]+){0,2}(?:--[a-z][a-z0-9\\-]+)?$"
+
