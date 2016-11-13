@@ -11,6 +11,7 @@
     "url": "https://github.com/izumin5210/tomatone/issues"
   },
   "dependencies": {
+    "babel-polyfill": "^6.16.0",
     "electron": "^1.4.5",
     "electron-debug": "^1.1.0",
     "electron-devtools-installer": "^2.0.1",
