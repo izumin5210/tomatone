@@ -4,8 +4,6 @@ import  merge   from "webpack-merge";
 import baseConfig from "../base";
 
 const config = merge(baseConfig, {
-  debug: false,
-
   entry: [
     "babel-polyfill",
     "./src/main",
@@ -16,6 +14,11 @@ const config = merge(baseConfig, {
   },
 
   plugins: [
+    new webpack.LoaderOptionsPlugin({
+      debug: false,
+      minimize: true,
+    }),
+
     new webpack.optimize.OccurrenceOrderPlugin(),
 
     new webpack.DefinePlugin({
@@ -36,6 +39,6 @@ const config = merge(baseConfig, {
   },
 
   target: "electron-main",
-}));
+});
 
 export default config;
