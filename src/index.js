@@ -21,7 +21,7 @@ if (module.hot) {
     const NextApp = require("./containers/App").default;  // eslint-disable-line
     render(
       <AppContainer>
-        <App />
+        <NextApp />
       </AppContainer>,
       rootEl,
     );
