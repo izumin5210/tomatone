@@ -1,7 +1,12 @@
 import React from "react";
 
+import Timer from "../components/Timer";
+
 export default function App() {
   return (
-    <h1>Hello, World !</h1>
+    <Timer
+      remainTimeInMillis={1200000}
+      totalTimeInMillis={1500000}
+    />
   );
 }
