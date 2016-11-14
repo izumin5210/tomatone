@@ -6,4 +6,5 @@
 
 @import "./patterns/shadows";
 
+@import "./containers/App";
 @import "./components/Timer";

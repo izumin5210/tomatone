@@ -2,6 +2,7 @@
   position: relative;
   width: 240px;
   height: 240px;
+  margin: 0 auto;
   border-radius: 50%;
   border: 2px solid var(--gray-light);
   background-color: var(--gray-light);
