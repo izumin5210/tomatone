@@ -5,3 +5,5 @@
 @import "./base/base";
 
 @import "./patterns/shadows";
+
+@import "./components/Timer";
