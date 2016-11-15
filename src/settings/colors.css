@@ -9,5 +9,13 @@
   --gray-lightest:  #f9f9f9;
   --white:          #fff;
 
+  /* brand colors */
+  --primary-red:          #ec6d51;
+  --primary-red-dark:     #d46248;
+  --primary-red-darker:   #a54c38;
+  --primary-green:        #88CB7F;
+  --primary-green-dark:   #7ab672;
+  --primary-green-darker: #5f8e58;
+
   /* stylelint-enable */
 }

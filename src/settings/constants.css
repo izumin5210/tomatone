@@ -2,12 +2,16 @@
   /* stylelint-disable declaration-colon-space-after */
 
   /* colors */
-  --color-text: var(--gray-dark);
-  --color-bg:   var(--white);
+  --color-text: var(--gray-lightest);
+  --color-bg:   var(--primary-green);
+  --color-bg_playing: var(--primary-red);
 
   /* text */
   --font-size-base:   16px;
   --line-height-base: 1.8;
+
+  /* spacing */
+  --spacing: 8px;
 
   /* stylelint-enable */
 }
