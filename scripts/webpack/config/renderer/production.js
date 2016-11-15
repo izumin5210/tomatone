@@ -48,6 +48,7 @@ const config = merge.smart(baseConfig, {
           }),
           require("postcss-custom-properties"),
           require("postcss-apply"),
+          require("postcss-color-function"),
           require("postcss-nesting"),
           require("postcss-csso"),
           require("postcss-reporter"),
