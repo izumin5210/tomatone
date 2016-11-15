@@ -25,7 +25,7 @@ const config = merge.smart(baseConfig, {
   module: {
     rules: [
       {
-        test: /style\.css$/,
+        test: /\.css$/,
         loaders: [
           "style-loader",
           { loader: "css-loader" },
