@@ -49,6 +49,7 @@
     "json-loader": "^0.5.4",
     "minimist": "^1.2.0",
     "postcss-apply": "^0.4.0",
+    "postcss-color-function": "^2.0.1",
     "postcss-csso": "^1.1.2",
     "postcss-custom-properties": "^5.0.1",
     "postcss-flexbugs-fixes": "^2.0.0",

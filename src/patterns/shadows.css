@@ -1,0 +1,27 @@
+:root {
+  --color-shadow: var(--gray-darker);
+
+  --shadow-1: {
+    box-shadow:
+      0 2px 5px color(var(--color-shadow) a(16%)),
+      0 2px 10px 0 color(var(--color-shadow) a(12%));
+  };
+
+  --shadow-2: {
+    box-shadow:
+      0 5px 11px color(var(--color-shadow) a(18%)),
+      0 4px 15px 0 color(var(--color-shadow) a(15%));
+  };
+
+  --shadow-3: {
+    box-shadow:
+      0 8px 17px color(var(--color-shadow) a(20%)),
+      0 6px 20px 0 color(var(--color-shadow) a(19%));
+  };
+
+  --shadow-4: {
+    box-shadow:
+      0 12px 15px color(var(--color-shadow) a(24%)),
+      0 17px 50px 0 color(var(--color-shadow) a(19%));
+  };
+}
