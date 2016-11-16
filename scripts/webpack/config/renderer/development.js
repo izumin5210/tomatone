@@ -3,7 +3,7 @@ import merge    from "webpack-merge";
 
 import baseConfig from "../base";
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8888;
 
 const publicPath = `http://localhost:${PORT}/dist/`;
 
