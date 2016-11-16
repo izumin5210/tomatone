@@ -34,8 +34,10 @@
     "babel-preset-stage-2": "^6.18.0",
     "css-loader": "^0.25.0",
     "devtron": "^1.4.0",
+    "electron-inspector": "^0.1.3",
     "electron-packager": "^8.2.0",
     "electron-prebuilt": "^1.4.5",
+    "electron-rebuild": "^1.4.0",
     "eslint": "^3.9.1",
     "eslint-config-airbnb": "^13.0.0",
     "eslint-loader": "^1.6.1",
@@ -86,7 +88,7 @@
     "build:renderer": "NODE_ENV=production NODE_TARGET=renderer webpack --progress --profile --colors",
     "dev": "npm run server -- --start-dev",
     "server": "NODE_ENV=development node --max_old_space_size=2096 -r babel-register ./scripts/server.js",
-    "start": "HOT=1 NODE_ENV=development electron -r babel-register -r babel-polyfill ./src/main.js",
+    "start": "HOT=1 NODE_ENV=development electron --debug=5858 -r babel-register -r babel-polyfill ./src/main.js",
     "start:production": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
   }

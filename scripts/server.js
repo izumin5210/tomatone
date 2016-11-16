@@ -8,7 +8,7 @@ import { spawn }            from "child_process";
 import config from "./webpack/config/renderer/development.js";
 
 const ARGV = minimist(process.argv.slice(2));
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8888;
 
 const app       = express();
 const compiler  = webpack(config);
