@@ -2,14 +2,29 @@ import React, { Component } from "react";
 import { subscriber }       from "react-dispatcher-decorator";
 import { ipcRenderer }      from "electron";
 
+import {
+  ACTION_RENDER,
+  ACTION_INITIALIZE,
+  ACTION_TIMER_START,
+  ACTION_TIMER_STOP,
+} from "../settings/constants";
+
 import Timer from "../components/Timer";
 
 @subscriber((self, subscribe) => {
-  ipcRenderer.on("render", (sender, state) => {
+  ipcRenderer.on(ACTION_RENDER, (sender, state) => {
     self.setState(state);
   });
 
-  ipcRenderer.send("initialize");
+  subscribe(ACTION_TIMER_START, (prop) => {
+    ipcRenderer.send(ACTION_TIMER_START, prop);
+  });
+
+  subscribe(ACTION_TIMER_STOP, (prop) => {
+    ipcRenderer.send(ACTION_TIMER_STOP, prop);
+  });
+
+  ipcRenderer.send(ACTION_INITIALIZE);
 })
 export default class App extends Component {
 

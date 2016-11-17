@@ -3,6 +3,7 @@ import { app, BrowserWindow } from "electron";
 import path from "path";
 import url  from "url";
 
+import { ACTION_RENDER } from "./settings/constants";
 import Reducer from "./reducers";
 
 let mainWindow;
@@ -54,7 +55,7 @@ app.on("ready", async () => {
 
   reducer = new Reducer();
   reducer.connect((state) => {
-    mainWindow.webContents.send("render", state);
+    mainWindow.webContents.send(ACTION_RENDER, state);
   });
 });
 
