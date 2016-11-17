@@ -39,7 +39,7 @@
     font-size: 2.4rem;
   };
 
-  --Timer__btn-play: {
+  --Timer__btn-start: {
     @apply --btn;
     @apply --btn-large;
 
@@ -49,9 +49,7 @@
   };
 }
 
-.Timer,
-.Timer_working,
-.Timer_breaking {
+.Timer {
   @apply --Timer;
 }
 
@@ -81,17 +79,17 @@
   @apply --Timer__time;
 }
 
-.Timer__btn-play {
-  @apply --Timer__btn-play;
+.Timer__btn-start {
+  @apply --Timer__btn-start;
   @apply --btn-primary-red;
 }
 
-.Timer__btn-play_working {
-  @apply --Timer__btn-play;
+.Timer__btn-start_working {
+  @apply --Timer__btn-start;
   @apply --btn-primary-green;
 }
 
-.Timer__btn-play_breaking {
-  @apply --Timer__btn-play;
+.Timer__btn-start_breaking {
+  @apply --Timer__btn-start;
   @apply --btn-primary-red;
 }

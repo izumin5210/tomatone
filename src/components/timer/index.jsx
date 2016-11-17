@@ -5,15 +5,17 @@ import moment         from "moment";
 import {
   IterationType,
   TimerType,
-} from "../entities";
+} from "../../entities";
 
 import {
   ACTION_TIMER_START,
   ACTION_TIMER_STOP,
-} from "../settings/constants";
+} from "../../settings/constants";
 
-import tickingSound from "../assets/audios/ticking.mp3";
-import finishSound  from "../assets/audios/finish.mp3";
+import tickingSound from "../../assets/audios/ticking.mp3";
+import finishSound  from "../../assets/audios/finish.mp3";
+
+import TimerInner from "./TimerInner";
 
 @dispatcher
 export default class Timer extends Component {
@@ -99,6 +101,14 @@ export default class Timer extends Component {
     return this.hasStarted ? this.currentIteration.totalTimeInMillis : 0;
   }
 
+  get name() {
+    let name = "";
+    if (this.hasStarted) {
+      name = this.hasStarted && `${this.currentIteration.state}(${this.currentIteration.count})`;
+    }
+    return name;
+  }
+
   get gradients() {
     // FIXME: Should import from settings/constans.css
     const colorText = "#f9f9f9";
@@ -121,30 +131,20 @@ export default class Timer extends Component {
   }
 
   render() {
-    const modifier = this.hasStarted ? `_${this.isWorking ? "work" : "break"}ing` : "";
     return (
       <div
-        className={`Timer${modifier}`}
+        className="Timer"
         style={{
           backgroundImage: this.gradients.join(", "),
         }}
       >
-        <div className={`Timer__inner-wrapper${modifier}`}>
-          <h2 className="Timer__name">
-            { this.hasStarted &&
-              `${this.currentIteration.state}(${this.currentIteration.count})`
-            }
-          </h2>
-          <span className="Timer__time">
-            {moment(this.state.remainTimeInMillis).format("mm:ss")}
-          </span>
-          <button
-            className={`Timer__btn-play${modifier}`}
-            onClick={() => this.onBtnPlayClick()}
-          >
-            <i className={`fa fa-${this.hasStarted ? "stop" : "play"}`} />
-          </button>
-        </div>
+        <TimerInner
+          name={this.name}
+          hasStarted={this.hasStarted}
+          isWorking={this.isWorking}
+          remainTimeInMillis={this.state.remainTimeInMillis}
+          onBtnPlayClick={() => this.onBtnPlayClick()}
+        />
         <audio
           src={tickingSound}
           ref={(ref) => { this.tickingSoundEl = ref; }}

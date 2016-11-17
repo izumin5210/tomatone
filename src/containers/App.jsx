@@ -9,7 +9,7 @@ import {
   ACTION_TIMER_STOP,
 } from "../settings/constants";
 
-import Timer from "../components/Timer";
+import Timer from "../components/timer/";
 
 @subscriber((self, subscribe) => {
   ipcRenderer.on(ACTION_RENDER, (sender, state) => {
