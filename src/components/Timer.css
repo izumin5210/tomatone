@@ -1,0 +1,97 @@
+:root {
+  --timer-size: 240px;
+  --timer-progress-width: 4px;
+  --timer-inner-size: calc(var(--timer-size) - 2 * var(--timer-progress-width));
+
+  --Timer: {
+    position: relative;
+    width: var(--timer-size);
+    height: var(--timer-size);
+    margin: 0 auto;
+    border-radius: 50%;
+    background-color: var(--gray-lightest);
+  };
+
+  --Timer__inner-wrapper: {
+    position: absolute;
+    text-align: center;
+    border-radius: 50%;
+    top: var(--timer-progress-width);
+    left: var(--timer-progress-width);
+    width: var(--timer-inner-size);
+    height: var(--timer-inner-size);
+    line-height: var(--timer-inner-size);
+    color: var(--color-text);
+  };
+
+  --Timer__name: {
+    position: absolute;
+    top: calc(3 * var(--spacing));
+    font-size: 0.8rem;
+    font-weight: normal;
+    text-align: center;
+    width: 100%;
+    height: auto;
+    line-height: var(--line-height-base);
+  };
+
+  --Timer__time: {
+    font-size: 2.4rem;
+  };
+
+  --Timer__btn-play: {
+    @apply --btn;
+    @apply --btn-large;
+
+    position: absolute;
+    bottom: calc(3 * var(--spacing));
+    left: calc(var(--timer-inner-size) / 2 - var(--btn-large-size) / 2);
+  };
+}
+
+.Timer,
+.Timer_working,
+.Timer_breaking {
+  @apply --Timer;
+}
+
+.Timer__inner-wrapper {
+  @apply --Timer__inner-wrapper;
+
+  background-color: var(--color-bg);
+}
+
+.Timer__inner-wrapper_working {
+  @apply --Timer__inner-wrapper;
+
+  background-color: var(--color-bg_working);
+}
+
+.Timer__inner-wrapper_breaking {
+  @apply --Timer__inner-wrapper;
+
+  background-color: var(--color-bg);
+}
+
+.Timer__name {
+  @apply --Timer__name;
+}
+
+.Timer__time {
+  @apply --Timer__time;
+}
+
+.Timer__btn-play {
+  @apply --Timer__btn-play;
+  @apply --btn-primary-red;
+}
+
+.Timer__btn-play_working {
+  @apply --Timer__btn-play;
+  @apply --btn-primary-green;
+}
+
+.Timer__btn-play_breaking {
+  @apply --Timer__btn-play;
+  @apply --btn-primary-red;
+}

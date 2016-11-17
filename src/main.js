@@ -3,7 +3,11 @@ import { app, BrowserWindow } from "electron";
 import path from "path";
 import url  from "url";
 
+import { ACTION_RENDER } from "./settings/constants";
+import Reducer from "./reducers";
+
 let mainWindow;
+let reducer;
 
 if (process.env.NODE_ENV === "production") {
   const sourceMapSupport = require("source-map-support"); // eslint-disable-line
@@ -37,16 +41,22 @@ function createWindow() {
     protocol: "file:",
   }));
 
-  mainWindow.webContents.openDevTools();
 
   mainWindow.on("closed", () => {
     mainWindow = null;
   });
+
+  mainWindow.webContents.openDevTools();
 }
 
 app.on("ready", async () => {
   await installExtensions();
   createWindow();
+
+  reducer = new Reducer();
+  reducer.connect((state) => {
+    mainWindow.webContents.send(ACTION_RENDER, state);
+  });
 });
 
 app.on("window-all-closed", () => {
@@ -59,4 +69,8 @@ app.on("activate", () => {
   if (mainWindow === null) {
     createWindow();
   }
+});
+
+app.on("quit", () => {
+  reducer.disconnect();
 });
