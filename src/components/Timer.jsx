@@ -12,6 +12,9 @@ import {
   ACTION_TIMER_STOP,
 } from "../settings/constants";
 
+import tickingSound from "../assets/audios/ticking.mp3";
+import finishSound  from "../assets/audios/finish.mp3";
+
 @dispatcher
 export default class Timer extends Component {
   static propTypes = {
@@ -55,8 +58,12 @@ export default class Timer extends Component {
     const { timer, iterations } = this.props;
     const itr = iterations.find(v => v.id === timer.currentIterationId);
     if (itr !== undefined) {
+      if (this.isWorking) {
+        this.tickingSoundEl.play();
+      }
       const stoppedAt = moment(itr.startedAt).add(itr.totalTimeInMillis, "ms");
       if (stoppedAt.isBefore()) {
+        this.finishSoundEl.play();
         this.stop();
       } else {
         const duration = moment.duration(stoppedAt - moment());
@@ -138,6 +145,14 @@ export default class Timer extends Component {
             <i className={`fa fa-${this.hasStarted ? "stop" : "play"}`} />
           </button>
         </div>
+        <audio
+          src={tickingSound}
+          ref={(ref) => { this.tickingSoundEl = ref; }}
+        />
+        <audio
+          src={finishSound}
+          ref={(ref) => { this.finishSoundEl = ref; }}
+        />
       </div>
     );
   }

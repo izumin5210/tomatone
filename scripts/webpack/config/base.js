@@ -26,6 +26,10 @@ const config = {
         ],
       },
       {
+        test: /\.mp3$/,
+        loader: "file-loader"
+      },
+      {
         test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
         loader: "url-loader?limit=10000&mimetype=application/font-woff"
       },
