@@ -34,13 +34,12 @@ export default class Timer extends Component {
     };
   }
 
+  componentDidMount() {
+    this.checkUpdates(this.props, this.state);
+  }
+
   componentWillUpdate(props, state) {
-    const { timer, iterations } = props;
-    const currentItr = iterations.find(v => v.id === timer.currentIterationId);
-    if (state.intervalId === undefined && currentItr !== undefined) {
-      const intervalId = setInterval(() => this.refresh(), 1000);
-      this.setState({ intervalId });
-    }
+    this.checkUpdates(props, state);
   }
 
   componentWillUnmount() {
@@ -54,6 +53,15 @@ export default class Timer extends Component {
       this.stop();
     }
     this.context.dispatch(this.hasStarted ? ACTION_TIMER_STOP : ACTION_TIMER_START);
+  }
+
+  checkUpdates(props, state) {
+    const { timer, iterations } = props;
+    const currentItr = iterations.find(v => v.id === timer.currentIterationId);
+    if (state.intervalId === undefined && currentItr !== undefined) {
+      const intervalId = setInterval(() => this.refresh(), 1000);
+      this.setState({ intervalId });
+    }
   }
 
   refresh() {
