@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from "react";
+import { dispatcher } from "react-dispatcher-decorator";
 
+@dispatcher
 export default class Timer extends Component {
   static propTypes = {
     remainTimeInMillis: PropTypes.number.isRequired,
