@@ -18,7 +18,7 @@ import finishSound  from "../../assets/audios/finish.mp3";
 import TimerInner from "./TimerInner";
 
 @dispatcher
-export default class Timer extends Component {
+export default class PomodoroTimer extends Component {
   static propTypes = {
     timer: PropTypes.instanceOf(TimerType).isRequired,
     iterations: PropTypes.arrayOf(
@@ -141,7 +141,7 @@ export default class Timer extends Component {
   render() {
     return (
       <div
-        className="Timer"
+        className="PomodoroTimer"
         style={{
           backgroundImage: this.gradients.join(", "),
         }}

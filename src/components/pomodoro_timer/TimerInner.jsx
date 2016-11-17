@@ -20,11 +20,11 @@ export default class TimerInner extends Component {
     const { name, hasStarted, isWorking, onBtnPlayClick } = this.props;
     const modifier = hasStarted ? `_${isWorking ? "work" : "break"}ing` : "";
     return (
-      <div className={`Timer__inner-wrapper${modifier}`}>
-        <h2 className="Timer__name">
+      <div className={`PomodoroTimer__inner-wrapper${modifier}`}>
+        <h2 className="PomodoroTimer__name">
           {name}
         </h2>
-        <span className="Timer__time">
+        <span className="PomodoroTimer__time">
           {this.remainTime}
         </span>
         <BtnStart

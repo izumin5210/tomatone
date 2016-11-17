@@ -9,7 +9,7 @@ import {
   ACTION_TIMER_STOP,
 } from "../settings/constants";
 
-import Timer from "../components/timer/";
+import PomodoroTimer from "../components/pomodoro_timer/";
 
 @subscriber((self, subscribe) => {
   ipcRenderer.on(ACTION_RENDER, (sender, state) => {
@@ -61,7 +61,7 @@ export default class App extends Component {
         <header className="App__header" />
         <main className="App__main">
           { this.timer &&
-            <Timer
+            <PomodoroTimer
               timer={this.timer}
               iterations={this.iterations}
             />
