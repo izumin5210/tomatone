@@ -17,6 +17,7 @@
     "electron-devtools-installer": "^2.0.1",
     "font-awesome": "^4.7.0",
     "immutable": "^3.8.1",
+    "moment": "^2.16.0",
     "promised-reducer": "^0.1.0",
     "react": "^15.3.2",
     "react-dispatcher-decorator": "^0.1.5",

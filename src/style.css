@@ -5,6 +5,7 @@
 @import "./base/base";
 
 @import "./patterns/shadows";
+@import "./patterns/buttons";
 
 @import "./containers/App";
 @import "./components/Timer";

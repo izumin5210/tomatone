@@ -65,7 +65,10 @@ export default class Iteration extends Record(defaultValues) {
 export const IterationType = PropTypes.shape({
   id: PropTypes.number.isRequired,
   startedAt: PropTypes.instanceOf(Date).isRequired,
+  totalTimeInMillis: PropTypes.number.isRequired,
   state: PropTypes.oneOf(
     [Iteration.WORK, Iteration.SHORT_BREAK, Iteration.LONG_BREAK],
   ).isRequired,
+  count: PropTypes.number.isRequired,
+  isWorking: PropTypes.bool.isRequired,
 });

@@ -33,15 +33,39 @@ export default class App extends Component {
     this.state = {};
   }
 
+  get timer() {
+    return this.state.timer;
+  }
+
+  get iterations() {
+    return this.state.iterations;
+  }
+
+  get hasStarted() {
+    return this.state.timer && (this.state.timer.currentIterationId !== undefined);
+  }
+
+  get currentIteration() {
+    const { timer, iterations } = this.state;
+    return iterations.find(v => v.id === timer.currentIterationId);
+  }
+
+  get isWorking() {
+    return this.hasStarted && this.currentIteration.isWorking;
+  }
+
   render() {
+    const modifier = this.hasStarted ? `_${this.isWorking ? "work" : "break"}ing` : "";
     return (
-      <div className="App">
+      <div className={`App${modifier}`}>
         <header className="App__header" />
         <main className="App__main">
-          <Timer
-            remainTimeInMillis={1200000}
-            totalTimeInMillis={1500000}
-          />
+          { this.timer &&
+            <Timer
+              timer={this.timer}
+              iterations={this.iterations}
+            />
+          }
         </main>
         <footer className="App__footer" />
       </div>

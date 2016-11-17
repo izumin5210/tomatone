@@ -1,0 +1,47 @@
+:root {
+  --btn-small-size: 16px;
+  --btn-large-size: 48px;
+
+  --btn: {
+    @apply --shadow-1;
+
+    position: relative;
+    border-radius: 50%;
+    outline: none;
+    transition: all 0.15s ease-in-out;
+
+    &:hover {
+      @apply --shadow-2;
+    }
+
+    &:active {
+      @apply --shadow-1;
+    }
+  };
+
+  --btn-primary-green: {
+    background-color: var(--primary-green);
+
+    &:active {
+      background-color: var(--primary-green-dark);
+    }
+  };
+
+  --btn-primary-red: {
+    background-color: var(--primary-red);
+
+    &:active {
+      background-color: var(--primary-red-dark);
+    }
+  };
+
+  --btn-small: {
+    width: var(--btn-small-size);
+    height: var(--btn-small-size);
+  };
+
+  --btn-large: {
+    width: var(--btn-large-size);
+    height: var(--btn-large-size);
+  };
+}
