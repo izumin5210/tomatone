@@ -8,4 +8,4 @@
 @import "./patterns/buttons";
 
 @import "./containers/App";
-@import "./components/Timer";
+@import "./components/pomodoro_timer";

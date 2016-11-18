@@ -5,18 +5,20 @@ import moment         from "moment";
 import {
   IterationType,
   TimerType,
-} from "../entities";
+} from "../../entities";
 
 import {
   ACTION_TIMER_START,
   ACTION_TIMER_STOP,
-} from "../settings/constants";
+} from "../../settings/constants";
 
-import tickingSound from "../assets/audios/ticking.mp3";
-import finishSound  from "../assets/audios/finish.mp3";
+import tickingSound from "../../assets/audios/ticking.mp3";
+import finishSound  from "../../assets/audios/finish.mp3";
+
+import TimerInner from "./TimerInner";
 
 @dispatcher
-export default class Timer extends Component {
+export default class PomodoroTimer extends Component {
   static propTypes = {
     timer: PropTypes.instanceOf(TimerType).isRequired,
     iterations: PropTypes.arrayOf(
@@ -32,13 +34,12 @@ export default class Timer extends Component {
     };
   }
 
+  componentDidMount() {
+    this.checkUpdates(this.props, this.state);
+  }
+
   componentWillUpdate(props, state) {
-    const { timer, iterations } = props;
-    const currentItr = iterations.find(v => v.id === timer.currentIterationId);
-    if (state.intervalId === undefined && currentItr !== undefined) {
-      const intervalId = setInterval(() => this.refresh(), 1000);
-      this.setState({ intervalId });
-    }
+    this.checkUpdates(props, state);
   }
 
   componentWillUnmount() {
@@ -52,6 +53,15 @@ export default class Timer extends Component {
       this.stop();
     }
     this.context.dispatch(this.hasStarted ? ACTION_TIMER_STOP : ACTION_TIMER_START);
+  }
+
+  checkUpdates(props, state) {
+    const { timer, iterations } = props;
+    const currentItr = iterations.find(v => v.id === timer.currentIterationId);
+    if (state.intervalId === undefined && currentItr !== undefined) {
+      const intervalId = setInterval(() => this.refresh(), 1000);
+      this.setState({ intervalId });
+    }
   }
 
   refresh() {
@@ -99,6 +109,14 @@ export default class Timer extends Component {
     return this.hasStarted ? this.currentIteration.totalTimeInMillis : 0;
   }
 
+  get name() {
+    let name = "";
+    if (this.hasStarted) {
+      name = this.hasStarted && `${this.currentIteration.state}(${this.currentIteration.count})`;
+    }
+    return name;
+  }
+
   get gradients() {
     // FIXME: Should import from settings/constans.css
     const colorText = "#f9f9f9";
@@ -121,30 +139,20 @@ export default class Timer extends Component {
   }
 
   render() {
-    const modifier = this.hasStarted ? `_${this.isWorking ? "work" : "break"}ing` : "";
     return (
       <div
-        className={`Timer${modifier}`}
+        className="PomodoroTimer"
         style={{
           backgroundImage: this.gradients.join(", "),
         }}
       >
-        <div className={`Timer__inner-wrapper${modifier}`}>
-          <h2 className="Timer__name">
-            { this.hasStarted &&
-              `${this.currentIteration.state}(${this.currentIteration.count})`
-            }
-          </h2>
-          <span className="Timer__time">
-            {moment(this.state.remainTimeInMillis).format("mm:ss")}
-          </span>
-          <button
-            className={`Timer__btn-play${modifier}`}
-            onClick={() => this.onBtnPlayClick()}
-          >
-            <i className={`fa fa-${this.hasStarted ? "stop" : "play"}`} />
-          </button>
-        </div>
+        <TimerInner
+          name={this.name}
+          hasStarted={this.hasStarted}
+          isWorking={this.isWorking}
+          remainTimeInMillis={this.state.remainTimeInMillis}
+          onBtnPlayClick={() => this.onBtnPlayClick()}
+        />
         <audio
           src={tickingSound}
           ref={(ref) => { this.tickingSoundEl = ref; }}

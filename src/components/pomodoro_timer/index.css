@@ -3,7 +3,7 @@
   --timer-progress-width: 4px;
   --timer-inner-size: calc(var(--timer-size) - 2 * var(--timer-progress-width));
 
-  --Timer: {
+  --PomodoroTimer: {
     position: relative;
     width: var(--timer-size);
     height: var(--timer-size);
@@ -12,7 +12,7 @@
     background-color: var(--gray-lightest);
   };
 
-  --Timer__inner-wrapper: {
+  --PomodoroTimer__inner-wrapper: {
     position: absolute;
     text-align: center;
     border-radius: 50%;
@@ -24,7 +24,7 @@
     color: var(--color-text);
   };
 
-  --Timer__name: {
+  --PomodoroTimer__name: {
     position: absolute;
     top: calc(3 * var(--spacing));
     font-size: 0.8rem;
@@ -35,11 +35,11 @@
     line-height: var(--line-height-base);
   };
 
-  --Timer__time: {
+  --PomodoroTimer__time: {
     font-size: 2.4rem;
   };
 
-  --Timer__btn-play: {
+  --PomodoroTimer__btn-start: {
     @apply --btn;
     @apply --btn-large;
 
@@ -49,49 +49,47 @@
   };
 }
 
-.Timer,
-.Timer_working,
-.Timer_breaking {
-  @apply --Timer;
+.PomodoroTimer {
+  @apply --PomodoroTimer;
 }
 
-.Timer__inner-wrapper {
-  @apply --Timer__inner-wrapper;
+.PomodoroTimer__inner-wrapper {
+  @apply --PomodoroTimer__inner-wrapper;
 
   background-color: var(--color-bg);
 }
 
-.Timer__inner-wrapper_working {
-  @apply --Timer__inner-wrapper;
+.PomodoroTimer__inner-wrapper_working {
+  @apply --PomodoroTimer__inner-wrapper;
 
   background-color: var(--color-bg_working);
 }
 
-.Timer__inner-wrapper_breaking {
-  @apply --Timer__inner-wrapper;
+.PomodoroTimer__inner-wrapper_breaking {
+  @apply --PomodoroTimer__inner-wrapper;
 
   background-color: var(--color-bg);
 }
 
-.Timer__name {
-  @apply --Timer__name;
+.PomodoroTimer__name {
+  @apply --PomodoroTimer__name;
 }
 
-.Timer__time {
-  @apply --Timer__time;
+.PomodoroTimer__time {
+  @apply --PomodoroTimer__time;
 }
 
-.Timer__btn-play {
-  @apply --Timer__btn-play;
+.PomodoroTimer__btn-start {
+  @apply --PomodoroTimer__btn-start;
   @apply --btn-primary-red;
 }
 
-.Timer__btn-play_working {
-  @apply --Timer__btn-play;
+.PomodoroTimer__btn-start_working {
+  @apply --PomodoroTimer__btn-start;
   @apply --btn-primary-green;
 }
 
-.Timer__btn-play_breaking {
-  @apply --Timer__btn-play;
+.PomodoroTimer__btn-start_breaking {
+  @apply --PomodoroTimer__btn-start;
   @apply --btn-primary-red;
 }
