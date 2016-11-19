@@ -105,6 +105,7 @@
     "start": "HOT=1 NODE_ENV=development electron --debug=5858 -r babel-register -r babel-polyfill ./src/main.js",
     "start:production": "electron .",
     "test": "mocha",
+    "test:all": "npm run typecheck && npm run test",
     "typecheck": "flow src"
   }
 }
