@@ -1,11 +1,6 @@
 @import "sanitize.css";
-
-@import "./settings/colors";
-@import "./settings/constants";
-@import "./base/base";
-
-@import "./patterns/shadows";
-@import "./patterns/buttons";
-
-@import "./containers/App";
-@import "./components/pomodoro_timer";
+@import "./settings";
+@import "./base";
+@import "./patterns";
+@import "./containers";
+@import "./components";
