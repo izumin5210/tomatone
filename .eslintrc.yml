@@ -1,7 +1,9 @@
 env:
   browser: true
+  node: true
   commonjs: true
   es6: true
+  mocha: true
 extends: airbnb
 parser: babel-eslint
 parserOptions:
@@ -28,6 +30,11 @@ rules:
   # Override: https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v10.0.1/packages/eslint-config-airbnb/rules/react.js#L171-L173
   # react/require-extension rule is deprecated
   react/require-extension: off
+  # Override: https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v10.0.1/packages/eslint-config-airbnb/rules/react.js#L226-L228
+  react/jsx-filename-extension:
+    - error
+    - extensions:
+      - js
   import/extensions:
     - error
     - js: never

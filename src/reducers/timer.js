@@ -1,6 +1,5 @@
 import {
   Iteration,
-  Timer,
 } from "../entities";
 
 function nextId(state) {

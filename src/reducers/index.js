@@ -3,12 +3,10 @@ import { Map, List }    from "immutable";
 import PromisedReducer  from "promised-reducer";
 
 import {
-  Iteration,
   Timer,
 } from "../entities";
 
 import {
-  ACTION_RENDER,
   ACTION_INITIALIZE,
   ACTION_TIMER_START,
   ACTION_TIMER_STOP,
