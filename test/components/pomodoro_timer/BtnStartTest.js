@@ -1,4 +1,5 @@
 /* @flow */
+
 import { shallow }  from "enzyme";
 import { spy }      from "sinon";
 
@@ -11,7 +12,7 @@ describe("<BtnStart />", () => {
       modifier: "",
       onClick: () => {},
     };
-    const wrapper = shallow(<BtnStart {...props}/>);
+    const wrapper = shallow(<BtnStart {...props} />);
     assert(wrapper.find(".fa-stop").length, 1);
   });
 
@@ -21,7 +22,7 @@ describe("<BtnStart />", () => {
       modifier: "",
       onClick: () => {},
     };
-    const wrapper = shallow(<BtnStart {...props}/>);
+    const wrapper = shallow(<BtnStart {...props} />);
     assert(wrapper.find(".fa-play").length, 1);
   });
 
@@ -31,7 +32,7 @@ describe("<BtnStart />", () => {
       modifier: "_awesome-state",
       onClick: () => {},
     };
-    const wrapper = shallow(<BtnStart {...props}/>);
+    const wrapper = shallow(<BtnStart {...props} />);
     assert(wrapper.find(".PomodoroTimer__btn-start_awesome-state").length, 1);
   });
 
@@ -41,7 +42,7 @@ describe("<BtnStart />", () => {
       modifier: "",
       onClick: spy(),
     };
-    const wrapper = shallow(<BtnStart {...props}/>);
+    const wrapper = shallow(<BtnStart {...props} />);
     assert(props.onClick.called === false);
     wrapper.find("button").simulate("click");
     assert(props.onClick.called === true);
