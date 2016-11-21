@@ -1,13 +1,17 @@
-import { app, BrowserWindow } from "electron";
-
-import path from "path";
-import url  from "url";
+import menubar from "menubar";
 
 import { ACTION_RENDER } from "./settings/constants";
 import Reducer from "./reducers";
 
-let mainWindow;
 let reducer;
+
+const mb = menubar({
+  dir: __dirname,
+  preloadWindow: true,
+  width: 320,
+  height: 480,
+  resizable: false,
+});
 
 if (process.env.NODE_ENV === "production") {
   const sourceMapSupport = require("source-map-support"); // eslint-disable-line
@@ -33,44 +37,16 @@ const installExtensions = async () => {
   }
 };
 
-function createWindow() {
-  mainWindow = new BrowserWindow({ width: 320, height: 480 });
-
-  mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, "index.html"),
-    protocol: "file:",
-  }));
-
-
-  mainWindow.on("closed", () => {
-    mainWindow = null;
-  });
-
-  mainWindow.webContents.openDevTools();
-}
-
-app.on("ready", async () => {
+mb.on("ready", async () => {
   await installExtensions();
-  createWindow();
+  // createWindow();
 
   reducer = new Reducer();
   reducer.connect((state) => {
-    mainWindow.webContents.send(ACTION_RENDER, state);
+    mb.window.webContents.send(ACTION_RENDER, state);
   });
 });
 
-app.on("window-all-closed", () => {
-  if (process.platform !== "darwin") {
-    app.quit();
-  }
-});
-
-app.on("activate", () => {
-  if (mainWindow === null) {
-    createWindow();
-  }
-});
-
-app.on("quit", () => {
+mb.on("after-close", () => {
   reducer.disconnect();
 });
