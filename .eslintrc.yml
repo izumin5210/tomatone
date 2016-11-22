@@ -4,7 +4,9 @@ env:
   commonjs: true
   es6: true
   mocha: true
-extends: airbnb
+extends:
+  - airbnb
+  - plugin:flowtype/recommended
 parser: babel-eslint
 parserOptions:
   ecmaFeatures:
@@ -13,6 +15,7 @@ parserOptions:
   sourceType: module
 plugins:
   - react
+  - flowtype
 rules:
   # Override: https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v10.0.1/packages/eslint-config-airbnb-base/rules/style.js#L57-L59
   quotes:
