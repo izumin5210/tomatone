@@ -1,25 +1,28 @@
-import { PropTypes }  from "react";
-import { Record }     from "immutable";
+/* @flow */
+import { Record } from "immutable";
+import Iteration  from "./iteration";
 
-const defaultValues = {
+type TimerConfig = {
+  currentIterationId: ?number;
+}
+
+const defaultValues: TimerConfig = {
   currentIterationId: undefined,
 };
 
-export default class Timer extends Record(defaultValues) {
+const TimerRecord = Record(defaultValues);
 
-  get hasStarted() {
+export default class Timer extends TimerRecord {
+
+  hasStarted(): boolean {
     return this.currentIterationId !== undefined;
   }
 
-  setIteration(itr) {
+  updateIteration(itr: Iteration): Timer {
     return this.set("currentIterationId", itr.id);
   }
 
-  stop() {
+  stop(): Timer {
     return this.set("currentIterationId", undefined);
   }
 }
-
-export const TimerType = PropTypes.shape({
-  id: PropTypes.number,
-});
