@@ -1,19 +1,27 @@
-import React, { Component, PropTypes } from "react";
-import moment from "moment";
+/* @flow */
+import React, { Component } from "react";
 
 import BtnStart from "./BtnStart";
 
-export default class TimerInner extends Component {
-  static propTypes = {
-    name: PropTypes.string,
-    hasStarted: PropTypes.bool.isRequired,
-    isWorking: PropTypes.bool.isRequired,
-    remainTimeInMillis: PropTypes.number.isRequired,
-    onBtnPlayClick: PropTypes.func.isRequired,
-  };
+// FIXME: I want to add align option to flowtype/space-after-type-colon rule...
+/* eslint-disable no-multi-spaces */
+type Props = {
+  name:               string;
+  hasStarted:         boolean;
+  isWorking:          boolean;
+  remainTimeInMillis: number;
+  onBtnPlayClick:     () => void;
+};
+/* eslint-enable */
 
-  get remainTime() {
-    return moment(this.props.remainTimeInMillis).format("mm:ss");
+export default class TimerInner extends Component {
+
+  props: Props;
+
+  remainTime(): string {
+    const min = Math.floor(this.props.remainTimeInMillis / 1000 / 60);
+    const sec = Math.round(this.props.remainTimeInMillis / 1000) % 60;
+    return `${min}:${(`00${sec}`).slice(-2)}`;
   }
 
   render() {
@@ -25,7 +33,7 @@ export default class TimerInner extends Component {
           {name}
         </h2>
         <span className="PomodoroTimer__time">
-          {this.remainTime}
+          {this.remainTime()}
         </span>
         <BtnStart
           {...{ hasStarted, modifier }}

@@ -1,74 +1,72 @@
-import { PropTypes }  from "react";
-import { Record }     from "immutable";
+/* @flow */
+import { Record } from "immutable";
 
-const defaultValues = {
-  id: undefined,
-  startedAt: undefined,
-  totalTimeInMillis: 0,
-  state: undefined,
-  count: 0,
-  isWorking: true,
+const TIMES = {
+  WORK:        25 * 60 * 1000,
+  SHORT_BREAK: 5 * 60 * 1000,
+  LONG_BREAK:  20 * 60 * 1000,
 };
 
-export default class Iteration extends Record(defaultValues) {
+type State = $Keys<typeof TIMES>
 
-  static WORK = "WORK";
-  static SHORT_BREAK = "SHORT_BREAK";
-  static LONG_BREAK = "LONG_BREAK";
+const MAX_ITERATION = 4;
 
-  static MAX_ITERATION = 4;
+// FIXME: I want to add align option to flowtype/space-after-type-colon rule...
+/* eslint-disable no-multi-spaces */
+type IterationConfig = {
+  id:        number;
+  startedAt: number;
+  state:     State;
+  count:     number;
+};
+/* eslint-enable */
 
-  static TIMES = {
-    [Iteration.WORK]: 25 * 60 * 1000,
-    [Iteration.SHORT_BREAK]: 5 * 60 * 1000,
-    [Iteration.LONG_BREAK]: 20 * 60 * 1000,
+const defaultValues: IterationConfig = {
+  id:        1,
+  startedAt: Date.now(),
+  state:     "WORK",
+  count:     1,
+};
+
+const IterationRecord = Record(defaultValues);
+
+export default class Iteration extends IterationRecord {
+
+  static createFirst(id: typeof IterationRecord.id): Iteration {
+    // FIXME: Should not use `Date.now()`
+    const startedAt = Date.now();
+    return new Iteration({ id, startedAt });
   }
 
-  static createFirst(id) {
-    // FIXME: Should not use `new Date()`
-    const startedAt = new Date();
-    const state = Iteration.WORK;
-    const totalTimeInMillis = Iteration.TIMES[state];
-    const count = 1;
-    const isWorking = true;
-    return new Iteration({ id, startedAt, totalTimeInMillis, state, count, isWorking });
+  totalTimeInMillis(): number {
+    return TIMES[this.state];
   }
 
-  get remainTimeInMillis() {
-    // FIXME: Should not use `new Date()`
-    const spentTimeInMillis = new Date() - this.startedAt;
-    return this.totalTimeInMillis - spentTimeInMillis;
+  remainTimeInMillis(): number {
+    // FIXME: Should not use `Date.now()`
+    return this.totalTimeInMillis() - (Date.now() - this.startedAt);
   }
 
-  get isFinished() {
-    return this.remainTimeInMillis < 0;
+  isWorking(): boolean {
+    return this.state === "WORK";
   }
 
-  get next() {
-    let state = Iteration.WORK;
-    let count = this.count;
+  isFinished(): boolean {
+    return !(this.remainTimeInMillis() > 0);
+  }
+
+  next(): Iteration {
+    let state: State = "WORK";
+    let count: number = this.count;
     const id = this.id + 1;
-    const isWorking = !this.isWorking;
-    if (this.state === Iteration.WORK) {
-      const isLongBreak = count % Iteration.MAX_ITERATION === 0;
-      state = isLongBreak ? Iteration.LONG_BREAK : Iteration.SHORT_BREAK;
+    if (this.state === "WORK") {
+      const isLongBreak = count % MAX_ITERATION === 0;
+      state = isLongBreak ? "LONG_BREAK" : "SHORT_BREAK";
     } else {
       count += 1;
     }
-    const totalTimeInMillis = Iteration.TIMES[state];
     // FIXME: Should not use `new Date()`
-    const startedAt = new Date();
-    return new Iteration({ id, startedAt, totalTimeInMillis, state, count, isWorking });
+    const startedAt = Date.now();
+    return new Iteration({ id, startedAt, state, count });
   }
 }
-
-export const IterationType = PropTypes.shape({
-  id: PropTypes.number.isRequired,
-  startedAt: PropTypes.instanceOf(Date).isRequired,
-  totalTimeInMillis: PropTypes.number.isRequired,
-  state: PropTypes.oneOf(
-    [Iteration.WORK, Iteration.SHORT_BREAK, Iteration.LONG_BREAK],
-  ).isRequired,
-  count: PropTypes.number.isRequired,
-  isWorking: PropTypes.bool.isRequired,
-});

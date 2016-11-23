@@ -1,16 +1,11 @@
 import menubar from "menubar";
 
-import { ACTION_RENDER } from "./settings/constants";
-import Reducer from "./reducers";
-
-let reducer;
-
 const mb = menubar({
-  dir: __dirname,
+  dir:           __dirname,
   preloadWindow: true,
-  width: 320,
-  height: 480,
-  resizable: false,
+  width:         320,
+  height:        480,
+  resizable:     false,
 });
 
 if (process.env.NODE_ENV === "production") {
@@ -39,14 +34,4 @@ const installExtensions = async () => {
 
 mb.on("ready", async () => {
   await installExtensions();
-  // createWindow();
-
-  reducer = new Reducer();
-  reducer.connect((state) => {
-    mb.window.webContents.send(ACTION_RENDER, state);
-  });
-});
-
-mb.on("after-close", () => {
-  reducer.disconnect();
 });

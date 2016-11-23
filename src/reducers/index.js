@@ -1,13 +1,11 @@
-import { ipcMain }      from "electron";
-import { Map, List }    from "immutable";
+/* @flow */
 import PromisedReducer  from "promised-reducer";
 
 import {
-  Timer,
-} from "../entities";
+  State,
+} from "../models";
 
 import {
-  ACTION_INITIALIZE,
   ACTION_TIMER_START,
   ACTION_TIMER_STOP,
 } from "../settings/constants";
@@ -15,42 +13,30 @@ import {
 import {
   startTimer,
   stopTimer,
-  checkTimer,
 } from "./timer";
 
-const initialState = Map({
-  timer: new Timer(),
-  iterations: List(),
-});
+const initialState = new State();
 
 export default class Reducer {
+  reducer: PromisedReducer;
+
   constructor() {
     this.reducer = new PromisedReducer(initialState);
   }
 
-  connect(onUpdate) {
-    this.reducer.on(":update", state => onUpdate(state.toJS()));
+  // FIXME: apply types
+  connect(self: any, subscribe: any) {
+    this.reducer.on(":update", state => self.setState({ state }));
 
-    ipcMain.on(ACTION_INITIALIZE, () => this.update(state => state));
-    ipcMain.on(ACTION_TIMER_START, () => this.update(startTimer));
-    ipcMain.on(ACTION_TIMER_STOP, () => this.update(stopTimer));
-
-    this.intervalId = setInterval(() => {
-      checkTimer(this.state, this.update.bind(this));
-    }, 100);
+    subscribe(ACTION_TIMER_START, () => this.update(startTimer));
+    subscribe(ACTION_TIMER_STOP, () => this.update(stopTimer));
   }
 
-  disconnect() {
-    if (this.intervalId !== undefined) {
-      clearInterval(this.intervalId);
-    }
-  }
-
-  update(fn) {
+  update(fn: () => void) {
     this.reducer.update(fn);
   }
 
-  get state() {
+  getState(): State {
     return this.reducer.state;
   }
 }

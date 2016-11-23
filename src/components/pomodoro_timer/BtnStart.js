@@ -1,6 +1,16 @@
-import React, { PropTypes } from "react";
+/* @flow */
+import React from "react";
 
-export default function BtnStart(props) {
+// FIXME: I want to add align option to flowtype/space-after-type-colon rule...
+/* eslint-disable no-multi-spaces */
+type Props = {
+  hasStarted: boolean;
+  modifier:   string;
+  onClick:    () => void;
+};
+/* eslint-enable */
+
+export default function BtnStart(props: Props) {
   return (
     <button
       className={`PomodoroTimer__btn-start${props.modifier}`}
@@ -10,9 +20,3 @@ export default function BtnStart(props) {
     </button>
   );
 }
-
-BtnStart.propTypes = {
-  hasStarted: PropTypes.bool.isRequired,
-  modifier: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired,
-};
