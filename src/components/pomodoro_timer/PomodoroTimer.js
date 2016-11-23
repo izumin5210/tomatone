@@ -87,7 +87,7 @@ export default class PomodoroTimer extends Component {
     const bg = this.isWorking() ? "#a54c38" : "#5f8e58";
 
     const itr = this.props.iteration;
-    const r = (itr != null) ? (1 - (this.state.remainTimeInMillis / itr.totalTimeInMillis())) : 0;
+    const r = (itr != null) ? (1 - (this.state.remainTimeInMillis / itr.totalTimeInMillis)) : 0;
     if (r < 0.5) {
       const angle = ((r / 0.5) * 180) + 90;
       return [
@@ -107,7 +107,7 @@ export default class PomodoroTimer extends Component {
     const itr = props.iteration;
     if (state.intervalId == null && itr != null && !itr.isFinished()) {
       const intervalId = setInterval(() => this.refresh(), 1000);
-      const remainTimeInMillis = itr.totalTimeInMillis();
+      const remainTimeInMillis = itr.totalTimeInMillis;
       this.setState({ intervalId, remainTimeInMillis });
     }
   }
@@ -145,12 +145,12 @@ export default class PomodoroTimer extends Component {
 
   totalTimeInMillis(): number {
     const itr = this.props.iteration;
-    return (itr != null) ? itr.totalTimeInMillis() : 0;
+    return (itr != null) ? itr.totalTimeInMillis : 0;
   }
 
   name(): string {
     const itr = this.props.iteration;
-    return (itr != null) ? `${itr.state}(${itr.count})` : "";
+    return (itr != null) ? `${itr.type}(${itr.numOfIteration})` : "";
   }
 
   props: Props;

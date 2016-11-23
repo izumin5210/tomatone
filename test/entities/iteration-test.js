@@ -20,17 +20,17 @@ describe("Iteration", () => {
 
   describe("#isWorking()", () => {
     it("returns true when the state is WORK", () => {
-      const itr = new Iteration({ state: "WORK" });
+      const itr = new Iteration({ type: "WORK" });
       assert(itr.isWorking());
     });
 
     it("returns true when the state is SHORT_BREAK", () => {
-      const itr = new Iteration({ state: "SHORT_BREAK" });
+      const itr = new Iteration({ type: "SHORT_BREAK" });
       assert(!itr.isWorking());
     });
 
     it("returns true when the state is LONG_BREAK", () => {
-      const itr = new Iteration({ state: "LONG_BREAK" });
+      const itr = new Iteration({ type: "LONG_BREAK" });
       assert(!itr.isWorking());
     });
   });
@@ -39,12 +39,12 @@ describe("Iteration", () => {
     it("returns positive value when the iteration has not finished", () => {
       const itr = new Iteration();
       clock.tick(1000);
-      assert(itr.remainTimeInMillis(), itr.totalTimeInMillis() - 1000);
+      assert(itr.remainTimeInMillis(), itr.totalTimeInMillis - 1000);
     });
 
     it("returns negative value when the iteration has finished", () => {
       const itr = new Iteration();
-      clock.tick(itr.totalTimeInMillis() + 1000);
+      clock.tick(itr.totalTimeInMillis + 1000);
       assert(itr.remainTimeInMillis(), -1000);
     });
   });
@@ -52,7 +52,7 @@ describe("Iteration", () => {
   describe("#isFinished()", () => {
     it("returns true when the iteration has finished", () => {
       const itr = new Iteration();
-      clock.tick(itr.totalTimeInMillis());
+      clock.tick(itr.totalTimeInMillis);
       assert(itr.isFinished());
     });
 
@@ -64,31 +64,31 @@ describe("Iteration", () => {
 
   describe("#next()", () => {
     it("returns WORKING Iteration and increments count after SHORT_BREAK", () => {
-      const itr = new Iteration({ state: "SHORT_BREAK" });
+      const itr = new Iteration({ type: "SHORT_BREAK" });
       const nextItr = itr.next();
-      assert(nextItr.state, "WORKING");
-      assert(nextItr.count, itr.count + 1);
+      assert(nextItr.type, "WORKING");
+      assert(nextItr.numOfIteration, itr.numOfIteration + 1);
     });
 
     it("returns WORKING Iteration and increments count after LONG_BREAK", () => {
-      const itr = new Iteration({ state: "LONG_BREAK" });
+      const itr = new Iteration({ type: "LONG_BREAK" });
       const nextItr = itr.next();
-      assert(nextItr.state, "WORKING");
-      assert(nextItr.count, itr.count + 1);
+      assert(nextItr.type, "WORKING");
+      assert(nextItr.numOfIteration, itr.numOfIteration + 1);
     });
 
     it("returns SHORT_BREAK Iteration", () => {
-      const itr = new Iteration({ state: "WORKING" });
+      const itr = new Iteration({ type: "WORKING" });
       const nextItr = itr.next();
-      assert(nextItr.state, "SHORT_BREAK");
-      assert(nextItr.count, itr.count);
+      assert(nextItr.type, "SHORT_BREAK");
+      assert(nextItr.numOfIteration, itr.numOfIteration);
     });
 
     it("returns LONG_BREAK Iteration", () => {
-      const itr = new Iteration({ state: "WORKING", count: 4 });
+      const itr = new Iteration({ type: "WORKING", numOfIteration: 4 });
       const nextItr = itr.next();
-      assert(nextItr.state, "LONG_BREAK");
-      assert(nextItr.count, itr.count);
+      assert(nextItr.type, "LONG_BREAK");
+      assert(nextItr.numOfIteration, itr.numOfIteration);
     });
   });
 });
