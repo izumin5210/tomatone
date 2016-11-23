@@ -7,15 +7,18 @@ import {
 } from "../../entities";
 
 import {
+  SoundPlayer,
+} from "../../models";
+
+import {
+  TICKING_SOUND_URI,
+  FINISH_SOUND_URI,
+} from "../../settings/audio";
+
+import {
   ACTION_TIMER_START,
   ACTION_TIMER_STOP,
 } from "../../settings/constants";
-
-/*
- * FIXME
- * import tickingSound from "../../assets/audios/ticking.mp3";
- * import finishSound  from "../../assets/audios/finish.mp3";
- */
 
 import TimerInner from "./TimerInner";
 
@@ -28,12 +31,18 @@ type Props = {
 type State = {
   intervalId:         ?number;
   remainTimeInMillis: number;
+  soundLoaded:        boolean;
+  tickingSoundPlayer: SoundPlayer;
+  finishSoundPlayer:  SoundPlayer;
 };
 /* eslint-enable */
 
 const initialState: State = {
   intervalId:         undefined,
   remainTimeInMillis: 0,
+  soundLoaded:        false,
+  tickingSoundPlayer: new SoundPlayer(TICKING_SOUND_URI),
+  finishSoundPlayer:  new SoundPlayer(FINISH_SOUND_URI),
 };
 
 @dispatcher
@@ -48,6 +57,11 @@ export default class PomodoroTimer extends Component {
 
   componentDidMount() {
     this.checkUpdates(this.props, this.state);
+    const promise = Promise.all([
+      this.state.tickingSoundPlayer.fetch(),
+      this.state.finishSoundPlayer.fetch(),
+    ]);
+    promise.then(() => this.setState({ soundLoaded: true }));
   }
 
   componentWillUpdate(props: Props, state: State) {
@@ -102,17 +116,11 @@ export default class PomodoroTimer extends Component {
     const itr = this.props.iteration;
     if (itr != null) {
       if (itr.isWorking()) {
-        /*
-         * FIXME
-         * this.tickingSoundEl.play();
-         */
+        this.state.tickingSoundPlayer.play();
       }
       this.setState({ remainTimeInMillis: itr.remainTimeInMillis() });
       if (itr.isFinished()) {
-        /*
-         * FIXME
-         * this.finishSoundEl.play();
-         */
+        this.state.finishSoundPlayer.play();
         this.stop();
         this.context.dispatch(ACTION_TIMER_START);
       }
@@ -122,7 +130,7 @@ export default class PomodoroTimer extends Component {
   stop() {
     if (this.state.intervalId != null) {
       clearInterval(this.state.intervalId);
-      this.setState(initialState);
+      this.setState({ intervalId: undefined, remainTimeInMillis: 0 });
     }
   }
 
@@ -162,19 +170,6 @@ export default class PomodoroTimer extends Component {
           remainTimeInMillis={this.state.remainTimeInMillis}
           onBtnPlayClick={() => this.onBtnPlayClick()}
         />
-        {
-        /*
-         * FIXME: Should use WebAudio API
-         * <audio
-         *   src={tickingSound}
-         *   ref={(ref) => { this.tickingSoundEl = ref; }}
-         * />
-         * <audio
-         *   src={finishSound}
-         *   ref={(ref) => { this.finishSoundEl = ref; }}
-         * />
-         */
-        }
       </div>
     );
   }

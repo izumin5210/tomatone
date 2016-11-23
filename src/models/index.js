@@ -1,8 +1,7 @@
-import State from "./state";
+import SoundPlayer from "./sound-player";
+import State       from "./state";
 
-// FIXME: Should remove the below option
-/* eslint-disable import/prefer-default-export */
 export {
+  SoundPlayer,
   State,
 };
-/* eslint-enable */
