@@ -1,9 +1,10 @@
-import Iteration, { IterationType } from "./iteration";
-import Timer, { TimerType }   from "./timer";
+import Iteration, { IterationType, IterationConfig } from "./iteration";
+import Timer, { TimerConfig }   from "./timer";
 
 export {
   Iteration,
   IterationType,
+  IterationConfig,
   Timer,
-  TimerType,
+  TimerConfig,
 };

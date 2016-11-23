@@ -7,25 +7,27 @@ const TIMES = {
   LONG_BREAK:  20 * 60 * 1000,
 };
 
-type State = $Keys<typeof TIMES>
+export type IterationType = $Keys<typeof TIMES>;
 
 const MAX_ITERATION = 4;
 
 // FIXME: I want to add align option to flowtype/space-after-type-colon rule...
 /* eslint-disable no-multi-spaces */
-type IterationConfig = {
-  id:        number;
-  startedAt: number;
-  state:     State;
-  count:     number;
+export type IterationConfig = {
+  id:                number;
+  startedAt:         number;
+  type:              IterationType;
+  numOfIteration:    number;
+  totalTimeInMillis: number;
 };
 /* eslint-enable */
 
 const defaultValues: IterationConfig = {
-  id:        1,
-  startedAt: Date.now(),
-  state:     "WORK",
-  count:     1,
+  id:                1,
+  startedAt:         Date.now(),
+  type:              "WORK",
+  numOfIteration:    1,
+  totalTimeInMillis: TIMES.WORK,
 };
 
 const IterationRecord = Record(defaultValues);
@@ -38,17 +40,13 @@ export default class Iteration extends IterationRecord {
     return new Iteration({ id, startedAt });
   }
 
-  totalTimeInMillis(): number {
-    return TIMES[this.state];
-  }
-
   remainTimeInMillis(): number {
     // FIXME: Should not use `Date.now()`
-    return this.totalTimeInMillis() - (Date.now() - this.startedAt);
+    return this.totalTimeInMillis - (Date.now() - this.startedAt);
   }
 
   isWorking(): boolean {
-    return this.state === "WORK";
+    return this.type === "WORK";
   }
 
   isFinished(): boolean {
@@ -56,17 +54,18 @@ export default class Iteration extends IterationRecord {
   }
 
   next(): Iteration {
-    let state: State = "WORK";
-    let count: number = this.count;
+    let type: IterationType = "WORK";
+    let numOfIteration : number = this.numOfIteration;
     const id = this.id + 1;
-    if (this.state === "WORK") {
-      const isLongBreak = count % MAX_ITERATION === 0;
-      state = isLongBreak ? "LONG_BREAK" : "SHORT_BREAK";
+    if (this.type === "WORK") {
+      const isLongBreak = numOfIteration % MAX_ITERATION === 0;
+      type = isLongBreak ? "LONG_BREAK" : "SHORT_BREAK";
     } else {
-      count += 1;
+      numOfIteration += 1;
     }
     // FIXME: Should not use `new Date()`
     const startedAt = Date.now();
-    return new Iteration({ id, startedAt, state, count });
+    const totalTimeInMillis = TIMES[type];
+    return new Iteration({ id, startedAt, type, numOfIteration, totalTimeInMillis });
   }
 }
