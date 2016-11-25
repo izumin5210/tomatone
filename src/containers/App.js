@@ -9,9 +9,10 @@ import {
   State,
 } from "../models";
 
+import TimerView from "./timer_view";
+
 import {
   GlobalNav,
-  PomodoroTimer,
 } from "../components";
 
 const reducer = new Reducer();
@@ -40,18 +41,11 @@ export default class App extends Component {
             <GlobalNav />
           </header>
           <main className="App__main">
-            <div className="App__main-wrapper">
-              <Match
-                pattern="/"
-                exactly
-                render={() => (
-                  <PomodoroTimer
-                    timer={state.timer}
-                    iteration={state.currentIteration()}
-                  />
-                )}
-              />
-            </div>
+            <Match
+              exactly
+              pattern="/"
+              render={() => <TimerView state={state} />}
+            />
           </main>
           <footer className="App__footer" />
         </div>
