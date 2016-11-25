@@ -9,7 +9,7 @@ const TIMES = {
 
 export type IterationType = $Keys<typeof TIMES>;
 
-const MAX_ITERATION = 4;
+const MAX_ITERATIONS = 4;
 
 // FIXME: I want to add align option to flowtype/space-after-type-colon rule...
 /* eslint-disable no-multi-spaces */
@@ -39,6 +39,9 @@ export default class Iteration extends IterationRecord {
     const startedAt = Date.now();
     return new Iteration({ id, startedAt });
   }
+
+  static MAX_ITERATIONS = MAX_ITERATIONS;
+  static TIMES = TIMES;
 
   remainTimeInMillis(): number {
     // FIXME: Should not use `Date.now()`
