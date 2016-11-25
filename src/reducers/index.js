@@ -32,7 +32,7 @@ export default class Reducer {
     subscribe(ACTION_TIMER_STOP, () => this.update(stopTimer));
   }
 
-  update(fn: () => void) {
+  update(fn: (s: ?State) => State | Promise<State>) {
     this.reducer.update(fn);
   }
 

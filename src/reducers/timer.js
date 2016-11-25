@@ -8,26 +8,28 @@ import {
   State,
 } from "../models";
 
-function nextId(state: State): number {
-  const latestItr = state.iterations.maxBy(itr => itr.id);
-  return (latestItr === undefined) ? 1 : (latestItr.id + 1);
-}
+import {
+  iterationDao,
+} from "../db";
 
-export function startTimer(state: State): State {
-  let nextItr: Iteration;
-  if (state.timer.hasStarted()) {
-    const id = state.timer.currentIterationId;
-    const itr: Iteration = state.iterations.find(v => v.id === id);
-    nextItr = itr.next();
+export function startTimer(state: State): Promise<State> {
+  const itr = state.currentIteration();
+  let promise: Promise<Iteration>;
+  if (itr == null) {
+    promise = iterationDao.createFirst();
   } else {
-    nextItr = Iteration.createFirst(nextId(state));
+    promise = iterationDao.next(itr);
   }
 
-  return state
-    .set("iterations", state.iterations.push(nextItr))
-    .set("timer", state.timer.updateIteration(nextItr));
+  return promise.then(nextItr => (
+    state
+      .set("iterations", state.iterations.push(nextItr))
+      .set("timer", state.timer.updateIteration(nextItr))
+  ));
 }
 
-export function stopTimer(state: State): State {
-  return state.set("timer", state.timer.stop());
+export function stopTimer(state: State): Promise<State> {
+  return iterationDao.stop(state.currentIteration())
+    .then(itr => state.set("iterations", state.iterations.push(itr)))
+    .then(newState => newState.set("timer", state.timer.stop()));
 }
