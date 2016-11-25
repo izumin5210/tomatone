@@ -1,0 +1,54 @@
+:root {
+  --GlobalNav__list: {
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  };
+
+  --GlobalNav__item: {
+    width: var(--nav-item-size);
+    height: var(--nav-item-size);
+    line-height: var(--nav-item-size);
+  };
+
+  --GlobalNav__link: {
+    display: block;
+    text-align: center;
+
+    &:hover {
+      background-color: color(var(--color-text) a(30%));
+    }
+
+    &:active {
+      background-color: color(var(--color-text) a(40%));
+    }
+  }
+}
+
+.GlobalNav__list {
+  @apply --GlobalNav__list;
+}
+
+.GlobalNav__item {
+  @apply --GlobalNav__item;
+}
+
+.GlobalNav__link {
+  @apply --GlobalNav__link;
+
+  &:link,
+  &:visited {
+    color: color(var(--color-text) a(50%));
+  }
+}
+
+.GlobalNav__link_active {
+  @apply --GlobalNav__link;
+
+  &:link,
+  &:visited {
+    color: var(--color-text);
+  }
+}

@@ -13,5 +13,9 @@
   /* spacing */
   --spacing: 8px;
 
+  /* size */
+  --nav-height:    48px;
+  --nav-item-size: var(--nav-height);
+
   /* stylelint-enable */
 }

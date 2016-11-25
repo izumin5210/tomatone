@@ -1,6 +1,8 @@
 :root {
   --App: {
-    display: table;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     width: 100%;
     height: 100%;
     color: var(--color-text);
@@ -26,10 +28,17 @@
 }
 
 .App__header {
-  /* TODO: Not yet implemented. */
+  @apply --shadow-1;
+
+  align-self: stretch;
 }
 
 .App__main {
+  display: table;
+  align-self: center;
+}
+
+.App__main-wrapper {
   display: table-cell;
   vertical-align: middle;
 }
