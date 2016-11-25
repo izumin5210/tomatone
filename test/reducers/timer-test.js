@@ -35,8 +35,8 @@ describe("timer reducer", () => {
     });
 
     it("returns new state when the state has some iterations", () => {
-      const itr1 = new Iteration();
-      const itr2 = itr1.next();
+      const itr1 = new Iteration({ id: 1 });
+      const itr2 = new Iteration({ id: 2 });
       const state = new State({
         iterations: List.of(itr1, itr2),
         timer:      new Timer({ currentIterationId: itr2.id }),

@@ -34,12 +34,6 @@ const IterationRecord = Record(defaultValues);
 
 export default class Iteration extends IterationRecord {
 
-  static createFirst(id: typeof IterationRecord.id): Iteration {
-    // FIXME: Should not use `Date.now()`
-    const startedAt = Date.now();
-    return new Iteration({ id, startedAt });
-  }
-
   static MAX_ITERATIONS = MAX_ITERATIONS;
   static TIMES = TIMES;
 
@@ -54,21 +48,5 @@ export default class Iteration extends IterationRecord {
 
   isFinished(): boolean {
     return !(this.remainTimeInMillis() > 0);
-  }
-
-  next(): Iteration {
-    let type: IterationType = "WORK";
-    let numOfIteration : number = this.numOfIteration;
-    const id = this.id + 1;
-    if (this.type === "WORK") {
-      const isLongBreak = numOfIteration % MAX_ITERATION === 0;
-      type = isLongBreak ? "LONG_BREAK" : "SHORT_BREAK";
-    } else {
-      numOfIteration += 1;
-    }
-    // FIXME: Should not use `new Date()`
-    const startedAt = Date.now();
-    const totalTimeInMillis = TIMES[type];
-    return new Iteration({ id, startedAt, type, numOfIteration, totalTimeInMillis });
   }
 }

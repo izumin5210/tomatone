@@ -61,34 +61,4 @@ describe("Iteration", () => {
       assert(!itr.isFinished());
     });
   });
-
-  describe("#next()", () => {
-    it("returns WORKING Iteration and increments count after SHORT_BREAK", () => {
-      const itr = new Iteration({ type: "SHORT_BREAK" });
-      const nextItr = itr.next();
-      assert(nextItr.type, "WORKING");
-      assert(nextItr.numOfIteration, itr.numOfIteration + 1);
-    });
-
-    it("returns WORKING Iteration and increments count after LONG_BREAK", () => {
-      const itr = new Iteration({ type: "LONG_BREAK" });
-      const nextItr = itr.next();
-      assert(nextItr.type, "WORKING");
-      assert(nextItr.numOfIteration, itr.numOfIteration + 1);
-    });
-
-    it("returns SHORT_BREAK Iteration", () => {
-      const itr = new Iteration({ type: "WORKING" });
-      const nextItr = itr.next();
-      assert(nextItr.type, "SHORT_BREAK");
-      assert(nextItr.numOfIteration, itr.numOfIteration);
-    });
-
-    it("returns LONG_BREAK Iteration", () => {
-      const itr = new Iteration({ type: "WORKING", numOfIteration: 4 });
-      const nextItr = itr.next();
-      assert(nextItr.type, "LONG_BREAK");
-      assert(nextItr.numOfIteration, itr.numOfIteration);
-    });
-  });
 });
