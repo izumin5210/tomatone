@@ -1,6 +1,5 @@
 :root {
   --App: {
-    display: table;
     width: 100%;
     height: 100%;
     color: var(--color-text);
@@ -26,12 +25,16 @@
 }
 
 .App__header {
-  /* TODO: Not yet implemented. */
+  @apply --shadow-1;
+
+  position: fixed;
+  width: 100%;
+  height: var(--nav-height);
 }
 
 .App__main {
-  display: table-cell;
-  vertical-align: middle;
+  width: 100%;
+  height: 100%;
 }
 
 .App__footer {
