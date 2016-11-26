@@ -9,7 +9,8 @@ import {
   State,
 } from "../models";
 
-import TimerView from "./timer_view";
+import TimerView   from "./timer_view";
+import HistoryView from "./history_view";
 
 import {
   GlobalNav,
@@ -45,6 +46,10 @@ export default class App extends Component {
               exactly
               pattern="/"
               render={() => <TimerView state={state} />}
+            />
+            <Match
+              pattern="/history"
+              render={() => <HistoryView state={state} />}
             />
           </main>
           <footer className="App__footer" />

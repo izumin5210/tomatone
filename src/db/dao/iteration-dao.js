@@ -1,5 +1,6 @@
 /* @flow */
 import Dexie from "dexie";
+import { List } from "immutable";
 
 import {
   Iteration,
@@ -11,6 +12,12 @@ export default class IterationDao {
 
   constructor(db: Dexie) {
     this.db = db;
+  }
+
+  getAll(): Promise<List<Iteration>> {
+    const items = this.table.toArray()
+      .then(arr => List(arr.map(i => new Iteration(i))));
+    return Promise.resolve(items);
   }
 
   createFirst(): Promise<Iteration> {

@@ -1,0 +1,65 @@
+:root {
+  --IterationList__icon: {
+    flex: 0 0 auto;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    text-align: center;
+    border-radius: 50%;
+    color: var(--color-text_light);
+    margin: calc(2 * var(--spacing));
+  };
+}
+
+.IterationList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.IterationList__item {
+  display: flex;
+
+  &:hover {
+    background-color: var(--gray-lighter);
+  }
+}
+
+.IterationList__date {
+  margin: calc(2 * var(--spacing));
+  color: var(--gray);
+}
+
+.IterationList__icon_work {
+  @apply --IterationList__icon;
+
+  background-color: var(--color-bg_work);
+}
+
+.IterationList__icon_break {
+  @apply --IterationList__icon;
+
+  background-color: var(--color-bg_break);
+}
+
+.IterationList__body {
+  flex: 1;
+  padding: calc(2 * var(--spacing)) 0;
+  margin-right: calc(2 * var(--spacing));
+  border-top: 1px solid var(--gray-light);
+}
+
+.IterationList__date + .IterationList__item > .IterationList__body {
+  border: none;
+}
+
+.IterationList__title {
+  display: block;
+  line-height: 1;
+  margin-bottom: calc(0.5 * var(--spacing));
+}
+
+.IterationList__metadata {
+  font-size: 0.8rem;
+  color: var(--gray);
+}

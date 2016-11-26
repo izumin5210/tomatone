@@ -10,6 +10,27 @@ describe("IterationDao", () => {
   beforeEach(db.open);
   afterEach(db.close);
 
+  describe("#getAll()", () => {
+    it("returns all saved iterations", () => {
+      let i = 1;
+      return db.iterations
+        .bulkPut([
+          { type: "WORK", numOfIteration: i },
+          { type: "SHORT_BREAK", numOfIteration: (i += 1) },
+          { type: "WORK", numOfIteration: i },
+          { type: "SHORT_BREAK", numOfIteration: (i += 1) },
+          { type: "WORK", numOfIteration: i },
+          { type: "SHORT_BREAK", numOfIteration: (i += 1) },
+          { type: "WORK", numOfIteration: i },
+          { type: "LONG_BREAK", numOfIteration: (i += 1) },
+        ])
+        .then(() => db.iterations.count())
+        .then(count => assert(count === 8))
+        .then(() => dao.getAll())
+        .then(itrs => assert(itrs.size === 8));
+    });
+  });
+
   describe("#createFirst()", () => {
     it("creates a 1st WORK iteration", () => {
       const promise = dao.createFirst();
