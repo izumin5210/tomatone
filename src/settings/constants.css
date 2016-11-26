@@ -20,5 +20,8 @@
   --nav-height:    48px;
   --nav-item-size: var(--nav-height);
 
+  /* z-index */
+  --zindex-nav: 1000;
+
   /* stylelint-enable */
 }
