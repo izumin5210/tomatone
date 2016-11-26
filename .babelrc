@@ -10,6 +10,17 @@
     "transform-flow-strip-types",
     "transform-class-properties",
     "transform-decorators-legacy",
-    "react-hot-loader/babel"
-  ]
+  ],
+  "env": {
+    "development": {
+      "plugins": [
+        "react-hot-loader/babel"
+      ]
+    },
+    "production": {
+      "presets": [
+        "react-optimize"
+      ]
+    }
+  }
 }
