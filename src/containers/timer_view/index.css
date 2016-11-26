@@ -1,8 +1,22 @@
-.TimerView {
-  display: flex;
-  width: 100%;
-  height: 100%;
-  padding-top: var(--nav-height);
+:root {
+  --TimerView: {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    padding-top: var(--nav-height);
+  };
+}
+
+.TimerView_work {
+  @apply --TimerView;
+
+  background-color: var(--color-bg_work);
+}
+
+.TimerView_break {
+  @apply --TimerView;
+
+  background-color: var(--color-bg_break);
 }
 
 .TimerView__wrapper {

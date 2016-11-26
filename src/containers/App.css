@@ -1,38 +1,41 @@
 :root {
   --App: {
+    position: relative;
     width: 100%;
     height: 100%;
     color: var(--color-text);
+  };
+
+  --App__header: {
+    @apply --shadow-1;
+
+    position: fixed;
+    width: 100%;
+    height: var(--nav-height);
+    top: 0;
+    left: 0;
+    z-index: var(--zindex-nav);
   };
 }
 
 .App {
   @apply --App;
-
-  background-color: var(--color-bg);
 }
 
-.App_working {
-  @apply --App;
+.App__header_work {
+  @apply --App__header;
 
-  background-color: var(--color-bg_working);
+  background-color: var(--color-bg_work);
 }
 
-.App_breaking {
-  @apply --App;
+.App__header_break {
+  @apply --App__header;
 
-  background-color: var(--color-bg);
-}
-
-.App__header {
-  @apply --shadow-1;
-
-  position: fixed;
-  width: 100%;
-  height: var(--nav-height);
+  background-color: var(--color-bg_break);
 }
 
 .App__main {
+  position: relative;
   width: 100%;
   height: 100%;
 }
