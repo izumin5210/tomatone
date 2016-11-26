@@ -2,6 +2,7 @@ import menubar from "menubar";
 
 const mb = menubar({
   dir:           __dirname,
+  icon:          `${__dirname}/icon.png`,
   preloadWindow: true,
   width:         320,
   height:        480,
