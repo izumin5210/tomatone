@@ -5,12 +5,14 @@
   --color-text_dark:  var(--gray-dark);
   --color-text_light: var(--gray-lightest);
   --color-text:       var(--color-text_dark);
-  --color-bg:         var(--gray-lightest);
+  --color-bg_dark:    var(--gray-dark);
+  --color-bg_light:   var(--gray-lightest);
+  --color-bg:         var(--color-bg_light);
   --color-bg_work:    var(--primary-red);
   --color-bg_break:   var(--primary-green);
 
   /* text */
-  --font-size-base:   16px;
+  --font-size-base:   14px;
   --line-height-base: 1.8;
 
   /* spacing */
