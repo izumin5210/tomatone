@@ -1,6 +1,6 @@
 /* @flow */
 import { useFakeTimers } from "sinon";
-import { List }          from "immutable";
+import { Map }           from "immutable";
 
 import {
   Iteration,
@@ -29,7 +29,7 @@ describe("State", () => {
       const itr1 = new Iteration({ id: 1 });
       const itr2 = new Iteration({ id: 2 });
       const state = new State({
-        iterations: List.of(itr1, itr2),
+        iterations: Map([[itr1.id, itr1], [itr2.id, itr2]]),
         timer:      new Timer(),
       });
       assert(state.currentIteration() === undefined);
@@ -39,7 +39,7 @@ describe("State", () => {
       const itr1 = new Iteration({ id: 1 });
       const itr2 = new Iteration({ id: 2 });
       const state = new State({
-        iterations: List.of(itr1, itr2),
+        iterations: Map([[itr1.id, itr1], [itr2.id, itr2]]),
         timer:      new Timer({ currentIterationId: itr2.id }),
       });
       assert(state.currentIteration(), itr2);

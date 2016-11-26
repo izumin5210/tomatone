@@ -23,13 +23,13 @@ export function startTimer(state: State): Promise<State> {
 
   return promise.then(nextItr => (
     state
-      .set("iterations", state.iterations.push(nextItr))
+      .set("iterations", state.iterations.set(nextItr.id, nextItr))
       .set("timer", state.timer.updateIteration(nextItr))
   ));
 }
 
 export function stopTimer(state: State): Promise<State> {
   return iterationDao.stop(state.currentIteration())
-    .then(itr => state.set("iterations", state.iterations.push(itr)))
+    .then(itr => state.set("iterations", state.iterations.set(itr.id, itr)))
     .then(newState => newState.set("timer", state.timer.stop()));
 }
