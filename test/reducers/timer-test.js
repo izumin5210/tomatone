@@ -1,5 +1,5 @@
 /* @flow */
-import { List } from "immutable";
+import { Map } from "immutable";
 
 import {
   startTimer,
@@ -38,7 +38,7 @@ describe("timer reducer", () => {
       const itr1 = new Iteration({ id: 1 });
       const itr2 = new Iteration({ id: 2 });
       const state = new State({
-        iterations: List.of(itr1, itr2),
+        iterations: Map([[itr1.id, itr1], [itr2.id, itr2]]),
         timer:      new Timer({ currentIterationId: itr2.id }),
       });
       startTimer(state)
@@ -53,7 +53,7 @@ describe("timer reducer", () => {
     it("returns new state that has stopped timer", () => {
       const itr = new Iteration();
       const state = new State({
-        iterations: List.of(itr),
+        iterations: Map([[itr.id, itr]]),
         timer:      new Timer({ currentIterationId: itr.id }),
       });
       stopTimer(state)

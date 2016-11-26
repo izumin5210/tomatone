@@ -1,5 +1,5 @@
 /* @flow */
-import { Record, List } from "immutable";
+import { Record, Map } from "immutable";
 
 import {
   Iteration,
@@ -9,13 +9,13 @@ import {
 // FIXME: I want to add align option to flowtype/space-after-type-colon rule...
 /* eslint-disable no-multi-spaces */
 type StateConfig = {
-  iterations: List<Iteration>;
+  iterations: Map<number, Iteration>;
   timer:      Timer;
 };
 /* eslint-enable */
 
 const defaultValues: StateConfig = {
-  iterations: List(),
+  iterations: Map(),
   timer:      new Timer(),
 };
 
@@ -23,7 +23,7 @@ const StateRecord = Record(defaultValues);
 
 export default class State extends StateRecord {
   currentIteration(): ?Iteration {
-    return this.iterations.find(v => v.id === this.timer.currentIterationId);
+    return this.iterations.get(this.timer.currentIterationId);
   }
 
   hasStarted(): boolean {
