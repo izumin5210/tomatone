@@ -21,7 +21,7 @@
     width: var(--timer-inner-size);
     height: var(--timer-inner-size);
     line-height: var(--timer-inner-size);
-    color: var(--color-text);
+    color: var(--color-text_light);
   };
 
   --PomodoroTimer__name: {
@@ -56,19 +56,19 @@
 .PomodoroTimer__inner-wrapper {
   @apply --PomodoroTimer__inner-wrapper;
 
-  background-color: var(--color-bg);
+  background-color: var(--color-bg_break);
 }
 
 .PomodoroTimer__inner-wrapper_working {
   @apply --PomodoroTimer__inner-wrapper;
 
-  background-color: var(--color-bg_working);
+  background-color: var(--color-bg_work);
 }
 
 .PomodoroTimer__inner-wrapper_breaking {
   @apply --PomodoroTimer__inner-wrapper;
 
-  background-color: var(--color-bg);
+  background-color: var(--color-bg_break);
 }
 
 .PomodoroTimer__name {

@@ -33,11 +33,11 @@ export default class App extends Component {
 
   render() {
     const state = this.state.state;
-    const modifier = state.hasStarted() ? `_${state.isWorking() ? "work" : "break"}ing` : "";
+    const modifier = `_${state.isWorking() ? "work" : "break"}`;
     return (
       <HashRouter>
-        <div className={`App${modifier}`}>
-          <header className="App__header">
+        <div className="App">
+          <header className={`App__header${modifier}`}>
             <GlobalNav />
           </header>
           <main className="App__main">

@@ -18,11 +18,11 @@
     text-align: center;
 
     &:hover {
-      background-color: color(var(--color-text) a(30%));
+      background-color: color(var(--color-text_light) a(30%));
     }
 
     &:active {
-      background-color: color(var(--color-text) a(40%));
+      background-color: color(var(--color-text_light) a(40%));
     }
   }
 }
@@ -40,7 +40,7 @@
 
   &:link,
   &:visited {
-    color: color(var(--color-text) a(50%));
+    color: color(var(--color-text_light) a(50%));
   }
 }
 
@@ -49,6 +49,6 @@
 
   &:link,
   &:visited {
-    color: var(--color-text);
+    color: var(--color-text_light);
   }
 }

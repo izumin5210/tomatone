@@ -2,9 +2,12 @@
   /* stylelint-disable declaration-colon-space-after */
 
   /* colors */
-  --color-text: var(--gray-lightest);
-  --color-bg:   var(--primary-green);
-  --color-bg_working: var(--primary-red);
+  --color-text_dark:  var(--gray-dark);
+  --color-text_light: var(--gray-lightest);
+  --color-text:       var(--color-text_dark);
+  --color-bg:         var(--gray-lightest);
+  --color-bg_work:    var(--primary-red);
+  --color-bg_break:   var(--primary-green);
 
   /* text */
   --font-size-base:   16px;

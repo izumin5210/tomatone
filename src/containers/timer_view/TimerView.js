@@ -14,7 +14,7 @@ type Props = {
 
 export default function TimerView({ state }: Props) {
   return (
-    <div className="TimerView">
+    <div className={`TimerView_${state.isWorking() ? "work" : "break"}`}>
       <div className="TimerView__wrapper">
         <PomodoroTimer
           timer={state.timer}
