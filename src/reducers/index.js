@@ -8,12 +8,17 @@ import {
 import {
   ACTION_TIMER_START,
   ACTION_TIMER_STOP,
+  ACTION_ITERATIONS_GET,
 } from "../settings/constants";
 
 import {
   startTimer,
   stopTimer,
 } from "./timer";
+
+import {
+  getAllIterations,
+} from "./iterations";
 
 const initialState = new State();
 
@@ -30,6 +35,7 @@ export default class Reducer {
 
     subscribe(ACTION_TIMER_START, () => this.update(startTimer));
     subscribe(ACTION_TIMER_STOP, () => this.update(stopTimer));
+    subscribe(ACTION_ITERATIONS_GET, () => this.update(getAllIterations));
   }
 
   update(fn: (s: ?State) => State | Promise<State>) {
