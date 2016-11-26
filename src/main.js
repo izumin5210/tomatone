@@ -7,6 +7,7 @@ const mb = menubar({
   width:         320,
   height:        480,
   resizable:     false,
+  alwaysOnTop:   (process.env.NODE_ENV === "development"),
 });
 
 if (process.env.NODE_ENV === "production") {
