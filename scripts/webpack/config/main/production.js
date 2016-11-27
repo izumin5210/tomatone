@@ -1,12 +1,17 @@
-import  webpack from "webpack";
-import  merge   from "webpack-merge";
+import webpack    from "webpack";
+import merge      from "webpack-merge";
+import CopyPlugin from "copy-webpack-plugin";
+
+import path from "path";
 
 import baseConfig from "../base";
 
 const config = merge(baseConfig, {
+  context: path.join(__dirname, "../../../../src"),
+
   entry: [
     "babel-polyfill",
-    "./src/main",
+    "./main",
   ],
 
   output: {
@@ -14,6 +19,10 @@ const config = merge(baseConfig, {
   },
 
   plugins: [
+    new CopyPlugin([
+      { from: "./icon*.png" },
+    ]),
+
     new webpack.LoaderOptionsPlugin({
       debug: false,
       minimize: true,

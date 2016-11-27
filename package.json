@@ -7,13 +7,40 @@
     "email": "masayuki@izumin.info",
     "url": "https://github.com/izumin5210"
   },
+  "bin": {
+    "electron": "./node_modules/.bin/electron"
+  },
   "bugs": {
     "url": "https://github.com/izumin5210/tomatone/issues"
+  },
+  "build": {
+    "appId": "info.izumin.tomatone",
+    "dmg": {
+      "contents": [
+        {
+          "x": 410,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 130,
+          "y": 150,
+          "type": "file"
+        }
+      ]
+    },
+    "files": [
+      "src/icon*.png",
+      "dist/",
+      "node_modules/",
+      "package.json",
+      "resources/"
+    ]
   },
   "dependencies": {
     "babel-polyfill": "^6.16.0",
     "dexie": "^1.5.1",
-    "electron": "^1.4.5",
     "electron-debug": "^1.1.0",
     "electron-devtools-installer": "^2.0.1",
     "font-awesome": "^4.7.0",
@@ -41,9 +68,13 @@
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-power-assert": "^1.0.0",
     "babel-preset-react": "^6.16.0",
+    "babel-preset-react-optimize": "^1.0.1",
     "babel-preset-stage-2": "^6.18.0",
+    "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.25.0",
     "devtron": "^1.4.0",
+    "electron": "^1.4.8",
+    "electron-builder": "^8.6.0",
     "electron-inspector": "^0.1.3",
     "electron-packager": "^8.2.0",
     "electron-prebuilt": "^1.4.5",
@@ -90,6 +121,10 @@
     "webpack-hot-middleware": "^2.13.2",
     "webpack-merge": "^0.15.0"
   },
+  "directories": {
+    "buildResources": "resources",
+    "output": "release"
+  },
   "homepage": "https://github.com/izumin5210/tomatone#readme",
   "license": {
     "type": "MIT",
@@ -110,6 +145,7 @@
     "lint:css": "stylelint 'src/**/*.css'",
     "lint:src": "eslint src",
     "lint:test": "eslint --global assert --global React test",
+    "package": "npm run build && build --publish never",
     "server": "NODE_ENV=development node --max_old_space_size=2096 -r babel-register ./scripts/server.js",
     "start": "HOT=1 NODE_ENV=development electron --debug=5858 -r babel-register -r babel-polyfill ./src/main.js",
     "start:production": "electron .",

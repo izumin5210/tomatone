@@ -2,10 +2,12 @@ import menubar from "menubar";
 
 const mb = menubar({
   dir:           __dirname,
+  icon:          `${__dirname}/icon.png`,
   preloadWindow: true,
   width:         320,
   height:        480,
   resizable:     false,
+  alwaysOnTop:   (process.env.NODE_ENV === "development"),
 });
 
 if (process.env.NODE_ENV === "production") {
