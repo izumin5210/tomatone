@@ -9,8 +9,8 @@ import {
   State,
 } from "../models";
 
-import TimerView   from "./timer_view";
-import HistoryView from "./history_view";
+import TimerView   from "./timer-view";
+import HistoryView from "./history-view";
 
 import {
   GlobalNav,
