@@ -3,7 +3,7 @@
 import { shallow }  from "enzyme";
 import { spy }      from "sinon";
 
-import BtnStart from "../../../src/components/pomodoro_timer/BtnStart";
+import BtnStart from "../../../src/components/pomodoro-timer/BtnStart";
 
 describe("<BtnStart />", () => {
   it("renders stop icon when the timer has already started", () => {

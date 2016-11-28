@@ -1,6 +1,6 @@
-import GlobalNav from "./global_nav";
-import IterationList from "./iteration_list";
-import PomodoroTimer from "./pomodoro_timer";
+import GlobalNav from "./global-nav";
+import IterationList from "./iteration-list";
+import PomodoroTimer from "./pomodoro-timer";
 
 export {
   GlobalNav,
