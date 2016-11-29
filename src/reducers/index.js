@@ -8,12 +8,14 @@ import {
 import {
   ACTION_TIMER_START,
   ACTION_TIMER_STOP,
+  ACTION_TIMER_REFRESH,
   ACTION_ITERATIONS_GET,
 } from "../settings/constants";
 
 import {
   startTimer,
   stopTimer,
+  refreshTimer,
 } from "./timer";
 
 import {
@@ -35,6 +37,7 @@ export default class Reducer {
 
     subscribe(ACTION_TIMER_START, () => this.update(startTimer));
     subscribe(ACTION_TIMER_STOP, () => this.update(stopTimer));
+    subscribe(ACTION_TIMER_REFRESH, () => this.update(refreshTimer));
     subscribe(ACTION_ITERATIONS_GET, () => this.update(getAllIterations));
   }
 
