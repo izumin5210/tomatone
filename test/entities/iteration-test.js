@@ -39,13 +39,13 @@ describe("Iteration", () => {
     it("returns positive value when the iteration has not finished", () => {
       const itr = new Iteration();
       clock.tick(1000);
-      assert(itr.remainTimeInMillis(), itr.totalTimeInMillis - 1000);
+      assert(itr.remainTimeInMillis, itr.totalTimeInMillis - 1000);
     });
 
     it("returns negative value when the iteration has finished", () => {
       const itr = new Iteration();
       clock.tick(itr.totalTimeInMillis + 1000);
-      assert(itr.remainTimeInMillis(), -1000);
+      assert(itr.remainTimeInMillis, -1000);
     });
   });
 
@@ -56,9 +56,23 @@ describe("Iteration", () => {
       assert(itr.isFinished());
     });
 
-    it("returns true when the iteration has not finished", () => {
+    it("returns false when the iteration has not finished", () => {
       const itr = new Iteration();
       assert(!itr.isFinished());
+    });
+
+    it("returns false when the iteration has remain times more than 500 ms", () => {
+      const itr = new Iteration();
+      assert(!itr.isFinished());
+      clock.tick(itr.remainTimeInMillis - 500);
+      assert(!itr.isFinished());
+    });
+
+    it("returns true when the iteration has remain times less than 500 ms", () => {
+      const itr = new Iteration();
+      assert(!itr.isFinished());
+      clock.tick(itr.remainTimeInMillis - 499);
+      assert(itr.isFinished());
     });
   });
 });

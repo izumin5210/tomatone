@@ -37,7 +37,7 @@ export default class Iteration extends IterationRecord {
   static MAX_ITERATIONS = MAX_ITERATIONS;
   static TIMES = TIMES;
 
-  remainTimeInMillis(): number {
+  get remainTimeInMillis(): number {
     // FIXME: Should not use `Date.now()`
     return this.totalTimeInMillis - (Date.now() - this.startedAt);
   }
@@ -47,6 +47,6 @@ export default class Iteration extends IterationRecord {
   }
 
   isFinished(): boolean {
-    return !(this.remainTimeInMillis() > 0);
+    return !(Math.round(this.remainTimeInMillis / 1000) > 0);
   }
 }
