@@ -3,6 +3,7 @@ import { Record, Map } from "immutable";
 
 import {
   Iteration,
+  Task,
   Timer,
 } from "../entities";
 
@@ -10,12 +11,14 @@ import {
 /* eslint-disable no-multi-spaces */
 type StateConfig = {
   iterations: Map<number, Iteration>;
+  tasks:      Map<number, Task>;
   timer:      Timer;
 };
 /* eslint-enable */
 
 const defaultValues: StateConfig = {
   iterations: Map(),
+  tasks:      Map(),
   timer:      new Timer(),
 };
 
