@@ -1,33 +1,23 @@
 /* @flow */
 import React, { Component } from "react";
-import { dispatcher } from "react-dispatcher-decorator";
 
 import {
   Iteration,
   Timer,
 } from "../../entities";
 
-import {
-  ACTION_TIMER_START,
-  ACTION_TIMER_STOP,
-} from "../../settings/constants";
-
 import TimerInner from "./TimerInner";
 
 // FIXME: I want to add align option to flowtype/space-after-type-colon rule...
 /* eslint-disable no-multi-spaces */
 type Props = {
-  iteration: ?Iteration;
-  timer:     Timer;
+  iteration:      ?Iteration;
+  timer:          Timer;
+  onBtnPlayClick: () => void;
 };
 /* eslint-enable */
 
-@dispatcher
 export default class PomodoroTimer extends Component {
-
-  onBtnPlayClick() {
-    this.context.dispatch(this.hasStarted() ? ACTION_TIMER_STOP : ACTION_TIMER_START);
-  }
 
   getGradients(): Array<string> {
     // FIXME: Should import from settings/constans.css
@@ -35,8 +25,7 @@ export default class PomodoroTimer extends Component {
     const bg = this.isWorking() ? "#a54c38" : "#5f8e58";
 
     const { timer } = this.props;
-    const itr = this.props.iteration;
-    const r = (itr != null) ? (1 - (timer.remainTimeInMillis / itr.totalTimeInMillis)) : 0;
+    const r = timer.hasStarted() ? (1 - (timer.remainTimeInMillis / timer.totalTimeInMillis)) : 0;
     if (r < 0.5) {
       const angle = ((r / 0.5) * 180) + 90;
       return [
@@ -52,18 +41,9 @@ export default class PomodoroTimer extends Component {
     ];
   }
 
-  hasStarted(): boolean {
-    return this.props.iteration != null;
-  }
-
   isWorking(): boolean {
     const itr = this.props.iteration;
     return (itr != null) && itr.isWorking();
-  }
-
-  totalTimeInMillis(): number {
-    const itr = this.props.iteration;
-    return (itr != null) ? itr.totalTimeInMillis : 0;
   }
 
   name(): string {
@@ -74,6 +54,7 @@ export default class PomodoroTimer extends Component {
   props: Props;
 
   render() {
+    const { timer, onBtnPlayClick } = this.props;
     return (
       <div
         className="PomodoroTimer"
@@ -83,10 +64,10 @@ export default class PomodoroTimer extends Component {
       >
         <TimerInner
           name={this.name()}
-          hasStarted={this.hasStarted()}
+          hasStarted={timer.hasStarted()}
           isWorking={this.isWorking()}
-          remainTimeInMillis={this.props.timer.remainTimeInMillis}
-          onBtnPlayClick={() => this.onBtnPlayClick()}
+          remainTimeInMillis={timer.remainTimeInMillis}
+          onBtnPlayClick={() => onBtnPlayClick()}
         />
       </div>
     );
