@@ -2,10 +2,15 @@
 import { Record } from "immutable";
 import Iteration  from "./iteration";
 
+import {
+  Task,
+} from "../entities";
+
 // FIXME: I want to add align option to flowtype/space-after-type-colon rule...
 /* eslint-disable no-multi-spaces */
 type TimerConfig = {
   currentIterationId: ?number;
+  selectedTaskId:     ?number;
   totalTimeInMillis:  number;
   remainTimeInMillis: number;
 }
@@ -13,6 +18,7 @@ type TimerConfig = {
 
 const defaultValues: TimerConfig = {
   currentIterationId: undefined,
+  selectedTaskId:     undefined,
   totalTimeInMillis:  0,
   remainTimeInMillis: 0,
 };
@@ -29,6 +35,10 @@ export default class Timer extends TimerRecord {
     return this.set("currentIterationId", itr.id)
       .set("totalTimeInMillis", itr.totalTimeInMillis)
       .set("remainTimeInMillis", itr.totalTimeInMillis);
+  }
+
+  updateTask(task: ?Task): Timer {
+    return this.set("selectedTaskId", (task == null) ? undefined : task.id);
   }
 
   stop(): Timer {
