@@ -15,6 +15,7 @@ import {
   CompleteTaskAction,
   IncompleteTaskAction,
   SelectTaskAction,
+  DeleteTaskAction,
 } from "../actions/tasks";
 
 export function getAllTasks(state: State): Promise<State> {
@@ -54,4 +55,15 @@ export function incompleteTask(state: State, action: IncompleteTaskAction): Prom
 
 export function selectTask(state: State, { task }: SelectTaskAction): State {
   return state.set("timer", state.timer.updateTask(task));
+}
+
+export function deleteTask(state: State, action: DeleteTaskAction): State {
+  return taskDao.delete(action.task)
+    .then((task) => {
+      const newState = state.set("tasks", state.tasks.delete(task.id));
+      if (state.timer.selectedTaskId === task.id) {
+        return newState.set("timer", newState.timer.updateTask(null));
+      }
+      return newState;
+    });
 }

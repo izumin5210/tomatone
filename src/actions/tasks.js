@@ -8,6 +8,7 @@ export const ACTION_TASK_UPDATE     = "task:udpate";
 export const ACTION_TASK_COMPLETE   = "task:complete";
 export const ACTION_TASK_INCOMPLETE = "task:incomplete";
 export const ACTION_TASK_SELECT     = "task:select";
+export const ACTION_TASK_DELETE     = "task:delete";
 /* eslint-enable */
 
 export type CreateTaskAction = {
@@ -28,4 +29,8 @@ export type IncompleteTaskAction = {
 
 export type SelectTaskAction = {
   task: ?Task;
+};
+
+export type DeleteTaskAction = {
+  task: Task;
 };

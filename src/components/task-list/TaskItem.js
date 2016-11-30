@@ -12,6 +12,7 @@ export type Props = {
   onCheck:  () => void;
   onSelect: () => void;
   onUpdate: (editedTask: Task) => void;
+  delete:   () => void;
   selected: boolean;
 };
 
@@ -85,6 +86,14 @@ export default class TaskItem extends Component {
         >
           <i className={`fa fa-${editing ? "check" : "pencil"}`} />
         </button>
+        { editing && (
+          <button
+            className="TaskList__btn-delete"
+            onClick={() => this.props.delete()}
+          >
+            <i className="fa fa-trash" />
+          </button>
+        )}
       </label>
     );
   }

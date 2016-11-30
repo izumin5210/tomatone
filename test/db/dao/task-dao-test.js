@@ -102,4 +102,17 @@ describe("TaskDao", () => {
         })
     ));
   });
+
+  describe("#delete()", () => {
+    it("returns the deleted task", () => (
+      db.tasks.put({ title: "awesome task" })
+        .then(id => db.tasks.get(id))
+        .then(attrs => new Task(attrs))
+        .then(task => dao.delete(task))
+        .then(() => db.tasks.count())
+        .then(c => assert(c === 0))
+    ));
+
+    xit("returns a not found error");
+  });
 });

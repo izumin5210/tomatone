@@ -51,6 +51,10 @@ export default class TasksView extends Component {
     this.context.dispatch(TasksActions.ACTION_TASK_UPDATE, { task });
   }
 
+  deleteTask(task: Task) {
+    this.context.dispatch(TasksActions.ACTION_TASK_DELETE, { task });
+  }
+
   render() {
     return (
       <div className="TasksView">
@@ -59,6 +63,7 @@ export default class TasksView extends Component {
           completeTask={t => this.completeTask(t)}
           updateTask={t => this.updateTask(t)}
           selectTask={t => this.selectTask(t)}
+          deleteTask={t => this.deleteTask(t)}
           selectedTaskId={this.props.state.timer.selectedTaskId}
         />
         <TaskComposer

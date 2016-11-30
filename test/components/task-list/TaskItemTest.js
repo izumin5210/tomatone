@@ -21,6 +21,7 @@ describe("<TaskItem />", () => {
       onCheck:  spy(),
       onSelect: spy(),
       onUpdate: spy(),
+      delete:   spy(),
       selected: false,
     };
   });
@@ -76,6 +77,18 @@ describe("<TaskItem />", () => {
       wrapper.find(".TaskList__btn-edit").simulate("click");
       assert(!props.onUpdate.called);
       assert(wrapper.find(".TaskList__form-edit").length === 0);
+    });
+  });
+
+  describe("deleteTask", () => {
+    it("calls delete() when btn-delete is clicked", () => {
+      const wrapper = shallow(<TaskItem {...props} />);
+      assert(!props.delete.called);
+      assert(wrapper.find(".TaskList__btn-delete").length === 0);
+      wrapper.find(".TaskList__btn-edit").simulate("click");
+      assert(wrapper.find(".TaskList__btn-delete").length === 1);
+      wrapper.find(".TaskList__btn-delete").simulate("click");
+      assert(props.delete.calledOnce);
     });
   });
 });

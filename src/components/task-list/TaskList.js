@@ -15,6 +15,7 @@ type Props = {
   completeTask:   (task: Task) => void;
   updateTask:     (task: Task) => void;
   selectTask:     (task: ?Task) => void;
+  deleteTask:     (task: Task) => void;
   selectedTaskId: ?number;
 };
 
@@ -52,6 +53,7 @@ export default class TaskList extends Component {
         onCheck={() => this.props.completeTask(task)}
         onSelect={() => this.onTaskSelect(task)}
         onUpdate={editedTask => this.props.updateTask(editedTask)}
+        delete={() => this.props.deleteTask(task)}
         selected={this.props.selectedTaskId === task.id}
       />
     );

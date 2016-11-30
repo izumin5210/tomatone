@@ -55,6 +55,11 @@ export default class TaskDao {
       .then(attrs => new Task(attrs));
   }
 
+  delete(task: Task): Promise<Task> {
+    return Promise.resolve(this.table.delete(task.id))
+      .then(() => task);
+  }
+
   get table(): Dexie.WriteableTable {
     return this.db.tasks;
   }

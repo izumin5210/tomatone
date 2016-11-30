@@ -1,3 +1,24 @@
+:root {
+  --TaskList__icon-right: {
+    flex: 0 0 auto;
+    width: calc(3 * var(--spacing));
+    text-align: center;
+  };
+
+  --TaskList__btn-small: {
+    flex: 0 0 auto;
+    cursor: pointer;
+    outline: none;
+    visibility: hidden;
+    padding: 0;
+    line-height: 1;
+  };
+
+  --TaskList__btn-small_hover: {
+    visibility: visible;
+  };
+}
+
 .TaskList__items {
   @apply --List;
 }
@@ -39,10 +60,9 @@
 }
 
 .TaskList__btn-edit,
+.TaskList__btn-delete,
 .TaskList__select:checked ~ .TaskList__item > .TaskList__body::after {
-  flex: 0 0 auto;
-  width: calc(3 * var(--spacing));
-  text-align: center;
+  @apply --TaskList__icon-right;
 }
 
 .TaskList__select:checked ~ .TaskList__item > .TaskList__body::after {
@@ -68,17 +88,14 @@
   border: none;
 }
 
-.TaskList__btn-edit {
-  flex: 0 0 auto;
-  cursor: pointer;
-  outline: none;
-  visibility: hidden;
-  padding: 0;
-  line-height: 1;
+.TaskList__btn-edit,
+.TaskList__btn-delete {
+  @apply --TaskList__btn-small;
 }
 
-.TaskList__body:hover > .TaskList__btn-edit {
-  visibility: visible;
+.TaskList__body:hover > .TaskList__btn-edit,
+.TaskList__body:hover > .TaskList__btn-delete {
+  @apply --TaskList__btn-small_hover;
 }
 
 .TaskList__form-edit {

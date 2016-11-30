@@ -8,6 +8,7 @@ import {
   completeTask,
   incompleteTask,
   selectTask,
+  deleteTask,
 } from "../../src/reducers/tasks";
 
 import {
@@ -170,6 +171,49 @@ describe("tasks reducer", () => {
       });
       const newState = selectTask(state, { task: undefined });
       assert(newState.timer.selectedTaskId == null);
+    });
+  });
+
+  describe("#deleteTask()", () => {
+    let state: State;
+
+    beforeEach(() => (
+      db.tasks.bulkPut([
+        { title: "awesome task 1" },
+        { title: "awesome task 2" },
+      ])
+        .then(() => (
+          db.tasks.toArray()
+            .then(list => list.map(attrs => new Task(attrs)))
+            .then(tasks => {
+              state = tasks.reduce(
+                (s, t) => s.set("tasks", s.tasks.set(t.id, t)),
+                new State(),
+              )
+            })
+        ))
+    ));
+
+    it("returns new state that removed the deleted task", () => {
+      state = state.set("timer",  state.timer.updateTask(state.tasks.get(1)));
+      return deleteTask(state, { task: state.tasks.get(2) })
+        .then((state) => {
+          assert(state.tasks.size === 1);
+          assert(state.timer.selectedTaskId != null);
+        })
+        .then(() => db.tasks.count())
+        .then(c => assert(c === 1))
+    });
+
+    it("returns new state that removed the deleted task and clear selected task", () => {
+      state = state.set("timer",  state.timer.updateTask(state.tasks.get(2)))
+      return deleteTask(state, { task: state.tasks.get(2) })
+        .then((state) => {
+          assert(state.tasks.size === 1);
+          assert(state.timer.selectedTaskId == null);
+        })
+        .then(() => db.tasks.count())
+        .then(c => assert(c === 1))
     });
   });
 });

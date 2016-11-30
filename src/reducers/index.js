@@ -33,6 +33,7 @@ import {
   completeTask,
   incompleteTask,
   selectTask,
+  deleteTask,
 } from "./tasks";
 
 const initialState = new State();
@@ -85,6 +86,12 @@ export default class Reducer {
       TasksActions.ACTION_TASK_SELECT,
       (props: TasksActions.SelectTaskAction) => (
         this.update((s: State) => selectTask(s, props))
+      ),
+    );
+    subscribe(
+      TasksActions.ACTION_TASK_DELETE,
+      (props: TasksActions.DeleteTaskAction) => (
+        this.update((s: State) => deleteTask(s, props))
       ),
     );
   }
