@@ -1,33 +1,21 @@
 :root {
   --IterationList__icon: {
-    flex: 0 0 auto;
-    width: 36px;
-    height: 36px;
-    line-height: 36px;
-    text-align: center;
-    border-radius: 50%;
+    @apply --List__icon;
+
     color: var(--color-text_light);
-    margin: calc(2 * var(--spacing));
   };
 }
 
 .IterationList {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+  @apply --List;
 }
 
 .IterationList__item {
-  display: flex;
-
-  &:hover {
-    background-color: var(--gray-lighter);
-  }
+  @apply --List__item;
 }
 
 .IterationList__date {
-  margin: calc(2 * var(--spacing));
-  color: var(--gray);
+  @apply --List__caption;
 }
 
 .IterationList__icon_work {
@@ -43,10 +31,7 @@
 }
 
 .IterationList__body {
-  flex: 1;
-  padding: calc(2 * var(--spacing)) 0;
-  margin-right: calc(2 * var(--spacing));
-  border-top: 1px solid var(--gray-light);
+  @apply --List__body;
 }
 
 .IterationList__date + .IterationList__item > .IterationList__body {

@@ -22,8 +22,13 @@
   --nav-height:    48px;
   --nav-item-size: var(--nav-height);
 
+  /* border */
+  --border-radius-base: 4px;
+
   /* z-index */
-  --zindex-nav: 1000;
+  --zindex-nav:            1000;
+  --zindex-modal-backdrop: 1040;
+  --zindex-modal:          1050;
 
   /* stylelint-enable */
 }

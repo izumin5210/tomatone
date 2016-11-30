@@ -8,4 +8,11 @@ export const iterations = [
   "totalTimeInMillis",
 ].join(",");
 
+export const tasks = [
+  "++id",
+  "title",
+  "createedAt",
+  "completedAt",
+].join(",");
+
 /* eslint-enable */

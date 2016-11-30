@@ -21,6 +21,7 @@
 
   --btn-primary-green: {
     background-color: var(--primary-green);
+    color: var(--color-text_light);
 
     &:active {
       background-color: var(--primary-green-dark);
@@ -29,6 +30,7 @@
 
   --btn-primary-red: {
     background-color: var(--primary-red);
+    color: var(--color-text_light);
 
     &:active {
       background-color: var(--primary-red-dark);
