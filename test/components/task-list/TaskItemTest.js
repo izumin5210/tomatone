@@ -92,4 +92,19 @@ describe("<TaskItem />", () => {
       assert(props.delete.calledOnce);
     });
   });
+
+  describe("clearTitle", () => {
+    it("clears the title and disable editing mode", () => {
+      const wrapper = shallow(<TaskItem {...props} />);
+      assert(wrapper.find(".TaskList__btn-clear").length === 0);
+      wrapper.find(".TaskList__btn-edit").simulate("click");
+      assert(wrapper.find(".TaskList__btn-clear").length === 1);
+      wrapper.find(".TaskList__input-title")
+        .simulate("change", { target: { value: "changed title" } });
+      wrapper.find(".TaskList__btn-clear").simulate("click", { preventDefault: spy() });
+      assert(wrapper.find(".TaskList__input-title").length === 0);
+      assert(!wrapper.state().editing);
+      assert(wrapper.state().title === props.task.title);
+    });
+  });
 });

@@ -60,6 +60,7 @@
 }
 
 .TaskList__btn-edit,
+.TaskList__btn-clear,
 .TaskList__btn-delete,
 .TaskList__select:checked ~ .TaskList__item > .TaskList__body::after {
   @apply --TaskList__icon-right;
@@ -89,11 +90,13 @@
 }
 
 .TaskList__btn-edit,
+.TaskList__btn-clear,
 .TaskList__btn-delete {
   @apply --TaskList__btn-small;
 }
 
 .TaskList__body:hover > .TaskList__btn-edit,
+.TaskList__body:hover > .TaskList__btn-clear,
 .TaskList__body:hover > .TaskList__btn-delete {
   @apply --TaskList__btn-small_hover;
 }

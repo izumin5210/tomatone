@@ -88,6 +88,20 @@ export default class TaskItem extends Component {
         </button>
         { editing && (
           <button
+            className="TaskList__btn-clear"
+            onClick={(e) => {
+              e.preventDefault();
+              this.setState({
+                editing: false,
+                title:   this.props.task.title,
+              });
+            }}
+          >
+            <i className="fa fa-times" />
+          </button>
+        )}
+        { editing && (
+          <button
             className="TaskList__btn-delete"
             onClick={() => this.props.delete()}
           >
