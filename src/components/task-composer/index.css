@@ -1,0 +1,60 @@
+.TaskCompoer__btn-open {
+  @apply --btn;
+  @apply --btn-primary-green;
+  @apply --btn-large;
+
+  position: fixed;
+  right: calc(2 * var(--spacing));
+  bottom: calc(2 * var(--spacing));
+}
+
+.ComposerModal {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: color(var(--gray-darker) a(60%));
+  z-index: var(--zindex-modal-backdrop);
+}
+
+.ComposerModal__modal {
+  @apply --shadow-4;
+
+  flex: 1 1;
+  z-index: var(--zindex-modal);
+  background: var(--color-bg_light);
+  border-radius: var(--border-radius-base);
+  margin: 0 calc(2 * var(--spacing));
+  padding: calc(2 * var(--spacing));
+}
+
+.ComposerForm {
+  display: flex;
+  width: 100%;
+}
+
+.ComposerForm__input-title {
+  flex: 1 1;
+  outline: none;
+  border-bottom: 1px solid var(--color-text_dark);
+  transition: 0.2s ease-in-out;
+
+  &:focus {
+    border-bottom-color: var(--primary-green-dark);
+  }
+}
+
+.ComposerForm__btn-create {
+  flex: 0 0;
+  outline: none;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+
+  &:hover,
+  &:active {
+    color: var(--primary-green-dark);
+  }
+}

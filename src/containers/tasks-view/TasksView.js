@@ -15,6 +15,7 @@ import {
 } from "../../actions";
 
 import {
+  TaskComposer,
   TaskList,
 } from "../../components";
 
@@ -55,11 +56,13 @@ export default class TasksView extends Component {
       <div className="TasksView">
         <TaskList
           tasks={this.props.state.tasks}
-          createTask={t => this.createTask(t)}
           completeTask={t => this.completeTask(t)}
           updateTask={t => this.updateTask(t)}
           selectTask={t => this.selectTask(t)}
           selectedTaskId={this.props.state.timer.selectedTaskId}
+        />
+        <TaskComposer
+          createTask={t => this.createTask(t)}
         />
       </div>
     );

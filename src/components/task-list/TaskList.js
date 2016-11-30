@@ -12,7 +12,6 @@ import TaskItem from "./TaskItem";
 /* eslint-disable no-multi-spaces */
 type Props = {
   tasks:          Map<number, Task>;
-  createTask:     (title: string) => void;
   completeTask:   (task: Task) => void;
   updateTask:     (task: Task) => void;
   selectTask:     (task: ?Task) => void;
@@ -34,18 +33,6 @@ export default class TaskList extends Component {
   }
 
   state: State;
-
-  onTitleSubmit(e: any) {
-    e.preventDefault();
-    if (this.state.title.length > 0) {
-      this.props.createTask(this.state.title);
-      this.state.title = "";
-    }
-  }
-
-  onTitleChange(e: any) {
-    this.setState({ title: e.target.value });
-  }
 
   onTaskSelect(task: Task) {
     let selectedTask = task;
@@ -90,13 +77,6 @@ export default class TaskList extends Component {
           </li>
           {completedItems}
         </ul>
-        <form onSubmit={e => this.onTitleSubmit(e)}>
-          <input
-            type="text"
-            value={this.state.title}
-            onChange={e => this.onTitleChange(e)}
-          />
-        </form>
       </div>
     );
   }
