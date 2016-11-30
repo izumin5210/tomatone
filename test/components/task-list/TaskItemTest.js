@@ -3,9 +3,10 @@
 import { shallow }  from "enzyme";
 import { spy }      from "sinon";
 
-import TaskItem, {
-  Props,
-} from "../../../src/components/task-list/TaskItem";
+import TaskItem       from "../../../src/components/task-list/TaskItem";
+/* eslint-disable no-duplicate-imports */
+import type { Props } from "../../../src/components/task-list/TaskItem";
+/* eslint-enable */
 
 import {
   Task,

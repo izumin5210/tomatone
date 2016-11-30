@@ -49,11 +49,11 @@ export default class TaskItem extends Component {
 
   props: Props;
 
-  get checkboxId() {
+  get checkboxId(): string {
     return `task-${this.props.task.id}-complete`;
   }
 
-  get radioId() {
+  get radioId(): string {
     return `task-${this.props.task.id}-select`;
   }
 

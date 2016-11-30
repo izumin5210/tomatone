@@ -3,13 +3,10 @@
 import { shallow }  from "enzyme";
 import { spy }      from "sinon";
 
-import ComposerForm, {
-  Props,
-} from "../../../src/components/task-composer/ComposerForm";
-
-import {
-  Task,
-} from "../../../src/entities";
+import ComposerForm   from "../../../src/components/task-composer/ComposerForm";
+/* eslint-disable no-duplicate-imports */
+import type { Props } from "../../../src/components/task-composer/ComposerForm";
+/* eslint-enable */
 
 describe("<ComposerForm />", () => {
   let props: Props;

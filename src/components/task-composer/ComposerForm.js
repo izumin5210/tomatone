@@ -40,6 +40,7 @@ export default class ComposerForm extends Component {
   }
 
   props: Props;
+  inputTitle: any;
 
   render() {
     return (

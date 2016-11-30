@@ -4,8 +4,8 @@ import React from "react";
 // FIXME: I want to add align option to flowtype/space-after-type-colon rule...
 /* eslint-disable no-multi-spaces */
 export type Props = {
-  children: React.Element<*>;
-  close:    () => void;
+  children?: React$Element<*>;
+  close:     () => void;
 };
 /* eslint-enable */
 
