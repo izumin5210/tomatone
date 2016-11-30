@@ -11,6 +11,7 @@ import {
 } from "../models";
 
 import TimerView   from "./timer-view";
+import TasksView   from "./tasks-view";
 import HistoryView from "./history-view";
 
 import {
@@ -116,6 +117,10 @@ export default class App extends Component {
               exactly
               pattern="/"
               render={() => <TimerView state={state} />}
+            />
+            <Match
+              pattern="/tasks"
+              render={() => <TasksView state={state} />}
             />
             <Match
               pattern="/history"

@@ -38,7 +38,13 @@ export function updateTask(state: State, action: UpdateTaskAction): Promise<Stat
 
 export function completeTask(state: State, action: CompleteTaskAction): Promise<State> {
   return taskDao.complete(action.task)
-    .then(task => state.set("tasks", state.tasks.set(task.id, task)));
+    .then((task) => {
+      const newState = state.set("tasks", state.tasks.set(task.id, task));
+      if (newState.timer.selectedTaskId === task.id) {
+        return newState.set("timer", state.timer.updateTask(undefined));
+      }
+      return newState;
+    });
 }
 
 export function incompleteTask(state: State, action: IncompleteTaskAction): Promise<State> {

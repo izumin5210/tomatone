@@ -1,0 +1,103 @@
+.TaskList__items {
+  @apply --List;
+}
+
+.TaskList__item {
+  @apply --List__item;
+
+  position: relative;
+  align-items: center;
+}
+
+.TaskList__icon {
+  @apply --List__icon;
+
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  border-radius: 4px;
+  border: 1px solid var(--color-text_dark);
+  position: relative;
+  color: var(--color-text_dark);
+  cursor: pointer;
+}
+
+.TaskList__complete,
+.TaskList__select {
+  position: absolute;
+  visibility: hidden;
+}
+
+.TaskList__complete:checked ~ .TaskList__item > .TaskList__body {
+  text-decoration: line-through;
+  cursor: auto;
+}
+
+.TaskList__select:checked ~ .TaskList__item > .TaskList__body {
+  font-weight: bold;
+  color: var(--primary-green-dark);
+}
+
+.TaskList__btn-edit,
+.TaskList__select:checked ~ .TaskList__item > .TaskList__body::after {
+  flex: 0 0 auto;
+  width: calc(3 * var(--spacing));
+  text-align: center;
+}
+
+.TaskList__select:checked ~ .TaskList__item > .TaskList__body::after {
+  flex: 0 0 auto;
+  content: "\f08d";
+  font-family: "FontAwesome";
+}
+
+.TaskList__body {
+  @apply --List__body;
+
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.TaskList__item-caption {
+  @apply --List__caption;
+}
+
+.TaskList__item-caption + li > .TaskList__item > .TaskList__body {
+  border: none;
+}
+
+.TaskList__btn-edit {
+  flex: 0 0 auto;
+  cursor: pointer;
+  outline: none;
+  visibility: hidden;
+  padding: 0;
+  line-height: 1;
+}
+
+.TaskList__body:hover > .TaskList__btn-edit {
+  visibility: visible;
+}
+
+.TaskList__form-edit {
+  display: inline-block;
+  padding-right: var(--spacing);
+}
+
+.TaskList__title,
+.TaskList__form-edit {
+  flex: 1 1;
+}
+
+.TaskList__input-title {
+  width: 100%;
+  padding: 0;
+  outline: none;
+  border-bottom: 1px solid var(--color-text_dark);
+
+  &:focus {
+    border-bottom-color: var(--primary-green-dark);
+  }
+}

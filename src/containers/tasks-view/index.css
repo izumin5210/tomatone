@@ -1,0 +1,4 @@
+.TasksView {
+  background: var(--gray-lightest);
+  padding-top: calc(var(--nav-height) + var(--spacing));
+}

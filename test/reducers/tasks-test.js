@@ -110,6 +110,25 @@ describe("tasks reducer", () => {
           assert(tasks.get(1).completedAt != null);
         })
     ));
+
+    it("returns new state that is cleared the selected task when the completed task was selected", () => (
+      Promise.resolve(db.tasks.put({ title: "awesome task" }))
+        .then(id => db.tasks.get(id))
+        .then(attrs => new Task(attrs))
+        .then((task) => {
+          const state = new State({
+            tasks: Map([[task.id, task]]),
+            timer: new Timer({ selectedTaskId: task.id }),
+          });
+          return completeTask(state, { task });
+        })
+        .then(({ tasks, timer }) => {
+          assert(tasks.size === 1);
+          assert(tasks.get(1).title === "awesome task");
+          assert(tasks.get(1).completedAt != null);
+          assert(timer.selectedTaskId == null);
+        })
+    ));
   });
 
   describe("#incompleteTask()", () => {
