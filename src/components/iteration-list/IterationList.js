@@ -2,9 +2,7 @@
 import React, { Component } from "react";
 import moment from "moment";
 
-import {
-  Iteration,
-} from "../../entities";
+import IterationItem from "./IterationItem";
 
 import {
   State,
@@ -15,34 +13,6 @@ type Props = {
 };
 
 export default class IterationList extends Component {
-  static TIME_FORMAT = "YYYY/MM/DD HH:mm";
-
-  static getFormattedDate(itr: Iteration): string {
-    return moment(itr.startedAt).format(this.TIME_FORMAT);
-  }
-
-  static getTimeFrom(itr: Iteration): string {
-    return moment(itr.startedAt).from(moment(itr.startedAt + itr.totalTimeInMillis), true);
-  }
-
-  static createListItem(itr: Iteration) {
-    return (
-      <li key={itr.id} className="IterationList__item">
-        <div className={`IterationList__icon_${itr.isWorking() ? "work" : "break"}`}>
-          <i className={`fa fa-${itr.type === "WORK" ? "pencil" : "coffee"}`} />
-        </div>
-        <div className="IterationList__body">
-          <strong className="IterationList__title">
-            {itr.id}: {itr.type}
-          </strong>
-          <div className="IterationList__metadata">
-            <time>{IterationList.getFormattedDate(itr)}</time>
-            &nbsp;(for {IterationList.getTimeFrom(itr)})
-          </div>
-        </div>
-      </li>
-    );
-  }
 
   getListItems() {
     const { state } = this.props;
@@ -57,7 +27,14 @@ export default class IterationList extends Component {
           </li>
         ));
         itrs.forEach((itr) => {
-          arr.push(IterationList.createListItem(itr));
+          arr.push((
+            <IterationItem
+              title={`${itr.id}: ${itr.type}`}
+              startedAt={itr.startedAt}
+              totalTimeInMillis={itr.totalTimeInMillis}
+              working={itr.isWorking()}
+            />
+          ));
         });
         return arr;
       });
