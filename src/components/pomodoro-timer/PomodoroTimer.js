@@ -6,7 +6,8 @@ import {
   Timer,
 } from "../../entities";
 
-import TimerInner from "./TimerInner";
+import TimerWrapper from "./TimerWrapper";
+import TimerInner   from "./TimerInner";
 
 // FIXME: I want to add align option to flowtype/space-after-type-colon rule...
 /* eslint-disable no-multi-spaces */
@@ -18,28 +19,6 @@ type Props = {
 /* eslint-enable */
 
 export default class PomodoroTimer extends Component {
-
-  getGradients(): Array<string> {
-    // FIXME: Should import from settings/constans.css
-    const colorText = "#f9f9f9";
-    const bg = this.isWorking() ? "#a54c38" : "#5f8e58";
-
-    const { timer } = this.props;
-    const r = timer.hasStarted() ? (1 - (timer.remainTimeInMillis / timer.totalTimeInMillis)) : 0;
-    if (r < 0.5) {
-      const angle = ((r / 0.5) * 180) + 90;
-      return [
-        `linear-gradient(${angle}deg, transparent 50%, ${bg} 50%)`,
-        `linear-gradient(90deg, ${bg} 50%, transparent 50%)`,
-      ];
-    }
-
-    const angle = (((r - 0.5) / 0.5) * 180) + 90;
-    return [
-      `linear-gradient(${angle}deg, transparent 50%, ${colorText} 50%)`,
-      `linear-gradient(90deg, ${bg} 50%, transparent 50%)`,
-    ];
-  }
 
   isWorking(): boolean {
     const itr = this.props.iteration;
@@ -55,21 +34,19 @@ export default class PomodoroTimer extends Component {
 
   render() {
     const { timer, onBtnPlayClick } = this.props;
+    const started = timer.hasStarted();
+    const working = this.isWorking();
+    const remainTimeInMillis = timer.remainTimeInMillis;
     return (
-      <div
-        className="PomodoroTimer"
-        style={{
-          backgroundImage: this.getGradients().join(", "),
-        }}
+      <TimerWrapper
+        totalTimeInMillis={timer.totalTimeInMillis}
+        {...{ started, working, remainTimeInMillis }}
       >
         <TimerInner
           name={this.name()}
-          hasStarted={timer.hasStarted()}
-          isWorking={this.isWorking()}
-          remainTimeInMillis={timer.remainTimeInMillis}
-          onBtnPlayClick={() => onBtnPlayClick()}
+          {...{ started, working, remainTimeInMillis, onBtnPlayClick }}
         />
-      </div>
+      </TimerWrapper>
     );
   }
 }

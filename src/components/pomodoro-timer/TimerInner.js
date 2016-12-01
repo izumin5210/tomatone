@@ -7,8 +7,8 @@ import BtnStart from "./BtnStart";
 /* eslint-disable no-multi-spaces */
 type Props = {
   name:               string;
-  hasStarted:         boolean;
-  isWorking:          boolean;
+  started:            boolean;
+  working:            boolean;
   remainTimeInMillis: number;
   onBtnPlayClick:     () => void;
 };
@@ -27,10 +27,10 @@ export default class TimerInner extends Component {
   }
 
   render() {
-    const { name, hasStarted, isWorking, onBtnPlayClick } = this.props;
-    const modifier = hasStarted ? `_${isWorking ? "work" : "break"}ing` : "";
+    const { started, working, name, onBtnPlayClick } = this.props;
+    const modifier = started ? `_${working ? "work" : "break"}ing` : "";
     return (
-      <div className={`PomodoroTimer__inner-wrapper${modifier}`}>
+      <div>
         <h2 className="PomodoroTimer__name">
           {name}
         </h2>
@@ -38,8 +38,8 @@ export default class TimerInner extends Component {
           {this.remainTime()}
         </span>
         <BtnStart
-          {...{ hasStarted, modifier }}
-          onClick={() => onBtnPlayClick()}
+          {...{ started, modifier }}
+          onClick={onBtnPlayClick}
         />
       </div>
     );
