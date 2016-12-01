@@ -16,7 +16,10 @@ export function startTimer(state: State): Promise<State> {
   const itr = state.currentIteration();
   let promise: Promise<Iteration>;
   if (itr == null) {
-    promise = iterationDao.createFirst();
+    if (state.currentTask() == null) {
+      return Promise.reject(new Error());
+    }
+    promise = iterationDao.createFirst(state.currentTask());
   } else {
     promise = iterationDao.next(itr);
   }

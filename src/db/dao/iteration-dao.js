@@ -5,6 +5,7 @@ import { List } from "immutable";
 import {
   Iteration,
   IterationType,
+  Task,
 } from "../../entities";
 
 export default class IterationDao {
@@ -20,17 +21,19 @@ export default class IterationDao {
     return Promise.resolve(items);
   }
 
-  createFirst(): Promise<Iteration> {
+  createFirst(task: Task): Promise<Iteration> {
     const startedAt = Date.now();
     const type: IterationType = "WORK";
     const numOfIteration = 1;
     const totalTimeInMillis = Iteration.TIMES[type];
+    const taskId = task.id;
 
     return this.create({
       startedAt,
       type,
       numOfIteration,
       totalTimeInMillis,
+      taskId,
     });
   }
 
@@ -45,17 +48,23 @@ export default class IterationDao {
     }
     const startedAt = Date.now();
     const totalTimeInMillis = Iteration.TIMES[type];
+    const taskId = itr.taskId;
 
     return this.create({
       startedAt,
       type,
       numOfIteration,
       totalTimeInMillis,
+      taskId,
     });
   }
 
   stop(itr: Iteration): Promise<Iteration> {
     return this.update(itr, { totalTimeInMillis: Date.now() - itr.startedAt });
+  }
+
+  setTask(itr: Iteration, task: Task): Promise<Iteration> {
+    return this.update(itr, { taskId: task.id });
   }
 
   create(props: any): Promise<Iteration> {

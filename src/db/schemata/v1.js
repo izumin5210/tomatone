@@ -6,12 +6,13 @@ export const iterations = [
   "type",
   "numOfIteration",
   "totalTimeInMillis",
+  "taskId",
 ].join(",");
 
 export const tasks = [
   "++id",
   "title",
-  "createedAt",
+  "createdAt",
   "completedAt",
 ].join(",");
 

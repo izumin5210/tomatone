@@ -1,5 +1,7 @@
 /* @flow */
 import Iteration from "../../../src/entities/iteration";
+import Task      from "../../../src/entities/task";
+
 import {
   db,
   iterationDao as dao,
@@ -7,8 +9,15 @@ import {
 
 describe("IterationDao", () => {
   // TODO: Should move to test-helper
-  beforeEach(db.open);
-  afterEach(db.close);
+  beforeEach(() => db.delete().then(db.open));
+  afterEach(() => db.delete().then(db.close));
+
+  beforeEach(() => Promise.resolve(db.tasks.bulkPut([
+    { title: "awesome task 1" },
+    { title: "awesome task 2" },
+    { title: "awesome task 3" },
+    { title: "awesome task 4" },
+  ])));
 
   describe("#getAll()", () => {
     it("returns all saved iterations", () => {
@@ -32,27 +41,30 @@ describe("IterationDao", () => {
   });
 
   describe("#createFirst()", () => {
-    it("creates a 1st WORK iteration", () => {
-      const promise = dao.createFirst();
-      return promise
+    it("creates a 1st WORK iteration", () => (
+      Promise.resolve(db.tasks.get(2))
+        .then(attrs => dao.createFirst(new Task(attrs)))
         .then((itr) => {
-          assert(itr.type, "WORK");
-          assert(itr.numOfIteration, 1);
-          return Promise.resolve(db.iterations.count());
+          assert(itr.type === "WORK");
+          assert(itr.numOfIteration === 1);
+          assert(itr.taskId === 2);
         })
-        .then(count => assert(count, 1));
-    });
+        .then(() => db.iterations.count())
+        .then(c => assert(c === 1))
+    ));
   });
 
   describe("#next()", () => {
     it("create a WORK iteration and increments numOfIteration after SHORT_BREAK", () => {
       const type = "SHORT_BREAK";
       const numOfIteration = 2;
-      const shortBreakItr = new Iteration({ type, numOfIteration });
+      const taskId = 2;
+      const shortBreakItr = new Iteration({ type, numOfIteration, taskId });
       return dao.next(shortBreakItr)
         .then((itr) => {
-          assert(itr.type, "WORK");
-          assert(itr.numOfIteration, numOfIteration + 1);
+          assert(itr.type === "WORK");
+          assert(itr.numOfIteration === numOfIteration + 1);
+          assert(itr.taskId === taskId);
           return Promise.resolve(db.iterations.count());
         })
         .then(count => assert(count, 2));
@@ -99,7 +111,8 @@ describe("IterationDao", () => {
   describe("#stop()", () => {
     it("update totalTimeInMillis", () => {
       let ms = 0;
-      return dao.createFirst()
+      return Promise.resolve(db.tasks.get(1))
+        .then(attrs => dao.createFirst(new Task(attrs)))
         .then((itr) => {
           ms = itr.totalTimeInMillis;
           return dao.stop(itr);
@@ -108,5 +121,23 @@ describe("IterationDao", () => {
         .then(() => Promise.resolve(db.iterations.count()))
         .then(count => assert(count, 1));
     });
+  });
+
+  describe("#setTask()", () => {
+    it("sets the given task to the iteration", () => (
+      Promise.resolve(db.iterations.put({ type: "WORK", numOfIteration: 1, taskId: 1 }))
+        .then(() => Promise.all([
+          Promise.resolve(db.iterations.get(1)).then(attrs => new Iteration(attrs)),
+          Promise.resolve(db.tasks.get(2)).then(attrs => new Task(attrs)),
+        ]))
+        .then((results) => {
+          const itr = results[0];
+          const task = results[1];
+          return dao.setTask(itr, task)
+            .then((newItr) => {
+              assert(newItr.taskId === task.id);
+            });
+        })
+    ));
   });
 });

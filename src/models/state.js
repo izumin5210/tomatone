@@ -32,6 +32,10 @@ export default class State extends StateRecord {
     return this.iterations.get(this.timer.currentIterationId);
   }
 
+  currentTask(): ?Task {
+    return this.tasks.get(this.timer.selectedTaskId);
+  }
+
   hasStarted(): boolean {
     return this.timer.hasStarted();
   }
