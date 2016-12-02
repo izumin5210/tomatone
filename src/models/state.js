@@ -1,8 +1,9 @@
 /* @flow */
-import { Record, Map } from "immutable";
+import { Record, Map, List } from "immutable";
 
 import {
   Iteration,
+  Message,
   Task,
   Timer,
 } from "../entities";
@@ -11,6 +12,7 @@ import {
 /* eslint-disable no-multi-spaces */
 type StateConfig = {
   iterations: Map<number, Iteration>;
+  messages:   List<Message>;
   tasks:      Map<number, Task>;
   timer:      Timer;
 };
@@ -18,6 +20,7 @@ type StateConfig = {
 
 const defaultValues: StateConfig = {
   iterations: Map(),
+  messages:   List(),
   tasks:      Map(),
   timer:      new Timer(),
 };
