@@ -22,6 +22,24 @@
   justify-content: center;
 }
 
+.MessageToast-enter {
+  opacity: 0;
+}
+
+.MessageToast-enter.MessageToast-enter-active {
+  opacity: 1;
+  transition: opacity 0.3s ease-in;
+}
+
+.MessageToast-leave {
+  opacity: 1;
+}
+
+.MessageToast-leave.MessageToast-leave-active {
+  opacity: 0;
+  transition: opacity 0.3s ease-in;
+}
+
 .MessageToast__toast_DEBUG {
   /* TODO: Add specific styles for the log level */
   @apply --MessageToast__toast;

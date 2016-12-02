@@ -1,5 +1,6 @@
 /* @flow */
 import React, { Component }    from "react";
+import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 
 import { List } from "immutable";
 
@@ -86,6 +87,14 @@ export default class MessageToast extends Component {
   }
 
   render() {
-    return this.renderMessage();
+    return (
+      <ReactCSSTransitionGroup
+        transitionName="MessageToast"
+        transitionEnterTimeout={300}
+        transitionLeaveTimeout={300}
+      >
+        { this.renderMessage() }
+      </ReactCSSTransitionGroup>
+    );
   }
 }
