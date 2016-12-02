@@ -16,6 +16,7 @@ import HistoryView from "./history-view";
 
 import {
   GlobalNav,
+  MessageToast,
 } from "../components";
 
 import {
@@ -26,6 +27,10 @@ import {
 import {
   ACTION_TIMER_REFRESH,
 } from "../settings/constants";
+
+import {
+  MessagesAction,
+} from "../actions";
 
 const reducer = new Reducer();
 
@@ -103,6 +108,10 @@ export default class App extends Component {
     }
   }
 
+  dismissMessage() {
+    this.getChildContext().dispatch(MessagesAction.REMOVE_MESSAGE);
+  }
+
   render() {
     const state = this.state.state;
     const modifier = `_${state.isWorking() ? "work" : "break"}`;
@@ -128,6 +137,10 @@ export default class App extends Component {
             />
           </main>
           <footer className="App__footer" />
+          <MessageToast
+            messages={state.messages}
+            dismiss={() => this.dismissMessage()}
+          />
         </div>
       </HashRouter>
     );

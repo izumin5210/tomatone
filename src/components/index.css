@@ -1,5 +1,6 @@
 @import "./global-nav";
 @import "./iteration-list";
+@import "./message-toast";
 @import "./pomodoro-timer";
 @import "./task-composer";
 @import "./task-list";

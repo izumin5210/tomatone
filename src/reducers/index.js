@@ -13,6 +13,7 @@ import {
 } from "../settings/constants";
 
 import {
+  MessagesAction,
   TasksActions,
 } from "../actions";
 
@@ -36,6 +37,11 @@ import {
   deleteTask,
 } from "./tasks";
 
+import {
+  pushMessage,
+  removeMessage,
+} from "./messages";
+
 const initialState = new State();
 
 export default class Reducer {
@@ -53,6 +59,15 @@ export default class Reducer {
     subscribe(ACTION_TIMER_STOP, () => this.update(stopTimer));
     subscribe(ACTION_TIMER_REFRESH, () => this.update(refreshTimer));
     subscribe(ACTION_ITERATIONS_GET, () => this.update(getAllIterations));
+
+    subscribe(
+      MessagesAction.PUSH_MESSAGE,
+      () => this.update(pushMessage),
+    );
+    subscribe(
+      MessagesAction.REMOVE_MESSAGE,
+      () => this.update(removeMessage),
+    );
 
     subscribe(
       TasksActions.ACTION_TASKS_GET,
