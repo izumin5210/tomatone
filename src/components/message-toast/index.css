@@ -1,0 +1,48 @@
+:root {
+  --MessageToast__toast: {
+    @apply --shadow-2;
+
+    cursor: pointer;
+    color: var(--color-text_light);
+    background-color: color(var(--color-bg_dark) a(75%));
+    padding: calc(1 * var(--spacing)) calc(2 * var(--spacing));
+    text-align: center;
+    border-radius: var(--border-radius-base);
+    font-size: 0.9rem;
+    outline: none;
+  };
+}
+
+.MessageToast {
+  position: fixed;
+  display: flex;
+  left: 0;
+  right: 0;
+  bottom: calc(3 * var(--spacing));
+  justify-content: center;
+}
+
+.MessageToast__toast_DEBUG {
+  /* TODO: Add specific styles for the log level */
+  @apply --MessageToast__toast;
+}
+
+.MessageToast__toast_INFO {
+  /* TODO: Add specific styles for the log level */
+  @apply --MessageToast__toast;
+}
+
+.MessageToast__toast_WARN {
+  /* TODO: Add specific styles for the log level */
+  @apply --MessageToast__toast;
+}
+
+.MessageToast__toast_ERROR {
+  /* TODO: Add specific styles for the log level */
+  @apply --MessageToast__toast;
+}
+
+.MessageToast__toast_FATAL {
+  /* TODO: Add specific styles for the log level */
+  @apply --MessageToast__toast;
+}

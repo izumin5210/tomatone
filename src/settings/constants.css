@@ -29,6 +29,7 @@
   --zindex-nav:            1000;
   --zindex-modal-backdrop: 1040;
   --zindex-modal:          1050;
+  --zindex-message:        1100;
 
   /* stylelint-enable */
 }
