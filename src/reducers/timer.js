@@ -12,23 +12,31 @@ import {
   iterationDao,
 } from "../db";
 
+import {
+  pushMessage,
+} from "./messages";
+
 export function startTimer(state: State): Promise<State> {
   const itr = state.currentIteration();
   let promise: Promise<Iteration>;
   if (itr == null) {
-    if (state.currentTask() == null) {
-      return Promise.reject(new Error());
-    }
     promise = iterationDao.createFirst(state.currentTask());
   } else {
-    promise = iterationDao.next(itr);
+    promise = iterationDao.next(itr, state.currentTask());
   }
 
-  return promise.then(nextItr => (
-    state
-      .set("iterations", state.iterations.set(nextItr.id, nextItr))
-      .set("timer", state.timer.updateIteration(nextItr))
-  ));
+  return promise
+    .then(nextItr => (
+      state
+        .set("iterations", state.iterations.set(nextItr.id, nextItr))
+        .set("timer", state.timer.updateIteration(nextItr))
+    ))
+    .catch(err => (
+      pushMessage(
+        state.set("timer", state.timer.stop()),
+        { body: err.message, level: "ERROR", durationType: "LONG" },
+      )
+    ));
 }
 
 export function stopTimer(state: State): Promise<State> {

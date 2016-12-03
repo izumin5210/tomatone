@@ -1,6 +1,6 @@
 /* @flow */
 import { Map } from "immutable";
-import { shouldFulfilled, shouldRejected } from "promise-test-helper";
+import { shouldFulfilled } from "promise-test-helper";
 
 import {
   startTimer,
@@ -43,9 +43,25 @@ describe("timer reducer", () => {
   ));
 
   describe("startTimer()", () => {
-    it("throws an error whent the timer has not a selected task", () => (
-      shouldRejected(startTimer(state))
-        .catch(e => assert(e instanceof Error))
+    it("push an error message when the timer has not a selected task", () => (
+      Promise.resolve(db.iterations.put({ totalTimeInMillis: 0 }))
+        .then(id => db.iterations.get(id))
+        .then(attrs => new Iteration(attrs))
+        .then(itr => state.set("iterations", state.iterations.set(itr.id, itr)))
+        .then(itr => state.set("timer", state.timer.updateIteration(itr)))
+        .then(newState => shouldFulfilled(startTimer(newState)))
+        .then(({ iterations, messages }) => {
+          assert(messages.size === 1);
+          assert(iterations.size === 0);
+        })
+    ));
+
+    it("push an error message when the timer has not a selected task and the timer has a running iteration", () => (
+      shouldFulfilled(startTimer(state))
+        .then(({ iterations, messages }) => {
+          assert(messages.size === 1);
+          assert(iterations.size === 0);
+        })
     ));
 
     it("returns new state when the state has no iterations", () => {
@@ -62,10 +78,14 @@ describe("timer reducer", () => {
 
     it("returns new state when the state has some iterations", () => (
       Promise.resolve(db.iterations.put({ taskId: state.tasks.get(3).id }))
-        .then(() => db.iterations.get(1))
-        .then(itr => (
+        .then(() => Promise.all([
+          db.iterations.get(1).then(attrs => new Iteration(attrs)),
+          db.tasks.get(2).then(attrs => new Task(attrs)),
+        ]))
+        .then(([itr, task]) => (
           state.set("iterations", Map([[itr.id, itr]]))
-            .set("timer", state.timer.set("currentIterationId", itr.id))
+            .set("timer", state.timer
+              .set("currentIterationId", itr.id).set("selectedTaskId", task.id))
         ))
         .then(newState => shouldFulfilled(startTimer(newState)))
         .then(({ iterations, timer }) => {

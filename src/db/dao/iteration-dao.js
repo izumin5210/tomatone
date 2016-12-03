@@ -26,6 +26,9 @@ export default class IterationDao {
     const type: IterationType = "WORK";
     const numOfIteration = 1;
     const totalTimeInMillis = Iteration.TIMES[type];
+    if (task == null) {
+      return Promise.reject(new Error("Should select a task."));
+    }
     const taskId = task.id;
 
     return this.create({
@@ -37,18 +40,23 @@ export default class IterationDao {
     });
   }
 
-  next(itr: Iteration): Promise<Iteration> {
+  next(itr: Iteration, task: ?Task): Promise<Iteration> {
     let type: IterationType = "WORK";
     let numOfIteration: number = itr.numOfIteration;
+    let taskId: number;
     if (itr.type === "WORK") {
       const isLongBreak = itr.numOfIteration % Iteration.MAX_ITERATIONS === 0;
       type = isLongBreak ? "LONG_BREAK" : "SHORT_BREAK";
     } else {
       numOfIteration += 1;
+      if (task != null) {
+        taskId = task.id;
+      } else {
+        return Promise.reject(new Error("Should select a task."));
+      }
     }
     const startedAt = Date.now();
     const totalTimeInMillis = Iteration.TIMES[type];
-    const taskId = itr.taskId;
 
     return this.create({
       startedAt,
@@ -63,8 +71,11 @@ export default class IterationDao {
     return this.update(itr, { totalTimeInMillis: Date.now() - itr.startedAt });
   }
 
-  setTask(itr: Iteration, task: Task): Promise<Iteration> {
-    return this.update(itr, { taskId: task.id });
+  setTask(itr: Iteration, task: ?Task): Promise<Iteration> {
+    if (itr.type === "WORK" && task == null) {
+      return Promise.reject(new Error("Should select a task."));
+    }
+    return this.update(itr, { taskId: (task ? task.id : undefined) });
   }
 
   create(props: any): Promise<Iteration> {

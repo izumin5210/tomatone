@@ -19,7 +19,7 @@ export type IterationConfig = {
   type:              IterationType;
   numOfIteration:    number;
   totalTimeInMillis: number;
-  taskId:            number;
+  taskId:            ?number;
 };
 /* eslint-enable */
 
@@ -29,7 +29,7 @@ const defaultValues: IterationConfig = {
   type:              "WORK",
   numOfIteration:    1,
   totalTimeInMillis: TIMES.WORK,
-  taskId:            1,
+  taskId:            undefined,
 };
 
 const IterationRecord = Record(defaultValues);
