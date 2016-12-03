@@ -108,6 +108,7 @@
     "postcss-reporter": "^2.0.0",
     "postcss-smart-import": "^0.5.1",
     "power-assert": "^1.4.2",
+    "promise-test-helper": "^0.2.1",
     "react-addons-test-utils": "^15.4.0",
     "sinon": "^1.17.6",
     "style-loader": "^0.13.1",
