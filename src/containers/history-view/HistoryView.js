@@ -11,6 +11,10 @@ import {
 } from "../../components";
 
 import {
+  TasksActions,
+} from "../../actions";
+
+import {
   ACTION_ITERATIONS_GET,
 } from "../../settings/constants";
 
@@ -22,6 +26,7 @@ type Props = {
 export default class HistoryView extends Component {
   componentDidMount() {
     this.context.dispatch(ACTION_ITERATIONS_GET);
+    this.context.dispatch(TasksActions.ACTION_TASKS_GET);
   }
 
   props: Props;
