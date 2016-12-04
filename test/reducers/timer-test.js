@@ -178,11 +178,8 @@ describe("timer reducer", () => {
     beforeEach(() => {
       clock = useFakeTimers(now);
       return Promise.resolve(db.tasks.put({ title: "awesome task" }))
-        .then(() => console.log("hoge"))
         .then(() => db.iterations.put({ type: "WORK", taskId: 1 }))
-        .then(() => console.log("fuga"))
         .then(() => db.iterations.get(1))
-        .then(() => console.log("piyo"))
         .then(attrs => (iteration = new Iteration(attrs)));
     });
 

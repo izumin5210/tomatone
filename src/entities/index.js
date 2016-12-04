@@ -1,8 +1,9 @@
 /* @flow */
+/* eslint-disable no-duplicate-imports */
 import Iteration from "./iteration";
 import type {
   IterationType,
-  IterationConfig
+  IterationConfig,
 } from "./iteration";
 
 import Message from "./message";
@@ -17,6 +18,7 @@ import type { TaskConfig } from "./task";
 
 import Timer from "./timer";
 import type { TimerConfig } from "./timer";
+/* eslint-enable */
 
 export {
   Iteration,
