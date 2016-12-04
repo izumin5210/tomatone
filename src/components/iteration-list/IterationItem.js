@@ -2,13 +2,15 @@
 import React, { Component } from "react";
 import moment from "moment";
 
-// FIXME: I want to add align option to flowtype/space-after-type-colon rule...
+import {
+  Iteration,
+  Task,
+} from "../../entities";
+
 /* eslint-disable no-multi-spaces */
 type Props = {
-  title:             string;
-  startedAt:         number;
-  totalTimeInMillis: number;
-  working:           boolean;
+   iteration: Iteration;
+   task:      Task;
 };
 /* eslint-enable */
 
@@ -26,7 +28,7 @@ export default class IterationItem extends Component {
   props: Props;
 
   renderIcon() {
-    const { working } = this.props;
+    const { working } = this.props.iteration.isWorking();
     return (
       <div className={`IterationList__icon_${working ? "work" : "break"}`}>
         <i className={`fa fa-${working ? "pencil" : "coffee"}`} />
@@ -35,7 +37,9 @@ export default class IterationItem extends Component {
   }
 
   renderBody() {
-    const { title, startedAt, totalTimeInMillis } = this.props;
+    const { iteration, task } = this.props;
+    const { startedAt, totalTimeInMillis, type } = iteration;
+    const title = (task != null) ? task.title : type;
     return (
       <div className="IterationList__body">
         <strong className="IterationList__title">

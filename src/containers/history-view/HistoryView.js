@@ -27,9 +27,12 @@ export default class HistoryView extends Component {
   props: Props;
 
   render() {
+    const { iterations, tasks } = this.props.state;
     return (
       <div className="HistoryView">
-        <IterationList state={this.props.state} />
+        <IterationList
+          {...{ iterations, tasks }}
+        />
       </div>
     );
   }
