@@ -25,13 +25,23 @@ export default class IterationItem extends Component {
     return moment.duration(ms, "ms").humanize();
   }
 
+  getIconName(): string {
+    const { iteration } = this.props;
+    if (!iteration.isFinished()) {
+      return "play";
+    } else if (iteration.isWorking()) {
+      return "pencil";
+    }
+    return "coffee";
+  }
+
   props: Props;
 
   renderIcon() {
-    const { working } = this.props.iteration.isWorking();
+    const { iteration } = this.props;
     return (
-      <div className={`IterationList__icon_${working ? "work" : "break"}`}>
-        <i className={`fa fa-${working ? "pencil" : "coffee"}`} />
+      <div className={`IterationList__icon${iteration.isFinished() ? "" : "_now"}`}>
+        <i className={`fa fa-${this.getIconName(iteration)}`} />
       </div>
     );
   }
