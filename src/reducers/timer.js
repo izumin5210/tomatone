@@ -27,7 +27,7 @@ export function startTimer(state: State): Promise<State> {
   const itr = state.currentIteration();
 
   if (task == null) {
-    promise = Promise.reject("Please select a task.");
+    promise = Promise.reject(new Error("Please select a task."));
   } else if (itr == null) {
     promise = iterationDao.createFirst(task);
   } else {
@@ -51,7 +51,7 @@ export function startTimer(state: State): Promise<State> {
 export function stopTimer(state: State): Promise<State> {
   const currentIteration = state.currentIteration();
   if (currentIteration == null) {
-    return Promise.reject("Any iterations are not started.");
+    return Promise.reject(new Error("Any iterations are not started."));
   }
 
   return iterationDao.stop(currentIteration)
