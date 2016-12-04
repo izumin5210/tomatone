@@ -1,3 +1,4 @@
+/* @flow */
 import GlobalNav     from "./global-nav";
 import IterationList from "./iteration-list";
 import MessageToast  from "./message-toast";

@@ -1,3 +1,4 @@
+/* @flow */
 import React       from "react";
 import assert      from "power-assert";
 import indexedDB   from "fake-indexeddb";

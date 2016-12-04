@@ -1,3 +1,4 @@
+/* @flow */
 /* eslint-disable no-multi-spaces */
 
 export const DB_NAME = "tomatone";

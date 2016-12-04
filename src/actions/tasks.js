@@ -1,3 +1,4 @@
+/* @flow */
 import { Task } from "../entities";
 
 // FIXME: I want to add align option to flowtype/space-after-type-colon rule...

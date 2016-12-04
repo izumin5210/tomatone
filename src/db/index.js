@@ -1,3 +1,4 @@
+/* @flow */
 import Database from "./database";
 import IterationDao from "./dao/iteration-dao";
 import TaskDao from "./dao/task-dao";
