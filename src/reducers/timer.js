@@ -21,12 +21,17 @@ import {
 } from "./messages";
 
 export function startTimer(state: State): Promise<State> {
-  const itr = state.currentIteration();
   let promise: Promise<Iteration>;
-  if (itr == null) {
-    promise = iterationDao.createFirst(state.currentTask());
+
+  const task = state.currentTask();
+  const itr = state.currentIteration();
+
+  if (task == null) {
+    promise = Promise.reject("Please select a task.");
+  } else if (itr == null) {
+    promise = iterationDao.createFirst(task);
   } else {
-    promise = iterationDao.next(itr, state.currentTask());
+    promise = iterationDao.next(itr, task);
   }
 
   return promise
@@ -44,9 +49,20 @@ export function startTimer(state: State): Promise<State> {
 }
 
 export function stopTimer(state: State): Promise<State> {
-  return iterationDao.stop(state.currentIteration())
+  const currentIteration = state.currentIteration();
+  if (currentIteration == null) {
+    return Promise.reject("Any iterations are not started.");
+  }
+
+  return iterationDao.stop(currentIteration)
     .then(itr => state.set("iterations", state.iterations.set(itr.id, itr)))
-    .then(newState => newState.set("timer", state.timer.stop()));
+    .then(newState => newState.set("timer", state.timer.stop()))
+    .catch(err => (
+      pushMessage(
+        state.set("timer", state.timer.stop()),
+        { body: err.message, level: "ERROR", durationType: "LONG" },
+      )
+    ));
 }
 
 export function refreshTimer(state: State): State | Promise<State> {

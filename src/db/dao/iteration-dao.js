@@ -4,9 +4,14 @@ import { List } from "immutable";
 
 import {
   Iteration,
-  IterationType,
   Task,
 } from "../../entities";
+
+/* eslint-disable no-duplicate-imports */
+import type {
+  IterationType,
+} from "../../entities";
+/* eslint-enable */
 
 export default class IterationDao {
   db: Dexie;
@@ -26,9 +31,6 @@ export default class IterationDao {
     const type: IterationType = "WORK";
     const numOfIteration = 1;
     const totalTimeInMillis = Iteration.TIMES[type];
-    if (task == null) {
-      return Promise.reject(new Error("Should select a task."));
-    }
     const taskId = task.id;
 
     return this.create({
@@ -40,7 +42,7 @@ export default class IterationDao {
     });
   }
 
-  next(itr: Iteration, task: ?Task): Promise<Iteration> {
+  next(itr: Iteration, task: Task): Promise<Iteration> {
     let type: IterationType = "WORK";
     let numOfIteration: number = itr.numOfIteration;
     let taskId: number;
@@ -49,11 +51,7 @@ export default class IterationDao {
       type = isLongBreak ? "LONG_BREAK" : "SHORT_BREAK";
     } else {
       numOfIteration += 1;
-      if (task != null) {
-        taskId = task.id;
-      } else {
-        return Promise.reject(new Error("Should select a task."));
-      }
+      taskId = task.id;
     }
     const startedAt = Date.now();
     const totalTimeInMillis = Iteration.TIMES[type];
@@ -71,11 +69,8 @@ export default class IterationDao {
     return this.update(itr, { totalTimeInMillis: Date.now() - itr.startedAt });
   }
 
-  setTask(itr: Iteration, task: ?Task): Promise<Iteration> {
-    if (itr.type === "WORK" && task == null) {
-      return Promise.reject(new Error("Should select a task."));
-    }
-    return this.update(itr, { taskId: (task ? task.id : undefined) });
+  setTask(itr: Iteration, task: Task): Promise<Iteration> {
+    return this.update(itr, { taskId: task.id });
   }
 
   create(props: any): Promise<Iteration> {

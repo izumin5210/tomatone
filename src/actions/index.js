@@ -1,3 +1,4 @@
+/* @flow */
 import * as MessagesAction from "./messages";
 import * as TasksActions from "./tasks";
 

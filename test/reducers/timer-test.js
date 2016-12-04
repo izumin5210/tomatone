@@ -128,19 +128,26 @@ describe("timer reducer", () => {
           remainTimeInMillis: itr.remainTimeInMillis + 10,
         }),
       });
-      const newState: State = refreshTimer(state);
-      assert(newState.timer.totalTimeInMillis === itr.totalTimeInMillis);
-      assert(newState.timer.remainTimeInMillis < state.timer.remainTimeInMillis);
+      const newState = refreshTimer(state);
+      if (!(newState instanceof Promise)) {
+        assert(newState.timer.totalTimeInMillis === itr.totalTimeInMillis);
+        assert(newState.timer.remainTimeInMillis < state.timer.remainTimeInMillis);
+      } else {
+        assert(!(newState instanceof Promise));
+      }
     });
 
     it("returns new state that started new iteration", () => (
       Promise.resolve(db.iterations.put({ totalTimeInMillis: 0 }))
-        .then(id => db.iterations.get(id))
-        .then(attrs => new Iteration(attrs))
-        .then(itr => (
-          state.set("iterations", Map([[itr.id, itr]]))
-            .set("timer", state.timer.set("currentIterationId", itr.id))
-        ))
+        .then(() => Promise.all([
+          db.iterations.get(1).then(attrs => new Iteration(attrs)),
+          db.tasks.get(2).then(attrs => new Task(attrs)),
+        ]))
+        .then(([itr, task]) => {
+          const timer = state.timer
+            .set("currentIterationId", itr.id).set("selectedTaskId", task.id);
+          return state.set("iterations", Map([[itr.id, itr]])).set("timer", timer);
+        })
         .then(newState => shouldFulfilled(refreshTimer(newState)))
         .then(({ iterations, timer }) => {
           assert(iterations.size === 2);
@@ -156,9 +163,13 @@ describe("timer reducer", () => {
         .set("totalTimeInMillis", 60 * 1000)
         .set("remainTimeInMillis", 60 * 1000);
       state = state.set("timer", timer);
-      const newState: State = refreshTimer(state);
-      assert(newState.timer.totalTimeInMillis === 0);
-      assert(newState.timer.remainTimeInMillis === 0);
+      const newState = refreshTimer(state);
+      if (!(newState instanceof Promise)) {
+        assert(newState.timer.totalTimeInMillis === 0);
+        assert(newState.timer.remainTimeInMillis === 0);
+      } else {
+        assert(!(newState instanceof Promise));
+      }
     });
   });
 
@@ -170,11 +181,8 @@ describe("timer reducer", () => {
     beforeEach(() => {
       clock = useFakeTimers(now);
       return Promise.resolve(db.tasks.put({ title: "awesome task" }))
-        .then(() => console.log("hoge"))
         .then(() => db.iterations.put({ type: "WORK", taskId: 1 }))
-        .then(() => console.log("fuga"))
         .then(() => db.iterations.get(1))
-        .then(() => console.log("piyo"))
         .then(attrs => (iteration = new Iteration(attrs)));
     });
 

@@ -114,7 +114,7 @@ export default class Reducer {
     );
   }
 
-  update(fn: (s: ?State) => State | Promise<State>) {
+  update(fn: (s: State, ...args: any) => State | Promise<State>) {
     this.reducer.update(fn);
   }
 

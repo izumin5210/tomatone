@@ -1,3 +1,4 @@
+/* @flow */
 declare var it: any;
 declare var xit: any;
 declare var context: any;

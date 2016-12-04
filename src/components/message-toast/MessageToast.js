@@ -4,7 +4,7 @@ import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 
 import { List } from "immutable";
 
-import Message from "../../entities";
+import { Message } from "../../entities";
 
 // FIXME: I want to add align option to flowtype/space-after-type-colon rule...
 /* eslint-disable no-multi-spaces */
