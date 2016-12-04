@@ -139,12 +139,15 @@ describe("timer reducer", () => {
 
     it("returns new state that started new iteration", () => (
       Promise.resolve(db.iterations.put({ totalTimeInMillis: 0 }))
-        .then(id => db.iterations.get(id))
-        .then(attrs => new Iteration(attrs))
-        .then(itr => (
-          state.set("iterations", Map([[itr.id, itr]]))
-            .set("timer", state.timer.set("currentIterationId", itr.id))
-        ))
+        .then(() => Promise.all([
+          db.iterations.get(1).then(attrs => new Iteration(attrs)),
+          db.tasks.get(2).then(attrs => new Task(attrs)),
+        ]))
+        .then(([itr, task]) => {
+          const timer = state.timer
+            .set("currentIterationId", itr.id).set("selectedTaskId", task.id);
+          return state.set("iterations", Map([[itr.id, itr]])).set("timer", timer);
+        })
         .then(newState => shouldFulfilled(refreshTimer(newState)))
         .then(({ iterations, timer }) => {
           assert(iterations.size === 2);
