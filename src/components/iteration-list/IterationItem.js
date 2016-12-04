@@ -2,13 +2,15 @@
 import React, { Component } from "react";
 import moment from "moment";
 
-// FIXME: I want to add align option to flowtype/space-after-type-colon rule...
+import {
+  Iteration,
+  Task,
+} from "../../entities";
+
 /* eslint-disable no-multi-spaces */
 type Props = {
-  title:             string;
-  startedAt:         number;
-  totalTimeInMillis: number;
-  working:           boolean;
+   iteration: Iteration;
+   task:      Task;
 };
 /* eslint-enable */
 
@@ -23,19 +25,31 @@ export default class IterationItem extends Component {
     return moment.duration(ms, "ms").humanize();
   }
 
+  getIconName(): string {
+    const { iteration } = this.props;
+    if (!iteration.isFinished()) {
+      return "play";
+    } else if (iteration.isWorking()) {
+      return "pencil";
+    }
+    return "coffee";
+  }
+
   props: Props;
 
   renderIcon() {
-    const { working } = this.props;
+    const { iteration } = this.props;
     return (
-      <div className={`IterationList__icon_${working ? "work" : "break"}`}>
-        <i className={`fa fa-${working ? "pencil" : "coffee"}`} />
+      <div className={`IterationList__icon${iteration.isFinished() ? "" : "_now"}`}>
+        <i className={`fa fa-${this.getIconName(iteration)}`} />
       </div>
     );
   }
 
   renderBody() {
-    const { title, startedAt, totalTimeInMillis } = this.props;
+    const { iteration, task } = this.props;
+    const { startedAt, totalTimeInMillis, type } = iteration;
+    const title = (task != null) ? task.title : type;
     return (
       <div className="IterationList__body">
         <strong className="IterationList__title">

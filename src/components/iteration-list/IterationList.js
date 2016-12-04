@@ -1,22 +1,27 @@
 /* @flow */
 import React, { Component } from "react";
-import moment from "moment";
+import moment               from "moment";
+import { Map }              from "immutable";
 
 import IterationItem from "./IterationItem";
 
 import {
-  State,
-} from "../../models";
+  Iteration,
+  Task,
+} from "../../entities";
 
+/* eslint-disable no-multi-spaces */
 type Props = {
-  state: State;
+   iterations: Map<number, Iteration>;
+   tasks:      Map<number, Task>;
 };
+/* eslint-enable */
 
 export default class IterationList extends Component {
 
   getListItems() {
-    const { state } = this.props;
-    return state.iterations
+    const { iterations, tasks } = this.props;
+    return iterations
       .sortBy(itr => -itr.id)
       .groupBy(itr => moment(itr.startedAt).format("YYYY-MM-DD"))
       .map((itrs, date) => {
@@ -29,10 +34,8 @@ export default class IterationList extends Component {
         itrs.forEach((itr) => {
           arr.push((
             <IterationItem
-              title={`${itr.id}: ${itr.type}`}
-              startedAt={itr.startedAt}
-              totalTimeInMillis={itr.totalTimeInMillis}
-              working={itr.isWorking()}
+              iteration={itr}
+              task={tasks.get(itr.taskId)}
             />
           ));
         });

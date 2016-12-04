@@ -18,16 +18,16 @@
   @apply --List__caption;
 }
 
-.IterationList__icon_work {
+.IterationList__icon {
+  @apply --IterationList__icon;
+
+  background-color: var(--color-bg_dark);
+}
+
+.IterationList__icon_now {
   @apply --IterationList__icon;
 
   background-color: var(--color-bg_work);
-}
-
-.IterationList__icon_break {
-  @apply --IterationList__icon;
-
-  background-color: var(--color-bg_break);
 }
 
 .IterationList__body {
