@@ -26,6 +26,7 @@ import {
 
 import {
   ACTION_TIMER_REFRESH,
+  ACTION_TIMER_RESTART,
 } from "../settings/constants";
 
 import {
@@ -73,6 +74,7 @@ export default class App extends Component {
       this.state.finishSoundPlayer.fetch(),
     ]);
     promise.then(() => this.setState({ soundLoaded: true }));
+    this.getChildContext().dispatch(ACTION_TIMER_RESTART);
   }
 
   componentWillUpdate(props: any, state: AppState) {

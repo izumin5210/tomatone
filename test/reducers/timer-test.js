@@ -1,11 +1,14 @@
 /* @flow */
-import { Map } from "immutable";
+import { useFakeTimers }   from "sinon";
 import { shouldFulfilled } from "promise-test-helper";
+
+import { Map } from "immutable";
 
 import {
   startTimer,
   stopTimer,
   refreshTimer,
+  restartTimer,
 } from "../../src/reducers/timer";
 
 import {
@@ -156,6 +159,51 @@ describe("timer reducer", () => {
       const newState: State = refreshTimer(state);
       assert(newState.timer.totalTimeInMillis === 0);
       assert(newState.timer.remainTimeInMillis === 0);
+    });
+  });
+
+  describe("#restartTimer()", () => {
+    let iteration: Iteration;
+    let clock;
+    const now = Date.now("2016-12-01T12:34:56");
+
+    beforeEach(() => {
+      clock = useFakeTimers(now);
+      return Promise.resolve(db.tasks.put({ title: "awesome task" }))
+        .then(() => console.log("hoge"))
+        .then(() => db.iterations.put({ type: "WORK", taskId: 1 }))
+        .then(() => console.log("fuga"))
+        .then(() => db.iterations.get(1))
+        .then(() => console.log("piyo"))
+        .then(attrs => (iteration = new Iteration(attrs)));
+    });
+
+    afterEach(() => {
+      clock.restore();
+    });
+
+    context("when the latest iteration has not finished", () => {
+      beforeEach(() => {
+        clock.tick(iteration.totalTimeInMillis + 1000);
+      });
+
+      xit("returns new state that has restarted tiemr", () => (
+        restartTimer(new State())
+          .then(({ iterations, timer }) => {
+            assert(timer.currentIterationId === iteration.id);
+            assert(iterations.size === 1);
+          })
+      ));
+    });
+
+    context("when the latest iteration has not finished", () => {
+      xit("returns new state that has not-restarted timer", () => (
+        restartTimer(new State())
+          .then(({ iterations, timer }) => {
+            assert(timer.currentIterationId == null);
+            assert(iterations.size === 1);
+          })
+      ));
     });
   });
 });

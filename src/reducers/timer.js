@@ -13,6 +13,10 @@ import {
 } from "../db";
 
 import {
+  getAllIterations,
+} from "./iterations";
+
+import {
   pushMessage,
 } from "./messages";
 
@@ -54,4 +58,15 @@ export function refreshTimer(state: State): State | Promise<State> {
     .set("totalTimeInMillis", (itr == null) ? 0 : itr.totalTimeInMillis)
     .set("remainTimeInMillis", (itr == null) ? 0 : itr.remainTimeInMillis);
   return state.set("timer", timer);
+}
+
+export function restartTimer(state: State): Promise<State> {
+  return getAllIterations(state)
+    .then((newState) => {
+      const prevItr = newState.iterations.maxBy(itr => itr.startedAt);
+      if (!prevItr.isFinished()) {
+        return newState.set("timer", newState.timer.updateIteration(prevItr));
+      }
+      return newState;
+    });
 }
