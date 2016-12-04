@@ -8,7 +8,7 @@ import {
 
 // FIXME: I want to add align option to flowtype/space-after-type-colon rule...
 /* eslint-disable no-multi-spaces */
-type TimerConfig = {
+export type TimerConfig = {
   currentIterationId: ?number;
   selectedTaskId:     ?number;
   totalTimeInMillis:  number;

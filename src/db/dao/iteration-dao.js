@@ -4,8 +4,11 @@ import { List } from "immutable";
 
 import {
   Iteration,
-  IterationType,
   Task,
+} from "../../entities";
+
+import type {
+  IterationType,
 } from "../../entities";
 
 export default class IterationDao {

@@ -128,9 +128,13 @@ describe("timer reducer", () => {
           remainTimeInMillis: itr.remainTimeInMillis + 10,
         }),
       });
-      const newState: State = refreshTimer(state);
-      assert(newState.timer.totalTimeInMillis === itr.totalTimeInMillis);
-      assert(newState.timer.remainTimeInMillis < state.timer.remainTimeInMillis);
+      const newState = refreshTimer(state);
+      if (!(newState instanceof Promise)) {
+        assert(newState.timer.totalTimeInMillis === itr.totalTimeInMillis);
+        assert(newState.timer.remainTimeInMillis < state.timer.remainTimeInMillis);
+      } else {
+        assert(!(newState instanceof Promise));
+      }
     });
 
     it("returns new state that started new iteration", () => (
@@ -156,9 +160,13 @@ describe("timer reducer", () => {
         .set("totalTimeInMillis", 60 * 1000)
         .set("remainTimeInMillis", 60 * 1000);
       state = state.set("timer", timer);
-      const newState: State = refreshTimer(state);
-      assert(newState.timer.totalTimeInMillis === 0);
-      assert(newState.timer.remainTimeInMillis === 0);
+      const newState = refreshTimer(state);
+      if (!(newState instanceof Promise)) {
+        assert(newState.timer.totalTimeInMillis === 0);
+        assert(newState.timer.remainTimeInMillis === 0);
+      } else {
+        assert(!(newState instanceof Promise));
+      }
     });
   });
 
