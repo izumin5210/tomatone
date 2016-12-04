@@ -1,5 +1,5 @@
 /* @flow */
-import { shouldFulfilled, shouldRejected } from "promise-test-helper";
+import { shouldFulfilled } from "promise-test-helper";
 
 import Iteration from "../../../src/entities/iteration";
 import Task      from "../../../src/entities/task";
@@ -99,9 +99,11 @@ describe("IterationDao", () => {
 
     it("create a SHORT_BREAK iteration after a 2nd WORK iteration", () => (
       Promise.resolve(db.iterations.put({ type: "WORK", numOfIteration: 2 }))
-        .then(() => db.iterations.get(1))
-        .then(attrs => new Iteration(attrs))
-        .then(itr => shouldFulfilled(dao.next(itr)))
+        .then(() => Promise.all([
+          Promise.resolve(db.iterations.get(1)).then(attrs => new Iteration(attrs)),
+          Promise.resolve(db.tasks.get(2)).then(attrs => new Task(attrs)),
+        ]))
+        .then(([itr, task]) => shouldFulfilled(dao.next(itr, task)))
         .then((itr) => {
           assert(itr.type === "SHORT_BREAK");
           assert(itr.numOfIteration === 2);
@@ -113,9 +115,11 @@ describe("IterationDao", () => {
 
     it("create a LONG_BREAK iteration after a 4th WORK iteration", () => (
       Promise.resolve(db.iterations.put({ type: "WORK", numOfIteration: 4 }))
-        .then(() => db.iterations.get(1))
-        .then(attrs => new Iteration(attrs))
-        .then(itr => shouldFulfilled(dao.next(itr)))
+        .then(() => Promise.all([
+          Promise.resolve(db.iterations.get(1)).then(attrs => new Iteration(attrs)),
+          Promise.resolve(db.tasks.get(2)).then(attrs => new Task(attrs)),
+        ]))
+        .then(([itr, task]) => shouldFulfilled(dao.next(itr, task)))
         .then((itr) => {
           assert(itr.type === "LONG_BREAK");
           assert(itr.numOfIteration === 4);
@@ -123,14 +127,6 @@ describe("IterationDao", () => {
         })
         .then(() => Promise.resolve(db.iterations.count()))
         .then(count => assert(count === 2))
-    ));
-
-    it("throw errors without a task when the next iteration's type is WORK", () => (
-      Promise.resolve(db.iterations.put({ type: "SHORT_BREAK", numOfIteration: 1 }))
-        .then(() => db.iterations.get(1))
-        .then(attrs => new Iteration(attrs))
-        .then(itr => shouldRejected(dao.next(itr)))
-        .catch(e => assert(e instanceof Error))
     ));
   });
 
@@ -150,21 +146,6 @@ describe("IterationDao", () => {
   });
 
   describe("#setTask()", () => {
-    it("throw an error when the iteration'type is WORK and the task is empty", () => (
-      Promise.resolve(db.iterations.put({ type: "WORK", numOfIteration: 1, taskId: 1 }))
-        .then(() => Promise.all([
-          Promise.resolve(db.iterations.get(1)).then(attrs => new Iteration(attrs)),
-        ]))
-        .then(results => (
-          shouldRejected(dao.setTask(results[0], undefined))
-            .catch((e) => {
-              assert(e instanceof Error);
-              Promise.resolve(db.iterations.get(1))
-                .then(({ taskId }) => { assert(taskId === 1); });
-            })
-        ))
-    ));
-
     it("sets the given task to the iteration", () => (
       Promise.resolve(db.iterations.put({ type: "WORK", numOfIteration: 1, taskId: 1 }))
         .then(() => Promise.all([
