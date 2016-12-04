@@ -63,6 +63,7 @@ describe("timer reducer", () => {
       shouldFulfilled(startTimer(state))
         .then(({ iterations, messages }) => {
           assert(messages.size === 1);
+          assert(messages.get(0).body != null);
           assert(iterations.size === 0);
         })
     ));
