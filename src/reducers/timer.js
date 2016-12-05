@@ -80,7 +80,7 @@ export function restartTimer(state: State): Promise<State> {
   return getAllIterations(state)
     .then((newState) => {
       const prevItr = newState.iterations.maxBy(itr => itr.startedAt);
-      if (!prevItr.isFinished()) {
+      if (prevItr != null && !prevItr.isFinished()) {
         return newState.set("timer", newState.timer.updateIteration(prevItr));
       }
       return newState;
