@@ -32,10 +32,10 @@ export default class TasksView extends Component {
 
   getTaskListProps() {
     return {
-      completeTask:   t => this.completeTask(t),
-      updateTask:     t => this.updateTask(t),
-      selectTask:     t => this.selectTask(t),
-      deleteTask:     t => this.deleteTask(t),
+      completeTask:   (t: Task) => this.completeTask(t),
+      updateTask:     (t: Task) => this.updateTask(t),
+      selectTask:     (t: ?Task) => this.selectTask(t),
+      deleteTask:     (t: Task) => this.deleteTask(t),
       selectedTaskId: this.props.state.timer.selectedTaskId,
     };
   }

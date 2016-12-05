@@ -5,151 +5,83 @@ import {
   Task,
 } from "../../entities";
 
+import TaskItemContent from "./TaskItemContent";
+
 // FIXME: I want to add align option to flowtype/space-after-type-colon rule...
 /* eslint-disable no-multi-spaces */
 export type Props = {
-  task:     Task;
-  onCheck:  () => void;
-  onSelect: () => void;
-  onUpdate: (editedTask: Task) => void;
+  task:      Task;
+  check:     () => void;
+  update:   (editedTask: Task) => void;
   delete:   () => void;
+  select:   () => void;
   selected: boolean;
 };
-
-export type State = {
-  editing: boolean;
-  title:   string;
-}
 /* eslint-enable */
+
 
 export default class TaskItem extends Component {
 
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      editing: false,
-      title:   props.task.title,
-    };
-  }
-
-  state: State;
-
-  onBtnEditClick() {
-    const { editing, title } = this.state;
-    const { task, onUpdate } = this.props;
-    if (editing) {
-      this.setState({ editing: false });
-      if (title !== task.title) {
-        onUpdate(task.set("title", title));
-      }
-    } else {
-      this.setState({ editing: true });
-    }
-  }
-
   props: Props;
 
-  get checkboxId(): string {
-    return `task-${this.props.task.id}-complete`;
+  renderInputs(ids: { completeId: string, selectId: string }) {
+    const { task, check, select, selected } = this.props;
+
+    const attrsList = [
+      {
+        type:      "checkbox",
+        id:        ids.completeId,
+        className: "TaskItem__complete",
+        value:     task.id,
+        checked:   task.hasCompleted(),
+        onChange:  check,
+      },
+      {
+        type:      "radio",
+        id:        ids.selectId,
+        className: "TaskItem__select",
+        value:     task.id,
+        checked:   selected,
+        onChange:  select,
+      },
+    ];
+
+    return attrsList.map(attrs => <input {...attrs} key={attrs.id} />);
   }
 
-  get radioId(): string {
-    return `task-${this.props.task.id}-select`;
-  }
-
-  renderItem() {
-    const { task } = this.props;
+  renderIcon(ids: { completeId: string }) {
     return (
-      <div className="TaskList__item">
-        <label htmlFor={this.checkboxId} className="TaskList__icon">
-          { task.hasCompleted() && <i className="fa fa-check" /> }
-        </label>
-        { this.renderBody() }
-      </div>
-    );
-  }
-
-  renderBody() {
-    const { task } = this.props;
-    const { editing } = this.state;
-
-    const title = (
-      <span className="TaskList__title">{task.title}</span>
-    );
-
-    return (
-      <label htmlFor={this.radioId} className="TaskList__body">
-        {editing ? this.renderEdit() : title}
-        <button
-          className="TaskList__btn-edit"
-          onClick={() => this.onBtnEditClick()}
-        >
-          <i className={`fa fa-${editing ? "check" : "pencil"}`} />
-        </button>
-        { editing && (
-          <button
-            className="TaskList__btn-clear"
-            onClick={(e) => {
-              e.preventDefault();
-              this.setState({
-                editing: false,
-                title:   this.props.task.title,
-              });
-            }}
-          >
-            <i className="fa fa-times" />
-          </button>
-        )}
-        { editing && (
-          <button
-            className="TaskList__btn-delete"
-            onClick={() => this.props.delete()}
-          >
-            <i className="fa fa-trash" />
-          </button>
-        )}
+      <label htmlFor={ids.completeId} className="TaskItem__icon">
+        { this.props.task.hasCompleted() && <i className="fa fa-check" /> }
       </label>
     );
   }
 
-  renderEdit() {
+  renderContent(ids: { selectId: string }) {
     return (
-      <form
-        className="TaskList__form-edit"
-        onSubmit={() => this.onBtnEditClick()}
+      <label
+        htmlFor={ids.selectId}
+        className="TaskItem__content"
       >
-        <input
-          className="TaskList__input-title"
-          type="text"
-          value={this.state.title}
-          onChange={e => this.setState({ title: e.target.value })}
+        <TaskItemContent
+          task={this.props.task}
+          delete={this.props.delete}
+          update={this.props.update}
         />
-      </form>
+      </label>
     );
   }
 
   render() {
-    const { task, onCheck, onSelect, selected } = this.props;
+    const { task } = this.props;
+    const completeId = `TaskItem__complete_${task.id}`;
+    const selectId = `TaskItem__select_${task.id}`;
+
     return (
-      <li>
-        <input
-          type="radio"
-          name="selected-task"
-          className="TaskList__select"
-          id={this.radioId}
-          value={task.id}
-          checked={selected}
-          onChange={() => onSelect()}
-        />
-        <input
-          type="checkbox"
-          className="TaskList__complete"
-          id={this.checkboxId}
-          value={task.id}
-          checked={task.hasCompleted()}
-          onChange={() => onCheck()}
-        />
-        { this.renderItem() }
+      <li className="TaskItem">
+        { this.renderInputs({ completeId, selectId }) }
+        { this.renderIcon({ completeId }) }
+        { this.renderContent({ selectId }) }
       </li>
     );
   }

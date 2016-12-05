@@ -9,5 +9,6 @@ declare var afterEach: any;
 
 declare module "enzyme" {
   declare function shallow(component: any): any;
+  declare function mount(component: any): any;
 }
 

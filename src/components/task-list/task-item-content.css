@@ -1,0 +1,66 @@
+:root {
+  --TaskItemContent__icon_right: {
+    flex: 0 0 auto;
+    width: calc(3 * var(--spacing));
+    text-align: center;
+  };
+
+  --TaskItemContent__button_small: {
+    cursor: pointer;
+    outline: none;
+    visibility: hidden;
+    padding: 0;
+    line-height: 1;
+  };
+
+  --TaskItemContent__button_small_visible: {
+    visibility: visible;
+  };
+}
+
+.TaskItemContent {
+  display: flex;
+  align-items: center;
+  line-height: 1;
+}
+
+.TaskItemContent::after {
+  @apply --TaskItemContent__icon_right;
+  @apply --TaskItemContent__button_small;
+  @apply --TaskItemContent__button_small_visible;
+
+  flex: 0 0 auto;
+  content: "\f08d";
+  font-family: "FontAwesome";
+  display: none;
+}
+
+.TaskItemContent__title,
+.TaskItemContent__form-edit {
+  flex: 1 1;
+}
+
+.TaskItemContent__form-edit {
+  display: inline-block;
+  padding-right: var(--spacing);
+}
+
+.TaskItemContent__input-title {
+  width: 100%;
+  padding: 0;
+  outline: none;
+  border-bottom: 1px solid var(--color-text_dark);
+
+  &:focus {
+    border-bottom-color: var(--primary-green-dark);
+  }
+}
+
+.TaskItemContent__button_small {
+  @apply --TaskItemContent__icon_right;
+  @apply --TaskItemContent__button_small;
+}
+
+.TaskItem:hover .TaskItemContent__button_small {
+  @apply --TaskItemContent__button_small_visible;
+}
