@@ -62,22 +62,11 @@ export default class TaskList extends Component {
   props: Props;
 
   render() {
-    const { tasks } = this.props;
-    const items = tasks.filterNot(task => task.hasCompleted())
-      .map(task => this.getTaskItem(task));
-    const completedItems = tasks.filter(task => task.hasCompleted())
-      .map(task => this.getTaskItem(task));
+    const items = this.props.tasks.map(task => this.getTaskItem(task));
     return (
       <div className="TaskList">
         <ul className="TaskList__items">
-          <li className="TaskList__item-caption">
-            Tasks
-          </li>
           {items}
-          <li className="TaskList__item-caption">
-            Completed tasks
-          </li>
-          {completedItems}
         </ul>
       </div>
     );
