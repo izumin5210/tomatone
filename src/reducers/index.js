@@ -2,6 +2,10 @@
 import PromisedReducer  from "promised-reducer";
 
 import {
+  powerSaver,
+} from "../middlewares";
+
+import {
   State,
 } from "../models";
 
@@ -50,7 +54,7 @@ export default class Reducer {
   reducer: PromisedReducer;
 
   constructor() {
-    this.reducer = new PromisedReducer(initialState);
+    this.reducer = new PromisedReducer(initialState, [powerSaver]);
   }
 
   // FIXME: apply types
