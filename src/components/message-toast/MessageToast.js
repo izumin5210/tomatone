@@ -51,7 +51,10 @@ export default class MessageToast extends Component {
   show() {
     clearTimeout(this.state.timeoutId);
     const message = this.props.messages.first();
-    const timeoutId = setTimeout(() => this.dismiss(), message.duration);
+    let timeoutId: ?number;
+    if (message != null) {
+      timeoutId = setTimeout(() => this.dismiss(), message.duration);
+    }
     this.setState({ message, timeoutId });
   }
 
