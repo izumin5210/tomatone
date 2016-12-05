@@ -65,7 +65,7 @@ describe("<MessageToast />", () => {
     assert(wrapper.find(".MessageToast").length === 0);
 
     props.messages.forEach(({ body, level, duration }) => {
-      clock.tick(500);
+      clock.tick(300);
       assert(wrapper.find(".MessageToast").length === 1);
       assert(wrapper.find(`.MessageToast__toast_${level}`).text() === body);
       clock.tick(duration);
@@ -81,7 +81,7 @@ describe("<MessageToast />", () => {
     wrapper = shallow(<MessageToast {...props} />, shallowOpts);
     props.messages = props.messages.push(msg);
     wrapper.setProps(props);
-    clock.tick(500);
+    clock.tick(300);
 
     assert(wrapper.find(".MessageToast").length === 1);
     wrapper.find(`.MessageToast__toast_${msg.level}`).simulate("click");
@@ -104,7 +104,7 @@ describe("<MessageToast />", () => {
     assert(wrapper.find(".MessageToast").length === 0);
 
     props.messages.forEach(({ body, level }) => {
-      clock.tick(500);
+      clock.tick(300);
       assert(wrapper.find(".MessageToast").length === 1);
       assert(wrapper.find(`.MessageToast__toast_${level}`).text() === body);
       wrapper.find(`.MessageToast__toast_${level}`).simulate("click");

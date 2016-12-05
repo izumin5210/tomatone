@@ -44,7 +44,7 @@ export default class MessageToast extends Component {
   }
 
   readyToShow() {
-    const timeoutId = setTimeout(() => this.show(), 500);
+    const timeoutId = setTimeout(() => this.show(), 300);
     this.setState({ timeoutId });
   }
 
