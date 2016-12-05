@@ -1,4 +1,6 @@
 /* @flow */
+import axios from "axios";
+
 export default class SoundPlayer {
   static AudioContext = window.AudioContext || window.webkitAudioContext;
 
@@ -12,9 +14,8 @@ export default class SoundPlayer {
   }
 
   fetch(): Promise<AudioBuffer> {
-    return fetch(this.uri)
-      .then(res => res.arrayBuffer())
-      .then(data => this.context.decodeAudioData(data))
+    return axios(this.uri, { responseType: "arraybuffer" })
+      .then(({ data }) => this.context.decodeAudioData(data))
       .then(buf => (this.buffer = buf));
   }
 

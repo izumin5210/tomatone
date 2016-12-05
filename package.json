@@ -39,6 +39,7 @@
     ]
   },
   "dependencies": {
+    "axios": "^0.15.3",
     "babel-polyfill": "^6.16.0",
     "dexie": "^1.5.1",
     "electron-debug": "^1.1.0",
