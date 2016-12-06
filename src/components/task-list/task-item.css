@@ -1,8 +1,43 @@
-.TaskItem {
-  @apply --List__item;
+:root {
+  --TaskItem: {
+    @apply --List__item;
 
-  position: relative;
-  align-items: center;
+    position: relative;
+    align-items: center;
+  };
+}
+
+.TaskItem {
+  @apply --TaskItem;
+}
+
+.TaskItem_dragging,
+.TaskItem_droppable {
+  @apply --TaskItem;
+
+  & .TaskItem__content {
+    cursor: pointer;
+  }
+}
+
+.TaskItem_droppable {
+  background-color: var(--color-bg_light);
+
+  &:hover {
+    background-color: var(--color-bg_light);
+  }
+}
+
+.TaskItem_not-droppable {
+  @apply --TaskItem;
+
+  & .TaskItem__content {
+    cursor: not-allowed;
+  }
+}
+
+.TaskItem_dragging {
+  background-color: var(--gray-lighter);
 }
 
 .TaskItem__complete,
@@ -40,7 +75,7 @@
 .TaskItem__content {
   @apply --List__body;
 
-  cursor: pointer;
+  cursor: move;
 }
 
 .TaskItem:first-child .TaskItem__content {

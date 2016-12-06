@@ -32,11 +32,12 @@ export default class TasksView extends Component {
 
   getTaskListProps() {
     return {
-      completeTask:   (t: Task) => this.completeTask(t),
-      updateTask:     (t: Task) => this.updateTask(t),
-      selectTask:     (t: ?Task) => this.selectTask(t),
-      deleteTask:     (t: Task) => this.deleteTask(t),
-      selectedTaskId: this.props.state.timer.selectedTaskId,
+      completeTask:    (t: Task) => this.completeTask(t),
+      updateTask:      (t: Task) => this.updateTask(t),
+      selectTask:      (t: ?Task) => this.selectTask(t),
+      deleteTask:      (t: Task) => this.deleteTask(t),
+      selectedTaskId:  this.props.state.timer.selectedTaskId,
+      updateTaskOrder: (t: Task, dest: number) => this.updateTaskOrder(t, dest),
     };
   }
 
@@ -74,6 +75,10 @@ export default class TasksView extends Component {
 
   deleteTask(task: Task) {
     this.context.dispatch(TasksActions.ACTION_TASK_DELETE, { task });
+  }
+
+  updateTaskOrder(task: Task, dest: number) {
+    this.context.dispatch(TasksActions.ACTION_TASK_UPDATE_ORDER, { task, order: dest });
   }
 
   props: Props;
