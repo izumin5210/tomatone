@@ -16,6 +16,7 @@ import type {
   IncompleteTaskAction,
   SelectTaskAction,
   DeleteTaskAction,
+  UpdateTaskOrderAction,
 } from "../actions/tasks";
 
 export function getAllTasks(state: State): Promise<State> {
@@ -65,5 +66,28 @@ export function deleteTask(state: State, action: DeleteTaskAction): Promise<Stat
         return newState.set("timer", newState.timer.updateTask(null));
       }
       return newState;
+    });
+}
+
+export function updateTaskOrder(
+  state: State,
+  { task, order }: UpdateTaskOrderAction,
+): Promise<State> {
+  const updatedTasks = state.tasks
+    .map((t) => {
+      if (t.id === task.id) {
+        return t.set("order", order);
+      } else if ((order <= t.order && t.order <= task.order)) {
+        return t.set("order", t.order + 1);
+      } else if ((task.order <= t.order && t.order <= order)) {
+        return t.set("order", t.order - 1);
+      }
+      return t;
+    })
+    .toList();
+  return taskDao.updateAll(updatedTasks)
+    .then((tasks) => {
+      const newTasks = tasks.reduce((m, t) => m.set(t.id, t), state.tasks);
+      return state.set("tasks", newTasks);
     });
 }

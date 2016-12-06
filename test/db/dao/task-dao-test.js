@@ -1,5 +1,8 @@
 /* @flow */
+import { List } from "immutable";
+
 import Task from "../../../src/entities/task";
+
 import {
   db,
   taskDao as dao,
@@ -40,9 +43,22 @@ describe("TaskDao", () => {
           assert(task.title === "awesome task");
           assert(task.createdAt != null);
           assert(task.completedAt == null);
+          assert(task.order === 0);
           return Promise.resolve(db.tasks.count());
         })
         .then(count => assert(count === 1))
+    ));
+
+    it("creates a new task that has largest order", () => (
+      Promise.resolve(db.tasks.bulkPut([
+        { title: "middle task", order: 50 },
+        { title: "last task", order: 100 },
+        { title: "first task", order: 0 },
+      ]))
+        .then(() => dao.create("new task"))
+        .then((task) => {
+          assert(task.order === 101);
+        })
     ));
   });
 
@@ -55,6 +71,32 @@ describe("TaskDao", () => {
         .then(task => assert(task.title === "alternative task"))
         .then(() => db.tasks.count())
         .then(count => assert(count === 1))
+    ));
+  });
+
+  describe("#updateAll()", () => {
+    it("returns updated tasks", () => (
+      db.tasks.bulkPut([
+        { title: "awesome task 1", order: 0 },
+        { title: "awesome task 2", order: 1 },
+        { title: "awesome task 3", order: 2 },
+        { title: "awesome task 4", order: 3 },
+      ])
+      .then(() => db.tasks.toArray())
+      .then(attrsList => attrsList.map(attrs => new Task(attrs)))
+      .then(tasks => tasks.reduce((l, t) => l.push(t), List()))
+      .then(tasks => List.of(
+        tasks.find(t => t.id === 1).set("order", 1),
+        tasks.find(t => t.id === 2).set("order", 2),
+        tasks.find(t => t.id === 3).set("order", 0),
+      ))
+      .then(tasks => dao.updateAll(tasks))
+      .then((tasks) => {
+        assert(tasks.find(t => t.id === 1).order === 1);
+        assert(tasks.find(t => t.id === 2).order === 2);
+        assert(tasks.find(t => t.id === 3).order === 0);
+        assert(tasks.find(t => t.id === 4) == null);
+      })
     ));
   });
 

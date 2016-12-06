@@ -24,7 +24,9 @@ export default class TaskDao {
   }
 
   create(title: string): Promise<Task> {
-    return Promise.resolve(this.table.put({ title, createdAt: Date.now() }))
+    return Promise.resolve(this.table.orderBy("order").reverse().first())
+      .then(attrs => ((attrs == null) ? 0 : attrs.order + 1))
+      .then(order => this.table.put({ title, createdAt: Date.now(), order }))
       .then(id => this.table.get(id))
       .then(attrs => new Task(attrs));
   }
@@ -33,6 +35,15 @@ export default class TaskDao {
     return Promise.resolve(this.table.update(task.id, task.toJS()))
       .then(() => this.table.get(task.id))
       .then(attrs => new Task(attrs));
+  }
+
+  updateAll(tasks: List<Task>): Promise<Task> {
+    return Promise.resolve(this.table.bulkPut(tasks.toArray().map(task => task.toJS())))
+      .then(() => this.table.where("id").anyOf(tasks.toArray().map(task => task.id)).toArray())
+      .then(attrsList => attrsList.reduce(
+        (list, attrs) => list.push(new Task(attrs)),
+        List(),
+      ));
   }
 
   complete(task: Task): Promise<Task> {

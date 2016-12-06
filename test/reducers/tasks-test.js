@@ -9,6 +9,7 @@ import {
   incompleteTask,
   selectTask,
   deleteTask,
+  updateTaskOrder,
 } from "../../src/reducers/tasks";
 
 import {
@@ -214,6 +215,54 @@ describe("tasks reducer", () => {
         })
         .then(() => db.tasks.count())
         .then(c => assert(c === 1));
+    });
+  });
+
+  describe("#updateTaskOrder()", () => {
+    let state: State;
+
+    beforeEach(() => (
+      Promise.resolve(db.tasks.bulkPut([
+        { title: "awesome task 1", order: 0 },
+        { title: "awesome task 2", order: 1 },
+        { title: "awesome task 3", order: 2 },
+        { title: "awesome task 4", order: 3 },
+        { title: "awesome task 5", order: 4 },
+      ]))
+        .then(() => db.tasks.count())
+        .then(c => assert(c === 5))
+        .then(() => db.tasks.toArray())
+        .then(list => list.map(attrs => new Task(attrs)))
+        .then(tasks => (state = tasks.reduce(
+          (s, t) => s.set("tasks", s.tasks.set(t.id, t)),
+          new State(),
+        )))
+    ));
+
+    context("", () => {
+      it("returns new state that has re-ordered tasks", () => (
+        updateTaskOrder(state, { task: state.tasks.get(4), order: 1 })
+          .then(({ tasks }) => {
+            assert(tasks.get(1).order === 0);
+            assert(tasks.get(2).order === 2);
+            assert(tasks.get(3).order === 3);
+            assert(tasks.get(4).order === 1);
+            assert(tasks.get(5).order === 4);
+          })
+      ));
+    });
+
+    context("", () => {
+      it("returns new state that has re-ordered tasks", () => (
+        updateTaskOrder(state, { task: state.tasks.get(2), order: 3 })
+          .then(({ tasks }) => {
+            assert(tasks.get(1).order === 0);
+            assert(tasks.get(2).order === 3);
+            assert(tasks.get(3).order === 1);
+            assert(tasks.get(4).order === 2);
+            assert(tasks.get(5).order === 4);
+          })
+      ));
     });
   });
 });
