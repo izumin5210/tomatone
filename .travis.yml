@@ -31,8 +31,9 @@ deploy:
   provider: releases
   api_key:
     secure: 0C0ify2LC21eb0+7Tn6S0RnECRcABW1yitsg8ubB/RKRK4jWrh64YLNRTq9tjMre73XsFxkR7V4/aHZxusbMyPJga1wuDwIvyF6yynySy371PAzWn40TRlWMIsd4zAjFsBiVGYOel1xCmO5/6ay/cLSlneOd8ogAc9paWPHm+hCzG+ky6gVCDaRLGpPEoB7GLJLI6ednmQCBWRWv7xS3hyal8I1wjH3EyjqBLnlSjUCS17FUUqH+Oag2X5ubmjKXwFDJTiPBzY5aPCjT7lYNN2BwNS2lBfsPkW5ZqG2PtR9V+9cV11ik+tsnmDWywXqBoue0qLX0B4kqso4Jdx3FWJXtYvhTnpimziaCm/8CUnu0gzQsB6oQLGe39GXMldI3lryEdilGKQ8WAU+mUAnai5Rf3EwGuJzPYqXAjlIzYhjHKQltT0xJ58XXCR7yQ8wk/hfBAmGrvRCTqL3FB6XvaHTaR0hhIuwUIV6gsPLRmRMoOZQhghZItvix6p+bsL/YQM5LvpYF62JfQwKnRzKxeAy2oarIVgW5gYJA8CcAQ7sIo/e66qXypJDote9p2Yg3JNjcQBx0jHrm7+LgXmrt0zTpEQDlnWSmccfWtkV9RF94csWXgMbDUBTGUnWnjdG2znxJmTjMf6az3TiZ7N2dpxMTo49w6Jr2PXBw7tTKmo4=
+  file_glob: true
   file:
-  - release/mac/tomatone-*.dmg
+  - "release/mac/tomatone-*.dmg"
   on:
     repo: izumin5210/tomatone
     tags: true
