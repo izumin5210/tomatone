@@ -1,4 +1,7 @@
 .TasksView {
-  background: var(--gray-lightest);
-  padding-top: calc(var(--nav-height) + var(--spacing));
+  @apply --Page;
+}
+
+.TasksView__caption {
+  @apply --Page__caption;
 }

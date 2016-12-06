@@ -11,12 +11,12 @@ import TaskItem from "./TaskItem";
 // FIXME: I want to add align option to flowtype/space-after-type-colon rule...
 /* eslint-disable no-multi-spaces */
 type Props = {
-  tasks:          Map<number, Task>;
-  completeTask:   (task: Task) => void;
-  updateTask:     (task: Task) => void;
-  selectTask:     (task: ?Task) => void;
-  deleteTask:     (task: Task) => void;
-  selectedTaskId: ?number;
+  tasks:           Map<number, Task>;
+  completeTask:    (task: Task) => void;
+  updateTask:      (task: Task) => void;
+  selectTask:      (task: ?Task) => void;
+  deleteTask:      (task: Task) => void;
+  selectedTaskId?: number;
 };
 
 type State = {
@@ -50,10 +50,10 @@ export default class TaskList extends Component {
       <TaskItem
         key={task.id}
         task={task}
-        onCheck={() => this.props.completeTask(task)}
-        onSelect={() => this.onTaskSelect(task)}
-        onUpdate={editedTask => this.props.updateTask(editedTask)}
+        check={() => this.props.completeTask(task)}
+        update={editedTask => this.props.updateTask(editedTask)}
         delete={() => this.props.deleteTask(task)}
+        select={() => this.onTaskSelect(task)}
         selected={this.props.selectedTaskId === task.id}
       />
     );
@@ -62,22 +62,11 @@ export default class TaskList extends Component {
   props: Props;
 
   render() {
-    const { tasks } = this.props;
-    const items = tasks.filterNot(task => task.hasCompleted())
-      .map(task => this.getTaskItem(task));
-    const completedItems = tasks.filter(task => task.hasCompleted())
-      .map(task => this.getTaskItem(task));
+    const items = this.props.tasks.map(task => this.getTaskItem(task));
     return (
       <div className="TaskList">
         <ul className="TaskList__items">
-          <li className="TaskList__item-caption">
-            Tasks
-          </li>
           {items}
-          <li className="TaskList__item-caption">
-            Completed tasks
-          </li>
-          {completedItems}
         </ul>
       </div>
     );

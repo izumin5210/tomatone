@@ -32,7 +32,6 @@
   };
 
   --List__caption: {
-    margin: calc(2 * var(--spacing));
-    color: var(--gray);
+    @apply --Page__caption;
   }
 }

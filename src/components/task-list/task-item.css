@@ -1,0 +1,48 @@
+.TaskItem {
+  @apply --List__item;
+
+  position: relative;
+  align-items: center;
+}
+
+.TaskItem__complete,
+.TaskItem__select {
+  display: none;
+}
+
+.TaskItem__complete:checked ~ .TaskItem__content {
+  text-decoration: line-through;
+  cursor: auto;
+}
+
+.TaskItem__select:checked ~ .TaskItem__content {
+  font-weight: bold;
+  color: var(--primary-green-dark);
+}
+
+.TaskItem__select:checked ~ .TaskItem__content > .TaskItemContent::after {
+  display: block;
+}
+
+.TaskItem__icon {
+  @apply --List__icon;
+
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  border-radius: 4px;
+  border: 1px solid var(--color-text_dark);
+  position: relative;
+  color: var(--color-text_dark);
+  cursor: pointer;
+}
+
+.TaskItem__content {
+  @apply --List__body;
+
+  cursor: pointer;
+}
+
+.TaskItem:first-child .TaskItem__content {
+  border-top: none;
+}

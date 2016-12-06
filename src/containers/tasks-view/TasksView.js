@@ -1,6 +1,7 @@
 /* @flow */
 import React, { Component } from "react";
 import { dispatcher }       from "react-dispatcher-decorator";
+import { Map }              from "immutable";
 
 import {
   Task,
@@ -29,7 +30,27 @@ export default class TasksView extends Component {
     this.context.dispatch(TasksActions.ACTION_TASKS_GET);
   }
 
-  props: Props;
+  getTaskListProps() {
+    return {
+      completeTask:   (t: Task) => this.completeTask(t),
+      updateTask:     (t: Task) => this.updateTask(t),
+      selectTask:     (t: ?Task) => this.selectTask(t),
+      deleteTask:     (t: Task) => this.deleteTask(t),
+      selectedTaskId: this.props.state.timer.selectedTaskId,
+    };
+  }
+
+  get tasks(): Map<number, Task> {
+    return this.props.state.tasks;
+  }
+
+  get activeTasks(): Map<number, Task> {
+    return this.tasks.filterNot(task => task.hasCompleted());
+  }
+
+  get completedTasks(): Map<number, Task> {
+    return this.tasks.filter(task => task.hasCompleted());
+  }
 
   createTask(title: string) {
     this.context.dispatch(TasksActions.ACTION_TASK_CREATE, { title });
@@ -55,16 +76,21 @@ export default class TasksView extends Component {
     this.context.dispatch(TasksActions.ACTION_TASK_DELETE, { task });
   }
 
+  props: Props;
+
   render() {
+    const taskListProps = this.getTaskListProps();
     return (
       <div className="TasksView">
+        <h2 className="TasksView__caption">Tasks</h2>
         <TaskList
-          tasks={this.props.state.tasks}
-          completeTask={t => this.completeTask(t)}
-          updateTask={t => this.updateTask(t)}
-          selectTask={t => this.selectTask(t)}
-          deleteTask={t => this.deleteTask(t)}
-          selectedTaskId={this.props.state.timer.selectedTaskId}
+          tasks={this.activeTasks}
+          {...taskListProps}
+        />
+        <h2 className="TasksView__caption">Completed tasks</h2>
+        <TaskList
+          tasks={this.completedTasks}
+          {...taskListProps}
         />
         <TaskComposer
           createTask={t => this.createTask(t)}

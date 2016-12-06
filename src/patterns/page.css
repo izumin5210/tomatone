@@ -1,0 +1,14 @@
+:root {
+  --Page: {
+    background: var(--gray-lightest);
+    padding-top: calc(var(--nav-height) + var(--spacing));
+  }
+
+  --Page__caption: {
+    font-size: 1rem;
+    font-weight: normal;
+    margin: calc(2 * var(--spacing));
+    color: var(--gray);
+  }
+}
+
