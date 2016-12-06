@@ -1,5 +1,6 @@
 /* @flow */
-import React, { Component } from "react";
+import React, { Component }       from "react";
+import { DropTarget, DragSource } from "react-dnd";
 
 import {
   Task,
@@ -7,20 +8,70 @@ import {
 
 import TaskItemContent from "./TaskItemContent";
 
-// FIXME: I want to add align option to flowtype/space-after-type-colon rule...
-/* eslint-disable no-multi-spaces */
+/* eslint-disable no-multi-spaces, react/no-unused-prop-types */
 export type Props = {
-  task:      Task;
-  check:     () => void;
-  update:   (editedTask: Task) => void;
-  delete:   () => void;
-  select:   () => void;
-  selected: boolean;
+  task:              Task;
+  order:             number;
+  check:             () => void;
+  update:            (editedTask: Task) => void;
+  delete:            () => void;
+  select:            () => void;
+  selected:          boolean;
+  updateOrder:       (task: Task, dest: number) => void;
+  drag:              (task: Task, dest: number) => void;
+  connectDragSource: (e: any) => any;
+  connectDropTarget: (e: any) => any;
+  isDragging:        boolean,
+  canDrop:           boolean,
 };
 /* eslint-enable */
 
+const getType = (task: Task) => (task.hasCompleted() ? "completed-tasks" : "tasks");
 
+@DropTarget(
+  ({ task }: Props) => getType(task),
+  {
+    drop({ order, updateOrder }: Props, monitor) {
+      const src = monitor.getItem();
+      if (order !== src.order) {
+        updateOrder(src.task, order);
+      }
+    },
+
+    hover({ order, drag }: Props, monitor) {
+      drag(monitor.getItem().task, order);
+    },
+  },
+  (connect, monitor) => ({
+    /* eslint-disable no-multi-spaces */
+    connectDropTarget: connect.dropTarget(),
+    canDrop:           monitor.canDrop(),
+    /* eslint-enable */
+  }),
+)
+@DragSource(
+  ({ task }: Props) => getType(task),
+  {
+    beginDrag(props) {
+      return props;
+    },
+  },
+  (connect, monitor) => ({
+    /* eslint-disable no-multi-spaces */
+    connectDragSource: connect.dragSource(),
+    isDragging:        monitor.isDragging(),
+    /* eslint-enable */
+  }),
+)
 export default class TaskItem extends Component {
+
+  // HACK
+  static defaultProps = {
+    connectDragSource: () => {},
+    connectDropTarget: () => {},
+    isDragging:        false,
+    canDrop:           false,
+  };
 
   props: Props;
 
@@ -73,16 +124,23 @@ export default class TaskItem extends Component {
   }
 
   render() {
-    const { task } = this.props;
+    const { task, connectDragSource, connectDropTarget, isDragging, canDrop } = this.props;
     const completeId = `TaskItem__complete_${task.id}`;
     const selectId = `TaskItem__select_${task.id}`;
 
-    return (
-      <li className="TaskItem">
+    let modifier = "";
+    if (isDragging) {
+      modifier = canDrop ? "_dragging" : "_not-droppable";
+    } else if (canDrop) {
+      modifier = "_droppable";
+    }
+
+    return connectDragSource(connectDropTarget((
+      <li className={`TaskItem${modifier}`}>
         { this.renderInputs({ completeId, selectId }) }
         { this.renderIcon({ completeId }) }
         { this.renderContent({ selectId }) }
       </li>
-    );
+    )));
   }
 }

@@ -1,12 +1,14 @@
 /* @flow */
 import React, { Component } from "react";
-import { Map }              from "immutable";
+import { DragDropContext }  from "react-dnd";
+import ReactDndHtml5Backend from "react-dnd-html5-backend";
+import { List, Map }        from "immutable";
 
 import {
   Task,
 } from "../../entities";
 
-import TaskItem from "./TaskItem";
+import TaskItem              from "./TaskItem";
 
 // FIXME: I want to add align option to flowtype/space-after-type-colon rule...
 /* eslint-disable no-multi-spaces */
@@ -17,23 +19,40 @@ type Props = {
   selectTask:      (task: ?Task) => void;
   deleteTask:      (task: Task) => void;
   selectedTaskId?: number;
+  updateTaskOrder: (task: Task, dest: number) => void;
 };
 
 type State = {
-  title: string;
+  orders: List<number>;
 };
 /* eslint-enable */
 
+@DragDropContext(ReactDndHtml5Backend)
 export default class TaskList extends Component {
+
+  static getInitialOrders({ tasks }: Props): List<number> {
+    return tasks.sortBy(t => t.order).map(t => t.id).toList();
+  }
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      title: "",
+      orders: TaskList.getInitialOrders(props),
     };
   }
 
   state: State;
+
+  componentWillReceiveProps(props: Props) {
+    const orders = TaskList.getInitialOrders(props);
+    this.setState({ orders });
+  }
+
+  componentWillUnmount() {
+    if (this.requestedFrame != null) {
+      cancelAnimationFrame(this.requestedFrame);
+    }
+  }
 
   onTaskSelect(task: Task) {
     let selectedTask = task;
@@ -45,24 +64,56 @@ export default class TaskList extends Component {
     }
   }
 
-  getTaskItem(task: Task) {
+  onDrag(task: Task, dest: number) {
+    this.scheduleUpdate(() => {
+      const src = this.state.orders.indexOf(task.id);
+      const orders = this.state.orders
+        .delete(src)
+        .insert(dest + (dest > src ? 1 : 0), task.id);
+      return { orders };
+    });
+  }
+
+  getTaskItem(task: Task, order: number) {
     return (
       <TaskItem
         key={task.id}
         task={task}
+        order={order}
         check={() => this.props.completeTask(task)}
         update={editedTask => this.props.updateTask(editedTask)}
         delete={() => this.props.deleteTask(task)}
         select={() => this.onTaskSelect(task)}
         selected={this.props.selectedTaskId === task.id}
+        updateOrder={this.props.updateTaskOrder}
+        drag={(t: Task, o: number) => this.onDrag(t, o)}
       />
     );
   }
 
+  scheduleUpdate(updateFn: () => State) {
+    this.pendingUpdateFn = updateFn;
+    if (!this.requestedFrame) {
+      this.requestedFrame = requestAnimationFrame(() => this.drawFrame());
+    }
+  }
+
+  drawFrame() {
+    if (this.pendingUpdateFn != null) {
+      this.setState(this.pendingUpdateFn());
+    }
+
+    this.pendingUpdateFn = null;
+    this.requestedFrame = null;
+  }
+
   props: Props;
+  pendingUpdateFn: ?() => State;
+  requestedFrame: ?number;
 
   render() {
-    const items = this.props.tasks.map(task => this.getTaskItem(task));
+    const items = this.state.orders
+      .map((id, i) => this.getTaskItem(this.props.tasks.get(id), i));
     return (
       <div className="TaskList">
         <ul className="TaskList__items">

@@ -41,6 +41,7 @@ import {
   incompleteTask,
   selectTask,
   deleteTask,
+  updateTaskOrder,
 } from "./tasks";
 
 import {
@@ -114,6 +115,12 @@ export default class Reducer {
       TasksActions.ACTION_TASK_DELETE,
       (props: TasksActions.DeleteTaskAction) => (
         this.update((s: State) => deleteTask(s, props))
+      ),
+    );
+    subscribe(
+      TasksActions.ACTION_TASK_UPDATE_ORDER,
+      (props: TasksActions.UpdateTaskOrderAction) => (
+        this.update((s: State) => updateTaskOrder(s, props))
       ),
     );
   }
