@@ -15,6 +15,7 @@ export const tasks = [
   "title",
   "createdAt",
   "completedAt",
+  "order",
 ].join(",");
 
 /* eslint-enable */

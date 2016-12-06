@@ -8,6 +8,7 @@ export type TaskConfig = {
   title:       string;
   createdAt:   number;
   completedAt: ?number;
+  order:       number;
 };
 /* eslint-enable */
 
@@ -16,6 +17,7 @@ const defaultValues: TaskConfig = {
   title:       "empty task",
   createdAt:   Date.now(),
   completedAt: undefined,
+  order:       0,
 };
 
 const TaskRecord = Record(defaultValues);
