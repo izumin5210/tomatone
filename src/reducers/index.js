@@ -58,8 +58,18 @@ export default class Reducer {
 
     subscribe(TimerActions.START, () => this.update(startTimer));
     subscribe(TimerActions.STOP, () => this.update(stopTimer));
-    subscribe(TimerActions.REFRESH, () => this.update(refreshTimer));
-    subscribe(TimerActions.RESTART, () => this.update(restartTimer));
+    subscribe(
+      TimerActions.REFRESH,
+      (props: TimerActions.RefreshAction) => (
+        this.update((s: State) => refreshTimer(s, props))
+      ),
+    );
+    subscribe(
+      TimerActions.RESTART,
+      (props: TimerActions.RestartAction) => (
+        this.update((s: State) => restartTimer(s, props))
+      ),
+    );
     subscribe(IterationsActions.GET_ALL, () => this.update(getAllIterations));
 
     subscribe(

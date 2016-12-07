@@ -6,6 +6,7 @@ import { HashRouter, Match } from "react-router";
 import Reducer from "../reducers";
 
 import {
+  dateTimeProvider,
   SoundPlayer,
   State,
 } from "../models";
@@ -29,10 +30,18 @@ import {
   TimerActions,
 } from "../actions";
 
+/* eslint-disable no-duplicate-imports */
+import type { DateTimeProvider } from "../models";
+/* eslint-enable */
+
 const reducer = new Reducer();
 
 // FIXME: I want to add align option to flowtype/space-after-type-colon rule...
 /* eslint-disable no-multi-spaces */
+type AppProps = {
+  dateTimeProvider: DateTimeProvider;
+};
+
 type AppState = {
   state:              State;
   intervalId:         ?number;
@@ -56,7 +65,11 @@ const initialState: AppState = {
 })
 export default class App extends Component {
 
-  constructor(props: any) {
+  static defaultProps = {
+    dateTimeProvider,
+  };
+
+  constructor(props: AppProps) {
     super(props);
     this.state = initialState;
   }
@@ -70,11 +83,18 @@ export default class App extends Component {
       this.state.finishSoundPlayer.fetch(),
     ]);
     promise.then(() => this.setState({ soundLoaded: true }));
-    this.getChildContext().dispatch(TimerActions.RESTART);
+    this.getChildContext().dispatch(
+      TimerActions.RESTART,
+      { nowInMilliSeconds: this.nowInMilliSeconds },
+    );
   }
 
   componentWillUpdate(props: any, state: AppState) {
     this.checkUpdates(state);
+  }
+
+  get nowInMilliSeconds(): number {
+    return this.props.dateTimeProvider.nowInMilliSeconds();
   }
 
   checkUpdates(state: AppState) {
@@ -91,11 +111,15 @@ export default class App extends Component {
       if (itr.isWorking()) {
         this.state.tickingSoundPlayer.play();
       }
-      if (itr.isFinished()) {
+      const now = this.props.dateTimeProvider.nowInMilliSeconds();
+      if (itr.isFinished(now)) {
         this.state.finishSoundPlayer.play();
         this.stop();
       }
-      this.getChildContext().dispatch(TimerActions.REFRESH);
+      this.getChildContext().dispatch(
+        TimerActions.REFRESH,
+        { nowInMilliSeconds: this.nowInMilliSeconds },
+      );
     }
   }
 

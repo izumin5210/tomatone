@@ -2,6 +2,7 @@
 import Dexie from "dexie";
 import { List } from "immutable";
 
+
 import {
   Iteration,
   Task,
@@ -13,11 +14,15 @@ import type {
 } from "../../entities";
 /* eslint-enable */
 
+import type { DateTimeProvider } from "../../models";
+
 export default class IterationDao {
   db: Dexie;
+  dateTimeProvider: DateTimeProvider;
 
-  constructor(db: Dexie) {
+  constructor(db: Dexie, dateTimeProvider: DateTimeProvider) {
     this.db = db;
+    this.dateTimeProvider = dateTimeProvider;
   }
 
   getAll(): Promise<List<Iteration>> {
@@ -27,7 +32,7 @@ export default class IterationDao {
   }
 
   createFirst(task: Task): Promise<Iteration> {
-    const startedAt = Date.now();
+    const startedAt = this.dateTimeProvider.nowInMilliSeconds();
     const type: IterationType = "WORK";
     const numOfIteration = 1;
     const totalTimeInMillis = Iteration.TIMES[type];
@@ -53,7 +58,7 @@ export default class IterationDao {
       numOfIteration += 1;
       taskId = task.id;
     }
-    const startedAt = Date.now();
+    const startedAt = this.dateTimeProvider.nowInMilliSeconds();
     const totalTimeInMillis = Iteration.TIMES[type];
 
     return this.create({
@@ -66,7 +71,8 @@ export default class IterationDao {
   }
 
   stop(itr: Iteration): Promise<Iteration> {
-    return this.update(itr, { totalTimeInMillis: Date.now() - itr.startedAt });
+    const totalTimeInMillis = this.dateTimeProvider.nowInMilliSeconds() - itr.startedAt;
+    return this.update(itr, { totalTimeInMillis });
   }
 
   setTask(itr: Iteration, task: Task): Promise<Iteration> {

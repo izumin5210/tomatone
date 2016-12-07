@@ -2,20 +2,31 @@
 import React, { Component } from "react";
 import moment from "moment";
 
+import { dateTimeProvider } from "../../models";
+
 import {
   Iteration,
   Task,
 } from "../../entities";
 
+/* eslint-disable no-duplicate-imports */
+import type { DateTimeProvider } from "../../models";
+/* eslint-enable */
+
 /* eslint-disable no-multi-spaces */
 type Props = {
-   iteration: Iteration;
-   task:      Task;
+   iteration:        Iteration;
+   task:             Task;
+   dateTimeProvider: DateTimeProvider;
 };
 /* eslint-enable */
 
 export default class IterationItem extends Component {
   static TIME_FORMAT = "YYYY/MM/DD HH:mm";
+
+  static defaultProps = {
+    dateTimeProvider,
+  };
 
   static getFormattedDate(startedAt: number): string {
     return moment(startedAt).format(this.TIME_FORMAT);
@@ -27,7 +38,7 @@ export default class IterationItem extends Component {
 
   getIconName(): string {
     const { iteration } = this.props;
-    if (!iteration.isFinished()) {
+    if (!this.isFinished()) {
       return "play";
     } else if (iteration.isWorking()) {
       return "pencil";
@@ -35,12 +46,17 @@ export default class IterationItem extends Component {
     return "coffee";
   }
 
+  isFinished(): boolean {
+    const now = this.props.dateTimeProvider.nowInMilliSeconds();
+    return this.props.iteration.isFinished(now);
+  }
+
   props: Props;
 
   renderIcon() {
     const { iteration } = this.props;
     return (
-      <div className={`IterationList__icon${iteration.isFinished() ? "" : "_now"}`}>
+      <div className={`IterationList__icon${this.isFinished() ? "" : "_now"}`}>
         <i className={`fa fa-${this.getIconName(iteration)}`} />
       </div>
     );

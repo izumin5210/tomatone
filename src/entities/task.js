@@ -15,7 +15,7 @@ export type TaskConfig = {
 const defaultValues: TaskConfig = {
   id:          1,
   title:       "empty task",
-  createdAt:   Date.now(),
+  createdAt:   0,
   completedAt: undefined,
   order:       0,
 };

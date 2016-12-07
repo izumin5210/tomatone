@@ -1,78 +1,67 @@
 /* @flow */
-import { useFakeTimers } from "sinon";
 
 import {
   Iteration,
 } from "../../src/entities";
 
-const now = Date.now("2016-11-22T15:30:00");
+const startedAt = Date.now("2016-11-22T15:30:00");
 
 describe("Iteration", () => {
-  let clock;
+  let itr: Iteration;
 
   beforeEach(() => {
-    clock = useFakeTimers(now);
-  });
-
-  afterEach(() => {
-    clock.restore();
+    itr = new Iteration({ startedAt });
   });
 
   describe("#isWorking()", () => {
     it("returns true when the state is WORK", () => {
-      const itr = new Iteration({ type: "WORK" });
+      itr = itr.set("type", "WORK");
       assert(itr.isWorking());
     });
 
     it("returns true when the state is SHORT_BREAK", () => {
-      const itr = new Iteration({ type: "SHORT_BREAK" });
+      itr = itr.set("type", "SHORT_BREAK");
       assert(!itr.isWorking());
     });
 
     it("returns true when the state is LONG_BREAK", () => {
-      const itr = new Iteration({ type: "LONG_BREAK" });
+      itr = itr.set("type", "LONG_BREAK");
       assert(!itr.isWorking());
     });
   });
 
   describe("#remainTimeInMillis()", () => {
     it("returns positive value when the iteration has not finished", () => {
-      const itr = new Iteration();
-      clock.tick(1000);
-      assert(itr.remainTimeInMillis, itr.totalTimeInMillis - 1000);
+      const now = startedAt + 1000;
+      assert(itr.remainTimeInMillis(now), itr.totalTimeInMillis - 1000);
     });
 
     it("returns negative value when the iteration has finished", () => {
-      const itr = new Iteration();
-      clock.tick(itr.totalTimeInMillis + 1000);
-      assert(itr.remainTimeInMillis, -1000);
+      const now = startedAt + itr.totalTimeInMillis + 1000;
+      assert(itr.remainTimeInMillis(now), -1000);
     });
   });
 
   describe("#isFinished()", () => {
     it("returns true when the iteration has finished", () => {
-      const itr = new Iteration();
-      clock.tick(itr.totalTimeInMillis);
-      assert(itr.isFinished());
+      const now = startedAt + itr.totalTimeInMillis;
+      assert(itr.isFinished(now));
     });
 
     it("returns false when the iteration has not finished", () => {
-      const itr = new Iteration();
-      assert(!itr.isFinished());
+      assert(!itr.isFinished(startedAt));
     });
 
     it("returns false when the iteration has remain times more than 500 ms", () => {
-      const itr = new Iteration();
-      assert(!itr.isFinished());
-      clock.tick(itr.remainTimeInMillis - 500);
-      assert(!itr.isFinished());
+      assert(!itr.isFinished(startedAt));
+      const now = (startedAt + itr.remainTimeInMillis(startedAt)) - 500;
+      assert(!itr.isFinished(now));
     });
 
     it("returns true when the iteration has remain times less than 500 ms", () => {
-      const itr = new Iteration();
-      assert(!itr.isFinished());
-      clock.tick(itr.remainTimeInMillis - 499);
-      assert(itr.isFinished());
+      assert(!itr.isFinished(startedAt));
+      const now = (startedAt + itr.remainTimeInMillis(startedAt)) - 499;
+      assert(itr.isFinished(now));
     });
   });
 });

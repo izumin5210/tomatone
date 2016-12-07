@@ -25,7 +25,7 @@ export type IterationConfig = {
 
 const defaultValues: IterationConfig = {
   id:                1,
-  startedAt:         Date.now(),
+  startedAt:         0,
   type:              "WORK",
   numOfIteration:    1,
   totalTimeInMillis: TIMES.WORK,
@@ -39,16 +39,15 @@ export default class Iteration extends IterationRecord {
   static MAX_ITERATIONS = MAX_ITERATIONS;
   static TIMES = TIMES;
 
-  get remainTimeInMillis(): number {
-    // FIXME: Should not use `Date.now()`
-    return this.totalTimeInMillis - (Date.now() - this.startedAt);
+  remainTimeInMillis(nowInMilliSeconds: number): number {
+    return this.totalTimeInMillis - (nowInMilliSeconds - this.startedAt);
   }
 
   isWorking(): boolean {
     return this.type === "WORK";
   }
 
-  isFinished(): boolean {
-    return !(Math.round(this.remainTimeInMillis / 1000) > 0);
+  isFinished(nowInMilliSeconds: number): boolean {
+    return !(Math.round(this.remainTimeInMillis(nowInMilliSeconds) / 1000) > 0);
   }
 }
