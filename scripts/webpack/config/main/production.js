@@ -20,7 +20,7 @@ const config = merge(baseConfig, {
 
   plugins: [
     new CopyPlugin([
-      { from: "./icon*.png" },
+      { from: "./assets/images/icon*.png" },
     ]),
 
     new webpack.LoaderOptionsPlugin({
