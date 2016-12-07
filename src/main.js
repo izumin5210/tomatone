@@ -8,10 +8,12 @@ import { TimerEvents } from "./ipc";
 
 app.commandLine.appendSwitch("disable-renderer-backgrounding");
 
+const iconfile = `icon${process.env.NODE_ENV === "development" ? "-dev" : ""}.png`;
+
 const mb = menubar({
   app,
   dir:           __dirname,
-  icon:          `${__dirname}/icon.png`,
+  icon:          `${__dirname}/assets/images/${iconfile}`,
   preloadWindow: true,
   width:         320,
   height:        480,
