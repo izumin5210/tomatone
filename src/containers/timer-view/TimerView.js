@@ -15,9 +15,8 @@ import {
 } from "../../components";
 
 import {
-  ACTION_TIMER_START,
-  ACTION_TIMER_STOP,
-} from "../../settings/constants";
+  TimerActions,
+} from "../../actions";
 
 type Props = {
   state: State;
@@ -26,7 +25,7 @@ type Props = {
 @dispatcher
 export default class TimerView extends Component {
   onBtnPlayClick() {
-    this.context.dispatch(this.timer.hasStarted() ? ACTION_TIMER_STOP : ACTION_TIMER_START);
+    this.context.dispatch(this.timer.hasStarted() ? TimerActions.STOP : TimerActions.START);
   }
 
   props: Props;

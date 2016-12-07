@@ -3,41 +3,41 @@ import { Task } from "../entities";
 
 // FIXME: I want to add align option to flowtype/space-after-type-colon rule...
 /* eslint-disable no-multi-spaces */
-export const ACTION_TASKS_GET         = "task:getall";
-export const ACTION_TASK_CREATE       = "task:create";
-export const ACTION_TASK_UPDATE       = "task:udpate";
-export const ACTION_TASK_COMPLETE     = "task:complete";
-export const ACTION_TASK_INCOMPLETE   = "task:incomplete";
-export const ACTION_TASK_SELECT       = "task:select";
-export const ACTION_TASK_DELETE       = "task:delete";
-export const ACTION_TASK_UPDATE_ORDER = "task:update-order";
+export const GET_ALL      = "task:getall";
+export const CREATE       = "task:create";
+export const UPDATE       = "task:udpate";
+export const COMPLETE     = "task:complete";
+export const INCOMPLETE   = "task:incomplete";
+export const SELECT       = "task:select";
+export const DELETE       = "task:delete";
+export const UPDATE_ORDER = "task:update-order";
 /* eslint-enable */
 
-export type CreateTaskAction = {
+export type CreateAction = {
   title: string;
 };
 
-export type UpdateTaskAction = {
+export type UpdateAction = {
   task: Task;
 };
 
-export type CompleteTaskAction = {
+export type CompleteAction = {
   task: Task;
 }
 
-export type IncompleteTaskAction = {
+export type IncompleteAction = {
   task: Task;
 }
 
-export type SelectTaskAction = {
+export type SelectAction = {
   task: ?Task;
 };
 
-export type DeleteTaskAction = {
+export type DeleteAction = {
   task: Task;
 };
 
-export type UpdateTaskOrderAction = {
+export type UpdateOrderAction = {
   task: Task;
   order: number;
 };

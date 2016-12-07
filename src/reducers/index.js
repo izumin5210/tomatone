@@ -10,16 +10,10 @@ import {
 } from "../models";
 
 import {
-  ACTION_TIMER_START,
-  ACTION_TIMER_STOP,
-  ACTION_TIMER_REFRESH,
-  ACTION_TIMER_RESTART,
-  ACTION_ITERATIONS_GET,
-} from "../settings/constants";
-
-import {
-  MessagesAction,
+  IterationsActions,
+  MessagesActions,
   TasksActions,
+  TimerActions,
 } from "../actions";
 
 import {
@@ -62,64 +56,64 @@ export default class Reducer {
   connect(self: any, subscribe: any) {
     this.reducer.on(":update", state => self.setState({ state }));
 
-    subscribe(ACTION_TIMER_START, () => this.update(startTimer));
-    subscribe(ACTION_TIMER_STOP, () => this.update(stopTimer));
-    subscribe(ACTION_TIMER_REFRESH, () => this.update(refreshTimer));
-    subscribe(ACTION_TIMER_RESTART, () => this.update(restartTimer));
-    subscribe(ACTION_ITERATIONS_GET, () => this.update(getAllIterations));
+    subscribe(TimerActions.START, () => this.update(startTimer));
+    subscribe(TimerActions.STOP, () => this.update(stopTimer));
+    subscribe(TimerActions.REFRESH, () => this.update(refreshTimer));
+    subscribe(TimerActions.RESTART, () => this.update(restartTimer));
+    subscribe(IterationsActions.GET_ALL, () => this.update(getAllIterations));
 
     subscribe(
-      MessagesAction.PUSH_MESSAGE,
+      MessagesActions.PUSH_MESSAGE,
       () => this.update(pushMessage),
     );
     subscribe(
-      MessagesAction.REMOVE_MESSAGE,
+      MessagesActions.REMOVE_MESSAGE,
       () => this.update(removeMessage),
     );
 
     subscribe(
-      TasksActions.ACTION_TASKS_GET,
+      TasksActions.GET_ALL,
       () => this.update(getAllTasks),
     );
     subscribe(
-      TasksActions.ACTION_TASK_CREATE,
-      (props: TasksActions.CreateTaskAction) => (
+      TasksActions.CREATE,
+      (props: TasksActions.CreateAction) => (
         this.update((s: State) => createTask(s, props))
       ),
     );
     subscribe(
-      TasksActions.ACTION_TASK_UPDATE,
-      (props: TasksActions.UpdateTaskAction) => (
+      TasksActions.UPDATE,
+      (props: TasksActions.UpdateAction) => (
         this.update((s: State) => updateTask(s, props))
       ),
     );
     subscribe(
-      TasksActions.ACTION_TASK_COMPLETE,
-      (props: TasksActions.CompleteTaskAction) => (
+      TasksActions.COMPLETE,
+      (props: TasksActions.CompleteAction) => (
         this.update((s: State) => completeTask(s, props))
       ),
     );
     subscribe(
-      TasksActions.ACTION_TASK_INCOMPLETE,
-      (props: TasksActions.IncompleteTaskAction) => (
+      TasksActions.INCOMPLETE,
+      (props: TasksActions.IncompleteAction) => (
         this.update((s: State) => incompleteTask(s, props))
       ),
     );
     subscribe(
-      TasksActions.ACTION_TASK_SELECT,
-      (props: TasksActions.SelectTaskAction) => (
+      TasksActions.SELECT,
+      (props: TasksActions.SelectAction) => (
         this.update((s: State) => selectTask(s, props))
       ),
     );
     subscribe(
-      TasksActions.ACTION_TASK_DELETE,
-      (props: TasksActions.DeleteTaskAction) => (
+      TasksActions.DELETE,
+      (props: TasksActions.DeleteAction) => (
         this.update((s: State) => deleteTask(s, props))
       ),
     );
     subscribe(
-      TasksActions.ACTION_TASK_UPDATE_ORDER,
-      (props: TasksActions.UpdateTaskOrderAction) => (
+      TasksActions.UPDATE_ORDER,
+      (props: TasksActions.UpdateOrderAction) => (
         this.update((s: State) => updateTaskOrder(s, props))
       ),
     );

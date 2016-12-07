@@ -27,7 +27,7 @@ type Props = {
 @dispatcher
 export default class TasksView extends Component {
   componentDidMount() {
-    this.context.dispatch(TasksActions.ACTION_TASKS_GET);
+    this.context.dispatch(TasksActions.GET_ALL);
   }
 
   getTaskListProps() {
@@ -54,31 +54,31 @@ export default class TasksView extends Component {
   }
 
   createTask(title: string) {
-    this.context.dispatch(TasksActions.ACTION_TASK_CREATE, { title });
+    this.context.dispatch(TasksActions.CREATE, { title });
   }
 
   completeTask(task: Task) {
     if (task.hasCompleted()) {
-      this.context.dispatch(TasksActions.ACTION_TASK_INCOMPLETE, { task });
+      this.context.dispatch(TasksActions.INCOMPLETE, { task });
     } else {
-      this.context.dispatch(TasksActions.ACTION_TASK_COMPLETE, { task });
+      this.context.dispatch(TasksActions.COMPLETE, { task });
     }
   }
 
   selectTask(task: ?Task) {
-    this.context.dispatch(TasksActions.ACTION_TASK_SELECT, { task });
+    this.context.dispatch(TasksActions.SELECT, { task });
   }
 
   updateTask(task: Task) {
-    this.context.dispatch(TasksActions.ACTION_TASK_UPDATE, { task });
+    this.context.dispatch(TasksActions.UPDATE, { task });
   }
 
   deleteTask(task: Task) {
-    this.context.dispatch(TasksActions.ACTION_TASK_DELETE, { task });
+    this.context.dispatch(TasksActions.DELETE, { task });
   }
 
   updateTaskOrder(task: Task, dest: number) {
-    this.context.dispatch(TasksActions.ACTION_TASK_UPDATE_ORDER, { task, order: dest });
+    this.context.dispatch(TasksActions.UPDATE_ORDER, { task, order: dest });
   }
 
   props: Props;

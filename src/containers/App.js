@@ -25,12 +25,8 @@ import {
 } from "../settings/audio";
 
 import {
-  ACTION_TIMER_REFRESH,
-  ACTION_TIMER_RESTART,
-} from "../settings/constants";
-
-import {
-  MessagesAction,
+  MessagesActions,
+  TimerActions,
 } from "../actions";
 
 const reducer = new Reducer();
@@ -74,7 +70,7 @@ export default class App extends Component {
       this.state.finishSoundPlayer.fetch(),
     ]);
     promise.then(() => this.setState({ soundLoaded: true }));
-    this.getChildContext().dispatch(ACTION_TIMER_RESTART);
+    this.getChildContext().dispatch(TimerActions.RESTART);
   }
 
   componentWillUpdate(props: any, state: AppState) {
@@ -99,7 +95,7 @@ export default class App extends Component {
         this.state.finishSoundPlayer.play();
         this.stop();
       }
-      this.getChildContext().dispatch(ACTION_TIMER_REFRESH);
+      this.getChildContext().dispatch(TimerActions.REFRESH);
     }
   }
 
@@ -111,7 +107,7 @@ export default class App extends Component {
   }
 
   dismissMessage() {
-    this.getChildContext().dispatch(MessagesAction.REMOVE_MESSAGE);
+    this.getChildContext().dispatch(MessagesActions.REMOVE_MESSAGE);
   }
 
   render() {
