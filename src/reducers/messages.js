@@ -10,10 +10,10 @@ import {
 } from "../entities";
 
 import {
-  MessagesAction,
+  MessagesActions,
 } from "../actions";
 
-export function pushMessage(state: State, action: MessagesAction.PushMessage): State {
+export function pushMessage(state: State, action: MessagesActions.PushMessage): State {
   return state.set("messages", state.messages.push(new Message(action)));
 }
 

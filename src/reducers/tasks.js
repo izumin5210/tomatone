@@ -10,13 +10,13 @@ import {
 } from "../db";
 
 import type {
-  CreateTaskAction,
-  UpdateTaskAction,
-  CompleteTaskAction,
-  IncompleteTaskAction,
-  SelectTaskAction,
-  DeleteTaskAction,
-  UpdateTaskOrderAction,
+  CreateAction,
+  UpdateAction,
+  CompleteAction,
+  IncompleteAction,
+  SelectAction,
+  DeleteAction,
+  UpdateOrderAction,
 } from "../actions/tasks";
 
 export function getAllTasks(state: State): Promise<State> {
@@ -28,17 +28,17 @@ export function getAllTasks(state: State): Promise<State> {
     .then(tasks => state.set("tasks", state.tasks.merge(tasks)));
 }
 
-export function createTask(state: State, action: CreateTaskAction): Promise<State> {
+export function createTask(state: State, action: CreateAction): Promise<State> {
   return taskDao.create(action.title)
     .then(task => state.set("tasks", state.tasks.set(task.id, task)));
 }
 
-export function updateTask(state: State, action: UpdateTaskAction): Promise<State> {
+export function updateTask(state: State, action: UpdateAction): Promise<State> {
   return taskDao.update(action.task)
     .then(task => state.set("tasks", state.tasks.set(task.id, task)));
 }
 
-export function completeTask(state: State, action: CompleteTaskAction): Promise<State> {
+export function completeTask(state: State, action: CompleteAction): Promise<State> {
   return taskDao.complete(action.task)
     .then((task) => {
       const newState = state.set("tasks", state.tasks.set(task.id, task));
@@ -49,16 +49,16 @@ export function completeTask(state: State, action: CompleteTaskAction): Promise<
     });
 }
 
-export function incompleteTask(state: State, action: IncompleteTaskAction): Promise<State> {
+export function incompleteTask(state: State, action: IncompleteAction): Promise<State> {
   return taskDao.incomplete(action.task)
     .then(task => state.set("tasks", state.tasks.set(task.id, task)));
 }
 
-export function selectTask(state: State, { task }: SelectTaskAction): State {
+export function selectTask(state: State, { task }: SelectAction): State {
   return state.set("timer", state.timer.updateTask(task));
 }
 
-export function deleteTask(state: State, action: DeleteTaskAction): Promise<State> {
+export function deleteTask(state: State, action: DeleteAction): Promise<State> {
   return taskDao.delete(action.task)
     .then((task) => {
       const newState = state.set("tasks", state.tasks.delete(task.id));
@@ -71,7 +71,7 @@ export function deleteTask(state: State, action: DeleteTaskAction): Promise<Stat
 
 export function updateTaskOrder(
   state: State,
-  { task, order }: UpdateTaskOrderAction,
+  { task, order }: UpdateOrderAction,
 ): Promise<State> {
   const updatedTasks = state.tasks
     .map((t) => {
