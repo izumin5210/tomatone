@@ -1,5 +1,5 @@
-
 import path from "path";
+import FlowtypePlugin from "flowtype-loader/plugin";
 
 const config = {
   module: {
@@ -9,6 +9,7 @@ const config = {
         test: /\.jsx?$/,
         use: [
           { loader: "eslint-loader" },
+          { loader: "flowtype-loader" },
         ],
         exclude: /node_modules/,
       },
@@ -62,6 +63,7 @@ const config = {
   },
 
   plugins: [
+    new FlowtypePlugin(),
   ],
 
   externals: [
