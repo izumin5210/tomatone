@@ -120,16 +120,17 @@ describe("timer reducer", () => {
 
   describe("refreshTimer()", () => {
     it("returns new state that timer's times are refreshed", () => {
-      const itr = new Iteration();
+      const startedAt = Date.now();
+      const itr = new Iteration({ startedAt });
       state = new State({
         iterations: Map([[itr.id, itr]]),
         timer:      new Timer({
           currentIterationId: itr.id,
           totalTimeInMillis:  itr.totalTimeInMillis,
-          remainTimeInMillis: itr.remainTimeInMillis + 10,
+          remainTimeInMillis: itr.remainTimeInMillis(startedAt),
         }),
       });
-      const newState = refreshTimer(state);
+      const newState = refreshTimer(state, { nowInMilliSeconds: startedAt + 10 });
       if (!(newState instanceof Promise)) {
         assert(newState.timer.totalTimeInMillis === itr.totalTimeInMillis);
         assert(newState.timer.remainTimeInMillis < state.timer.remainTimeInMillis);
@@ -138,8 +139,9 @@ describe("timer reducer", () => {
       }
     });
 
-    it("returns new state that started new iteration", () => (
-      Promise.resolve(db.iterations.put({ totalTimeInMillis: 0 }))
+    it("returns new state that started new iteration", () => {
+      const startedAt = Date.now();
+      return Promise.resolve(db.iterations.put({ totalTimeInMillis: 0, startedAt }))
         .then(() => Promise.all([
           db.iterations.get(1).then(attrs => new Iteration(attrs)),
           db.tasks.get(2).then(attrs => new Task(attrs)),
@@ -149,22 +151,24 @@ describe("timer reducer", () => {
             .set("currentIterationId", itr.id).set("selectedTaskId", task.id);
           return state.set("iterations", Map([[itr.id, itr]])).set("timer", timer);
         })
-        .then(newState => shouldFulfilled(refreshTimer(newState)))
+        .then(newState => shouldFulfilled(
+          refreshTimer(newState, { nowInMilliSeconds: startedAt }),
+        ))
         .then(({ iterations, timer }) => {
           assert(iterations.size === 2);
           const latestItr = iterations.maxBy(i => i.id);
           assert(timer.currentIterationId === latestItr.id);
           assert(timer.totalTimeInMillis === latestItr.totalTimeInMillis);
           assert(timer.remainTimeInMillis <= latestItr.totalTimeInMillis);
-        })
-    ));
+        });
+    });
 
     it("returns new state that timer has no active iterations", () => {
       const timer = state.timer
         .set("totalTimeInMillis", 60 * 1000)
         .set("remainTimeInMillis", 60 * 1000);
       state = state.set("timer", timer);
-      const newState = refreshTimer(state);
+      const newState = refreshTimer(state, { nowInMilliSeconds: Date.now() });
       if (!(newState instanceof Promise)) {
         assert(newState.timer.totalTimeInMillis === 0);
         assert(newState.timer.remainTimeInMillis === 0);
@@ -197,7 +201,7 @@ describe("timer reducer", () => {
       });
 
       xit("returns new state that has restarted tiemr", () => (
-        restartTimer(new State())
+        restartTimer(new State(), { nowInMilliSeconds: Date.now() })
           .then(({ iterations, timer }) => {
             assert(timer.currentIterationId === iteration.id);
             assert(iterations.size === 1);
@@ -207,7 +211,7 @@ describe("timer reducer", () => {
 
     context("when the latest iteration has not finished", () => {
       xit("returns new state that has not-restarted timer", () => (
-        restartTimer(new State())
+        restartTimer(new State(), { nowInMilliSeconds: Date.now() })
           .then(({ iterations, timer }) => {
             assert(timer.currentIterationId == null);
             assert(iterations.size === 1);

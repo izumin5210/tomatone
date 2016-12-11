@@ -6,11 +6,15 @@ import {
   Task,
 } from "../../entities";
 
+import type { DateTimeProvider } from "../../models";
+
 export default class TaskDao {
   db: Dexie;
+  dateTimeProvider: DateTimeProvider;
 
-  constructor(db: Dexie) {
+  constructor(db: Dexie, dateTimeProvider: DateTimeProvider) {
     this.db = db;
+    this.dateTimeProvider = dateTimeProvider;
   }
 
   getAll(): Promise<List<Task>> {
@@ -26,7 +30,11 @@ export default class TaskDao {
   create(title: string): Promise<Task> {
     return Promise.resolve(this.table.orderBy("order").reverse().first())
       .then(attrs => ((attrs == null) ? 0 : attrs.order + 1))
-      .then(order => this.table.put({ title, createdAt: Date.now(), order }))
+      .then(order => this.table.put({
+        title,
+        createdAt: this.dateTimeProvider.nowInMilliSeconds(),
+        order,
+      }))
       .then(id => this.table.get(id))
       .then(attrs => new Task(attrs));
   }
@@ -50,8 +58,9 @@ export default class TaskDao {
     if (task.hasCompleted()) {
       return Promise.resolve(task);
     }
+    const completedAt = this.dateTimeProvider.nowInMilliSeconds();
 
-    return Promise.resolve(this.table.update(task.id, { completedAt: Date.now() }))
+    return Promise.resolve(this.table.update(task.id, { completedAt }))
       .then(() => this.table.get(task.id))
       .then(attrs => new Task(attrs));
   }

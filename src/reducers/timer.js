@@ -20,6 +20,10 @@ import {
   pushMessage,
 } from "./messages";
 
+import {
+  TimerActions,
+} from "../actions";
+
 export function startTimer(state: State): Promise<State> {
   let promise: Promise<Iteration>;
 
@@ -65,22 +69,25 @@ export function stopTimer(state: State): Promise<State> {
     ));
 }
 
-export function refreshTimer(state: State): State | Promise<State> {
+export function refreshTimer(
+  state: State,
+  { nowInMilliSeconds }: TimerActions.RefreshAction,
+): State | Promise<State> {
   const itr = state.currentIteration();
-  if (itr != null && itr.isFinished()) {
+  if (itr != null && itr.isFinished(nowInMilliSeconds)) {
     return startTimer(state);
   }
   const timer = state.timer
     .set("totalTimeInMillis", (itr == null) ? 0 : itr.totalTimeInMillis)
-    .set("remainTimeInMillis", (itr == null) ? 0 : itr.remainTimeInMillis);
+    .set("remainTimeInMillis", (itr == null) ? 0 : itr.remainTimeInMillis(nowInMilliSeconds));
   return state.set("timer", timer);
 }
 
-export function restartTimer(state: State): Promise<State> {
+export function restartTimer(state: State, action: TimerActions.RestartAction): Promise<State> {
   return getAllIterations(state)
     .then((newState) => {
       const prevItr = newState.iterations.maxBy(itr => itr.startedAt);
-      if (prevItr != null && !prevItr.isFinished()) {
+      if (prevItr != null && !prevItr.isFinished(action.nowInMilliSeconds)) {
         return newState.set("timer", newState.timer.updateIteration(prevItr));
       }
       return newState;
