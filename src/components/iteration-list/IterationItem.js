@@ -51,6 +51,7 @@ export default class IterationItem extends Component {
     return this.props.iteration.isFinished(now);
   }
 
+
   props: Props;
 
   renderIcon() {
@@ -66,6 +67,11 @@ export default class IterationItem extends Component {
     const { iteration, task } = this.props;
     const { startedAt, totalTimeInMillis, type } = iteration;
     const title = (task != null) ? task.title : type;
+    const now = this.props.dateTimeProvider.nowInMilliSeconds();
+    let ms = totalTimeInMillis;
+    if (!iteration.isFinished(now)) {
+      ms -= iteration.remainTimeInMillis(now);
+    }
     return (
       <div className="IterationList__body">
         <strong className="IterationList__title">
@@ -73,7 +79,7 @@ export default class IterationItem extends Component {
         </strong>
         <div className="IterationList__metadata">
           <time>{IterationItem.getFormattedDate(startedAt)}</time>
-          &nbsp;(for {IterationItem.getTimeFrom(totalTimeInMillis)})
+          &nbsp;(for {IterationItem.getTimeFrom(ms)})
         </div>
       </div>
     );
