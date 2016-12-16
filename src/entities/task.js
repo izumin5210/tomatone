@@ -9,6 +9,7 @@ export type TaskConfig = {
   createdAt:   number;
   completedAt: ?number;
   order:       number;
+  categoryId?: number;
 };
 /* eslint-enable */
 
@@ -18,6 +19,7 @@ const defaultValues: TaskConfig = {
   createdAt:   0,
   completedAt: undefined,
   order:       0,
+  categoryId:  undefined,
 };
 
 const TaskRecord = Record(defaultValues);
