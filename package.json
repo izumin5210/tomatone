@@ -148,6 +148,7 @@
     "build:main": "NODE_ENV=production NODE_TARGET=main webpack --progress --profile --colors",
     "build:renderer": "NODE_ENV=production NODE_TARGET=renderer webpack --progress --profile --colors",
     "dev": "npm run server -- --start-dev",
+    "generate:migration": "touch ./src/db/schemata/$(date +'%Y%m%d%H%M%S').js",
     "lint": "npm run lint:src && npm run lint:test && npm run lint:css",
     "lint:css": "stylelint 'src/**/*.css'",
     "lint:src": "eslint src",
