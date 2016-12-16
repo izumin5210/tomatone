@@ -1,5 +1,8 @@
 /* @flow */
 /* eslint-disable no-duplicate-imports */
+import Category from "./category";
+import type { CategoryConfig } from "./category";
+
 import Iteration from "./iteration";
 import type {
   IterationType,
@@ -21,6 +24,7 @@ import type { TimerConfig } from "./timer";
 /* eslint-enable */
 
 export {
+  Category,
   Iteration,
   Message,
   Task,
@@ -28,6 +32,7 @@ export {
 };
 
 export type {
+  CategoryConfig,
   IterationType,
   IterationConfig,
   MessageConfig,
