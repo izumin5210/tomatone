@@ -43,19 +43,36 @@ export default class ComposerForm extends Component {
   inputTitle: any;
 
   render() {
+    const inputTitleId = "ComposerForm__input-title";
+    const modifierForHint = this.state.title.length > 0 ? "_hidden" : "";
     return (
       <form
         onSubmit={e => this.onTitleSubmit(e)}
         className="ComposerForm"
       >
-        <input
-          className="ComposerForm__input-title"
-          type="text"
-          placeholder="input new task."
-          ref={(c) => { this.inputTitle = c; }}
-          value={this.state.title}
-          onChange={e => this.onTitleChange(e)}
-        />
+        <div className="ComposerForm__group-input-title">
+          <input
+            type="text"
+            className="ComposerForm__input-title"
+            name={inputTitleId}
+            ref={(c) => { this.inputTitle = c; }}
+            value={this.state.title}
+            onChange={e => this.onTitleChange(e)}
+          />
+          <hr className="ComposerForm__hr-input-title" />
+          <label
+            htmlFor={inputTitleId}
+            className="ComposerForm__label-input-title"
+          >
+            category1/category2/task title
+          </label>
+          <label
+            htmlFor={inputTitleId}
+            className={`ComposerForm__hint-input-title${modifierForHint}`}
+          >
+            input new task.
+          </label>
+        </div>
         <button
           onClick={e => this.onTitleSubmit(e)}
           className="ComposerForm__btn-create"

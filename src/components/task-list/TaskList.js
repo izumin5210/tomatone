@@ -5,6 +5,7 @@ import ReactDndHtml5Backend from "react-dnd-html5-backend";
 import { List, Map }        from "immutable";
 
 import {
+  Category,
   Task,
 } from "../../entities";
 
@@ -14,6 +15,7 @@ import TaskItem              from "./TaskItem";
 /* eslint-disable no-multi-spaces */
 type Props = {
   tasks:           Map<number, Task>;
+  categories:      Map<number, Category>;
   completeTask:    (task: Task) => void;
   updateTask:      (task: Task) => void;
   selectTask:      (task: ?Task) => void;
@@ -79,6 +81,7 @@ export default class TaskList extends Component {
       <TaskItem
         key={task.id}
         task={task}
+        category={this.props.categories.get(task.categoryId)}
         order={order}
         check={() => this.props.completeTask(task)}
         update={editedTask => this.props.updateTask(editedTask)}

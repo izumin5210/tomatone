@@ -1,7 +1,10 @@
 /* @flow */
 import { List } from "immutable";
 
-import Task from "../../../src/entities/task";
+import {
+  Category,
+  Task,
+} from "../../../src/entities";
 
 import {
   db,
@@ -44,6 +47,7 @@ describe("TaskDao", () => {
           assert(task.createdAt != null);
           assert(task.completedAt == null);
           assert(task.order === 0);
+          assert(task.categorId == null);
           return Promise.resolve(db.tasks.count());
         })
         .then(count => assert(count === 1))
@@ -60,6 +64,28 @@ describe("TaskDao", () => {
           assert(task.order === 101);
         })
     ));
+
+    context("when the category is given", () => {
+      let category: Category;
+
+      beforeEach(() => (
+        Promise.resolve(db.categories.put({ name: "awesome category" }))
+          .then(id => db.categories.get(id))
+          .then(attrs => (category = new Category(attrs)))
+      ));
+
+      it("creates a new task", () => (
+        dao.create("awesome task", category)
+          .then((task) => {
+            assert(task.title === "awesome task");
+            assert(task.createdAt != null);
+            assert(task.completedAt == null);
+            assert(task.categoryId === category.id);
+            return Promise.resolve(db.tasks.count());
+          })
+          .then(count => assert(count === 1))
+      ));
+    });
   });
 
   describe("#update()", () => {

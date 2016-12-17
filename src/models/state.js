@@ -2,6 +2,7 @@
 import { Record, Map, List } from "immutable";
 
 import {
+  Category,
   Iteration,
   Message,
   Task,
@@ -11,6 +12,7 @@ import {
 // FIXME: I want to add align option to flowtype/space-after-type-colon rule...
 /* eslint-disable no-multi-spaces */
 type StateConfig = {
+  categories: Map<number, Category>;
   iterations: Map<number, Iteration>;
   messages:   List<Message>;
   tasks:      Map<number, Task>;
@@ -19,6 +21,7 @@ type StateConfig = {
 /* eslint-enable */
 
 const defaultValues: StateConfig = {
+  categories: Map(),
   iterations: Map(),
   messages:   List(),
   tasks:      Map(),

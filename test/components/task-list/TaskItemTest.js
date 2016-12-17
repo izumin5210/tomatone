@@ -37,6 +37,7 @@ describe("<TaskItem />", () => {
     const task = new Task({ id: 1, title: "awesome task" });
     props = {
       task,
+      category:          undefined,
       order:             0,
       check:             spy(),
       select:            spy(),

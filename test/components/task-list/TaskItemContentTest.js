@@ -22,8 +22,9 @@ describe("<TaskItemContent />", () => {
     const task = new Task({ id: 1, title: "awesome task" });
     props = {
       task,
-      update: spy(),
-      delete: spy(),
+      category: undefined,
+      update:   spy(),
+      delete:   spy(),
     };
     wrapper = mount(<TaskItemContent {...props} />);
   });

@@ -2,6 +2,7 @@
 import React, { Component } from "react";
 
 import {
+  Category,
   Task,
 } from "../../entities";
 
@@ -11,6 +12,7 @@ import TaskItemButton from "./TaskItemButton";
 /* eslint-disable no-multi-spaces */
 export type Props = {
   task:     Task;
+  category: ?Category;
   update:   (editedTask: Task) => void;
   delete:   () => void;
 };
@@ -27,7 +29,7 @@ export default class TaskItemContent extends Component {
     super(props);
     this.state = {
       editing: false,
-      title:   this.props.task.title,
+      title:   this.defaultTitle,
     };
   }
 
@@ -39,7 +41,7 @@ export default class TaskItemContent extends Component {
     const { task, update } = this.props;
     if (editing) {
       this.setState({ editing: false });
-      if (title !== task.title) {
+      if (title !== this.defaultTitle) {
         update(task.set("title", title));
       }
     } else {
@@ -51,8 +53,17 @@ export default class TaskItemContent extends Component {
     e.preventDefault();
     this.setState({
       editing: false,
-      title:   this.props.task.title,
+      title:   this.defaultTitle,
     });
+  }
+
+  get defaultTitle(): string {
+    const { category, task } = this.props;
+    if (category != null) {
+      return `${category.name}/${task.title}`;
+    }
+
+    return task.title;
   }
 
   props: Props;
