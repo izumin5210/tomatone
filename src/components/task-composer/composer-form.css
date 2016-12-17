@@ -1,0 +1,94 @@
+.ComposerForm {
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+}
+
+.ComposerForm__group-input-title {
+  flex: 1 1;
+  position: relative;
+  padding-top: calc(1.5 * var(--spacing));
+}
+
+.ComposerForm__input-title,
+.ComposerForm__hr-input-title::before,
+.ComposerForm__hr-input-title::after,
+.ComposerForm__hint-input-title,
+.ComposerForm__label-input-title {
+  transition: 0.2s ease-in-out;
+}
+
+.ComposerForm__hint-input-title,
+.ComposerForm__label-input-title {
+  position: absolute;
+  pointer-events: none;
+  color: var(--gray-light);
+  left: 0;
+  top: calc(2.25 * var(--spacing));
+}
+
+.ComposerForm__input-title {
+  outline: none;
+  padding: 0 0 var(--spacing);
+  margin-top: var(--spacing);
+  width: 100%;
+
+  &:focus {
+    & ~ .ComposerForm__hint-input-title {
+      display: block;
+    }
+
+    & ~ .ComposerForm__label-input-title {
+      top: 0;
+      color: var(--primary-green-dark);
+      font-size: 0.75rem;
+    }
+
+    & ~ .ComposerForm__hr-input-title {
+      &::after {
+        width: 100%;
+      }
+    }
+  }
+}
+
+.ComposerForm__hr-input-title {
+  border: none;
+  margin: 0;
+
+  &::before,
+  &::after {
+    display: block;
+    content: "";
+    margin: 0 auto;
+  }
+
+  &::before {
+    width: 100%;
+    border-bottom: 1px solid var(--color-text_dark);
+  }
+
+  &::after {
+    margin-top: -2px;
+    width: 0%;
+    border-bottom: 2px solid var(--primary-green-dark);
+  }
+}
+
+.ComposerForm__hint-input-title,
+.ComposerForm__hint-input-title_hidden {
+  display: none;
+}
+
+.ComposerForm__btn-create {
+  flex: 0 0;
+  outline: none;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+
+  &:hover,
+  &:active {
+    color: var(--primary-green-dark);
+  }
+}
+
