@@ -3,6 +3,7 @@ import React, { Component }       from "react";
 import { DropTarget, DragSource } from "react-dnd";
 
 import {
+  Category,
   Task,
 } from "../../entities";
 
@@ -11,6 +12,7 @@ import TaskItemContent from "./TaskItemContent";
 /* eslint-disable no-multi-spaces, react/no-unused-prop-types */
 export type Props = {
   task:              Task;
+  category:          ?Category;
   order:             number;
   check:             () => void;
   update:            (editedTask: Task) => void;
@@ -116,6 +118,7 @@ export default class TaskItem extends Component {
       >
         <TaskItemContent
           task={this.props.task}
+          category={this.props.category}
           delete={this.props.delete}
           update={this.props.update}
         />
