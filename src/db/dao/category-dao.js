@@ -27,10 +27,17 @@ export default class CategoryDao {
       ));
   }
 
-  create(name: string): Promise<Category> {
-    const createdAt = this.dateTimeProvider.nowInMilliSeconds();
-    return Promise.resolve(this.table.put({ name, createdAt }))
-      .then(id => this.table.get(id))
+  findOrCreateByName(name: string): Promise<Category> {
+    return Promise.resolve(this.table.where("name").equals(name).toArray())
+      .then((attrsList) => {
+        if (attrsList.length === 0) {
+          const createdAt = this.dateTimeProvider.nowInMilliSeconds();
+          return this.table.put({ name, createdAt })
+            .then(id => this.table.get(id));
+        }
+
+        return attrsList[0];
+      })
       .then(attrs => new Category(attrs));
   }
 

@@ -3,6 +3,7 @@ import Dexie from "dexie";
 import { List } from "immutable";
 
 import {
+  Category,
   Task,
 } from "../../entities";
 
@@ -27,13 +28,16 @@ export default class TaskDao {
       ));
   }
 
-  create(title: string): Promise<Task> {
+  create(title: string, category?: Category): Promise<Task> {
+    const createdAt = this.dateTimeProvider.nowInMilliSeconds();
+    const categoryId = (category == null) ? undefined : category.id;
     return Promise.resolve(this.table.orderBy("order").reverse().first())
       .then(attrs => ((attrs == null) ? 0 : attrs.order + 1))
       .then(order => this.table.put({
         title,
-        createdAt: this.dateTimeProvider.nowInMilliSeconds(),
+        createdAt,
         order,
+        categoryId,
       }))
       .then(id => this.table.get(id))
       .then(attrs => new Task(attrs));

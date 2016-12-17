@@ -8,13 +8,12 @@ import {
 import CategoryDao from "../../../src/db/dao/category-dao";
 
 import { FakeDateTimeProvider }  from "../../support";
-import type { DateTimeProvider } from "../../../src/models";
 
 const now = Date.now("2016-12-01T12:34:56");
 
 describe("CategoryDao", () => {
   let dao: CategoryDao;
-  let dateTimeProvider: DateTimeProvider;
+  let dateTimeProvider: FakeDateTimeProvider;
 
   // TODO: Should move to test-helper
   beforeEach(() => db.delete().then(db.open));
@@ -48,16 +47,38 @@ describe("CategoryDao", () => {
     ));
   });
 
-  describe("#create()", () => {
-    it("creates a new category", () => (
-      dao.create("awesome category")
-        .then((category) => {
-          assert(category.name === "awesome category");
-          assert(category.createdAt === now);
-          return Promise.resolve(db.categories.count());
-        })
-        .then(count => assert(count === 1))
+  describe("#findOrCreateByName()", () => {
+    const name = "awesome category";
+    beforeEach(() => (
+      Promise.resolve(db.categories.put({ name, createdAt: now }))
+        .then(() => dateTimeProvider.tick(10))
     ));
+
+    context("when a category that has the given name has already exists", () => {
+      it("returns the existing category", () => (
+        dao.findOrCreateByName(name)
+          .then((category) => {
+            assert(category.id === 1);
+            assert(category.name === name);
+            assert(category.createdAt === now);
+            return Promise.resolve(db.categories.count());
+          })
+            .then(count => assert(count === 1))
+      ));
+    });
+
+    context("when a category that has the given name has not exists", () => {
+      it("returns a new category", () => (
+        dao.findOrCreateByName("alternative category")
+          .then((category) => {
+            assert(category.id === 2);
+            assert(category.name === "alternative category");
+            assert(category.createdAt === now + 10);
+            return Promise.resolve(db.categories.count());
+          })
+            .then(count => assert(count === 2))
+      ));
+    });
   });
 
   describe("#update()", () => {
