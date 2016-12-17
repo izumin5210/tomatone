@@ -13,6 +13,7 @@ import {
 } from "../../src/reducers/tasks";
 
 import {
+  Category,
   Task,
   Timer,
 } from "../../src/entities";
@@ -67,32 +68,222 @@ describe("tasks reducer", () => {
   });
 
   describe("#createTask()", () => {
-    it("returns new state that has a created task", () => (
-      createTask(new State(), { title: "awesome task" })
-        .then(({ tasks }) => {
-          assert(tasks.size === 1);
-          assert(tasks.get(1).title === "awesome task");
-        })
-    ));
+    context("when the new task has no category", () => {
+      it("returns new state that has a created task", () => (
+        createTask(new State(), { title: "awesome task" })
+          .then(({ categories, tasks }) => {
+            assert(categories.size === 0);
+            assert(tasks.size === 1);
+            assert(tasks.get(1).title === "awesome task");
+            assert(tasks.get(1).categoryId == null);
+          })
+          .then(() => db.tasks.count())
+          .then(count => assert(count === 1))
+          .then(() => db.categories.count())
+          .then(count => assert(count === 0))
+      ));
+    });
+
+    context("when the new task has a new category", () => {
+      it("returns new state that has a created task", () => (
+        createTask(new State(), { title: "awesome category/awesome task" })
+          .then(({ categories, tasks }) => {
+            assert(categories.size === 1);
+            assert(tasks.size === 1);
+            assert(tasks.get(1).title === "awesome task");
+            assert(tasks.get(1).categoryId === 1);
+            assert(categories.get(1).name === "awesome category");
+          })
+          .then(() => db.tasks.count())
+          .then(count => assert(count === 1))
+          .then(() => db.categories.count())
+          .then(count => assert(count === 1))
+      ));
+    });
+
+    context("when the new task has a new nested category", () => {
+      it("returns new state that has a created task", () => (
+        createTask(new State(), { title: "awesome category/nested category/awesome task" })
+          .then(({ categories, tasks }) => {
+            assert(categories.size === 2);
+            assert(tasks.size === 1);
+            assert(tasks.get(1).title === "awesome task");
+            assert(tasks.get(1).categoryId === 2);
+            assert(categories.get(1).name === "awesome category");
+            assert(categories.get(2).name === "awesome category/nested category");
+          })
+          .then(() => db.tasks.count())
+          .then(count => assert(count === 1))
+          .then(() => db.categories.count())
+          .then(count => assert(count === 2))
+      ));
+    });
+
+    context("when the new task has an existing category", () => {
+      let state: State;
+      beforeEach(() => {
+        state = new State();
+        return Promise.resolve(db.categories.bulkPut([
+          { name: "awesome category" },
+          { name: "awesome category/nested category" },
+        ]))
+          .then(id => Promise.all([
+            db.categories.get(id - 1).then(attrs => new Category(attrs)),
+            db.categories.get(id).then(attrs => new Category(attrs)),
+          ]))
+          .then(([cat1, cat2]) => {
+            const categories = state.categories
+              .set(cat1.id, cat1)
+              .set(cat2.id, cat2);
+            state = state.set("categories", categories);
+          });
+      });
+
+      it("returns new state that has its category", () => (
+        createTask(state, { title: "awesome category/alt-nested category/awesome task" })
+          .then(({ categories, tasks }) => {
+            assert(categories.size === 3);
+            assert(tasks.size === 1);
+            const task = tasks.get(1);
+            assert(task.title === "awesome task");
+            assert(task.categoryId === 3);
+            assert(categories.get(1).name === "awesome category");
+            assert(categories.get(task.categoryId).name === "awesome category/alt-nested category");
+          })
+          .then(() => db.tasks.count())
+          .then(count => assert(count === 1))
+          .then(() => db.categories.count())
+          .then(count => assert(count === 3))
+      ));
+    });
   });
 
   describe("#updateTask()", () => {
-    it("returns new state that has the updated task", () => (
-      Promise.resolve(db.tasks.put({ title: "awesome task" }))
-        .then(id => db.tasks.get(id))
-        .then(attrs => new Task(attrs))
-        .then((task) => {
-          const state = new State({
-            tasks: Map([[task.id, task]]),
-          });
-          return updateTask(state, { task: task.set("title", "updated task") });
-        })
-        .then(({ tasks }) => {
-          assert(tasks.size === 1);
-          assert(tasks.get(1).title === "updated task");
-          assert(tasks.get(1).completedAt == null);
-        })
-    ));
+    let state: State;
+    let task: Task;
+    let category: Category;
+
+    beforeEach(() => {
+      state = new State();
+      return db.categories.bulkPut([
+        { name: "awesome category" },
+        { name: "awesome category/nested category" },
+      ])
+        .then(id => Promise.all([
+          Promise.resolve(db.categories.get(id - 1)).then(attrs => new Category(attrs)),
+          Promise.resolve(db.categories.get(id)).then(attrs => new Category(attrs)),
+        ]))
+        .then(([cat1, cat2]) => {
+          category = cat1;
+          const categories = state.categories
+            .set(cat1.id, cat1)
+            .set(cat2.id, cat2);
+          state = state.set("categories", categories);
+        });
+    });
+
+    context("when the task has no categories", () => {
+      beforeEach(() => (
+        Promise.resolve(db.tasks.put({ title: "awesome task" }))
+          .then(id => db.tasks.get(id))
+          .then(attrs => (task = new Task(attrs)))
+          .then(() => (state = state.set("tasks", state.tasks.set(task.id, task))))
+      ));
+
+      context("when the updated task has no category", () => {
+        it("returns new state that includes the updated task", () => (
+          updateTask(state, { task: task.set("title", "updated task") })
+            .then(({ tasks }) => {
+              assert(tasks.size === 1);
+              assert(tasks.get(1).title === "updated task");
+              assert(tasks.get(1).categoryId == null);
+            })
+        ));
+      });
+
+      context("when updated task has a new category", () => {
+        it("returns new state that includes the updated task", () => (
+          updateTask(state, { task: task.set("title", "awesome category/new category/updated task") })
+            .then(({ tasks, categories }) => {
+              assert(tasks.size === 1);
+              assert(categories.size === 3);
+              assert(tasks.get(1).title === "updated task");
+              assert(tasks.get(1).categoryId === 3);
+              assert(categories.get(3).name === "awesome category/new category");
+            })
+        ));
+      });
+
+      context("when updated task has an existing category", () => {
+        it("returns new state that includes the updated task", () => (
+          updateTask(state, { task: task.set("title", "awesome category/nested category/updated task") })
+            .then(({ tasks, categories }) => {
+              assert(tasks.size === 1);
+              assert(categories.size === 2);
+              assert(tasks.get(1).title === "updated task");
+              assert(tasks.get(1).categoryId === 2);
+              assert(categories.get(2).name === "awesome category/nested category");
+            })
+        ));
+      });
+    });
+
+    context("when the task has a category", () => {
+      beforeEach(() => (
+        Promise.resolve(db.tasks.put({ title: "awesome task", categoryId: category.id }))
+          .then(id => db.tasks.get(id))
+          .then(attrs => (task = new Task(attrs)))
+          .then(() => (state = state.set("tasks", state.tasks.set(task.id, task))))
+      ));
+
+      context("when updated task has no category", () => {
+        it("returns new state that includes the updated task", () => (
+          updateTask(state, { task: task.set("title", "updated task") })
+            .then(({ tasks }) => {
+              assert(tasks.size === 1);
+              assert(tasks.get(1).title === "updated task");
+              assert(tasks.get(1).categoryId == null);
+            })
+        ));
+      });
+
+      context("when updated task has the same category as before", () => {
+        it("returns new state that includes the updated task", () => (
+          updateTask(state, { task: task.set("title", `${category.name}/updated task`) })
+            .then(({ tasks }) => {
+              assert(tasks.size === 1);
+              assert(tasks.get(1).title === "updated task");
+              assert(tasks.get(1).categoryId === category.id);
+            })
+        ));
+      });
+
+      context("when updated task has a new category", () => {
+        it("returns new state that includes the updated task", () => (
+          updateTask(state, { task: task.set("title", "awesome category/new category/updated task") })
+            .then(({ tasks, categories }) => {
+              assert(tasks.size === 1);
+              assert(categories.size === 3);
+              assert(tasks.get(1).title === "updated task");
+              assert(tasks.get(1).categoryId === 3);
+              assert(categories.get(3).name === "awesome category/new category");
+            })
+        ));
+      });
+
+      context("when updated task has an existing category", () => {
+        it("returns new state that includes the updated task", () => (
+          updateTask(state, { task: task.set("title", "awesome category/nested category/updated task") })
+            .then(({ tasks, categories }) => {
+              assert(tasks.size === 1);
+              assert(categories.size === 2);
+              assert(tasks.get(1).title === "updated task");
+              assert(tasks.get(1).categoryId === 2);
+              assert(categories.get(2).name === "awesome category/nested category");
+            })
+        ));
+      });
+    });
   });
 
   describe("#completeTask()", () => {
