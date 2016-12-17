@@ -10,6 +10,7 @@ import {
 } from "../models";
 
 import {
+  CategoriesActions,
   IterationsActions,
   MessagesActions,
   TasksActions,
@@ -26,6 +27,10 @@ import {
 import {
   getAllIterations,
 } from "./iterations";
+
+import {
+  getAllCategories,
+} from "./categories";
 
 import {
   getAllTasks,
@@ -81,6 +86,10 @@ export default class Reducer {
       () => this.update(removeMessage),
     );
 
+    subscribe(
+      CategoriesActions.GET_ALL,
+      () => this.update(getAllCategories),
+    );
     subscribe(
       TasksActions.GET_ALL,
       () => this.update(getAllTasks),

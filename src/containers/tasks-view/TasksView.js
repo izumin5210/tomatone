@@ -13,6 +13,7 @@ import {
 
 import {
   TasksActions,
+  CategoriesActions,
 } from "../../actions";
 
 import {
@@ -28,10 +29,12 @@ type Props = {
 export default class TasksView extends Component {
   componentDidMount() {
     this.context.dispatch(TasksActions.GET_ALL);
+    this.context.dispatch(CategoriesActions.GET_ALL);
   }
 
   getTaskListProps() {
     return {
+      categories:      this.props.state.categories,
       completeTask:    (t: Task) => this.completeTask(t),
       updateTask:      (t: Task) => this.updateTask(t),
       selectTask:      (t: ?Task) => this.selectTask(t),
