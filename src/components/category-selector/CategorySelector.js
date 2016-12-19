@@ -53,7 +53,12 @@ export default class CategorySelector extends Component {
 
     const path = this.categoryPaths.map(cat => (
       <li key={`category-${cat.id}`} className="CategorySelector__breadcrumbs-item">
-        <Link to={{ pathname: "/tasks", query: { category: cat.path } }}>
+        <Link
+          to={{ pathname: "/tasks", query: { category: cat.path } }}
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
           {cat.subName}
         </Link>
       </li>
