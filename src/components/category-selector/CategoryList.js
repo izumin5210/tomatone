@@ -10,7 +10,7 @@ import {
 
 // FIXME: I want to add align option to flowtype/space-after-type-colon rule...
 /* eslint-disable no-multi-spaces */
-type Props = {
+export type Props = {
   categories: Map<number, Category>;
   tasks:      Map<number, Task>;
   close:      () => void;
@@ -28,7 +28,7 @@ export default function CategoryList({ categories, tasks, close }: Props) {
       }
       const to = { pathname: "/tasks", query: { category: path } };
       return (
-        <li className="CategoryList__item">
+        <li key={`category-${id}`} className="CategoryList__item">
           <Link to={to} onClick={close} activeOnlyWhenExact>
             {({ isActive, onClick, href }) => (
               <a
@@ -42,7 +42,8 @@ export default function CategoryList({ categories, tasks, close }: Props) {
           </Link>
         </li>
       );
-    });
+    })
+    .toArray();
   return (
     <ul className="CategoryList">
       {items}

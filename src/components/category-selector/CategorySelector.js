@@ -1,6 +1,5 @@
 /* @flow */
 import React, { Component } from "react";
-import { Link }             from "react-router";
 import { Map }              from "immutable";
 
 import {
@@ -8,7 +7,8 @@ import {
   Task,
 } from "../../entities";
 
-import CategoryList from "./CategoryList";
+import CategoryBreadcrumbs from "./CategoryBreadcrumbs";
+import CategoryList        from "./CategoryList";
 
 // FIXME: I want to add align option to flowtype/space-after-type-colon rule...
 /* eslint-disable no-multi-spaces */
@@ -38,34 +38,13 @@ export default class CategorySelector extends Component {
     this.setState({ opened });
   }
 
-  get categoryPaths(): Map<number, Category> {
-    const { currentCategory, categories } = this.props;
-    return categories
-      .filter(cat => cat.isParentOf(currentCategory) || (cat.id === currentCategory.id))
-      .sortBy(cat => cat.depth);
-  }
-
   props: Props;
 
   render() {
-    const { categories, tasks } = this.props;
-    if (categories.size < 2) { return null; }
-
-    const path = this.categoryPaths.map(cat => (
-      <li key={`category-${cat.id}`} className="CategorySelector__breadcrumbs-item">
-        <Link
-          to={{ pathname: "/tasks", query: { category: cat.path } }}
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-        >
-          {cat.subName}
-        </Link>
-      </li>
-    ));
-
+    const { currentCategory, categories, tasks } = this.props;
     const { opened } = this.state;
     const modifier = opened ? "_opened" : "";
+
     /* eslint-disable jsx-a11y/no-static-element-interactions */
     return (
       <div
@@ -78,9 +57,9 @@ export default class CategorySelector extends Component {
           className={`CategorySelector__button-open${modifier}`}
           onClick={() => this.setOpened(!opened)}
         >
-          <ul className="CategorySelector__breadcrumbs">
-            {path}
-          </ul>
+          <CategoryBreadcrumbs
+            {...{ currentCategory, categories }}
+          />
         </button>
         { opened && <CategoryList
           {...{ categories, tasks }}

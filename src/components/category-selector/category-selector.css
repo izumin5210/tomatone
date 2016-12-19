@@ -59,29 +59,3 @@
   }
 }
 
-.CategorySelector__breadcrumbs {
-  flex: 1 1 auto;
-  margin: 0;
-  padding: 0;
-}
-
-.CategorySelector__breadcrumbs-item {
-  display: inline-block;
-  list-style: none;
-
-  & > :link,
-  & > :visited {
-    color: var(--gray);
-    text-decoration: none;
-  }
-
-  & > :hover {
-    text-decoration: underline;
-  }
-
-  &:not(:last-child)::after {
-    display: inline-block;
-    content: "/";
-    margin: 0 calc(0.5 * var(--spacing));
-  }
-}
