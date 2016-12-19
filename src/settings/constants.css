@@ -21,15 +21,17 @@
   /* size */
   --nav-height:    48px;
   --nav-item-size: var(--nav-height);
+  --category-selector-height: 42px;
 
   /* border */
   --border-radius-base: 4px;
 
   /* z-index */
-  --zindex-nav:            1000;
-  --zindex-modal-backdrop: 1040;
-  --zindex-modal:          1050;
-  --zindex-message:        1100;
+  --zindex-category-selector: 980;
+  --zindex-nav:               1000;
+  --zindex-modal-backdrop:    1040;
+  --zindex-modal:             1050;
+  --zindex-message:           1100;
 
   /* stylelint-enable */
 }

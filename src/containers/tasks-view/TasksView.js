@@ -4,6 +4,7 @@ import { dispatcher }       from "react-dispatcher-decorator";
 import { Map }              from "immutable";
 
 import {
+  Category,
   Task,
 } from "../../entities";
 
@@ -17,13 +18,17 @@ import {
 } from "../../actions";
 
 import {
+  CategorySelector,
   TaskComposer,
   TaskList,
 } from "../../components";
 
+/* eslint-disable no-multi-spaces */
 type Props = {
-  state: State;
+  state:    State;
+  location: any;
 };
+/* eslint-enable */
 
 @dispatcher
 export default class TasksView extends Component {
@@ -54,6 +59,15 @@ export default class TasksView extends Component {
 
   get completedTasks(): Map<number, Task> {
     return this.tasks.filter(task => task.hasCompleted());
+  }
+
+  get currentCategory(): Category {
+    const { location, state } = this.props;
+    const { query } = location;
+    if (query != null && query.category != null) {
+      return state.categories.find(({ name }) => name === query.category);
+    }
+    return Category.NO_CATEGORY;
   }
 
   createTask(title: string) {
@@ -90,6 +104,11 @@ export default class TasksView extends Component {
     const taskListProps = this.getTaskListProps();
     return (
       <div className="TasksView">
+        <CategorySelector
+          currentCategory={this.currentCategory}
+          categories={this.props.state.categories}
+          tasks={this.props.state.tasks}
+        />
         <h2 className="TasksView__caption">Tasks</h2>
         <TaskList
           tasks={this.activeTasks}

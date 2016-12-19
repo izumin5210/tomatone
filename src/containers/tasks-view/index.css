@@ -1,5 +1,7 @@
 .TasksView {
   @apply --Page;
+
+  padding-top: calc(var(--nav-height) + var(--category-selector-height) + var(--spacing));
 }
 
 .TasksView__caption {
