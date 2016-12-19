@@ -21,7 +21,7 @@ type StateConfig = {
 /* eslint-enable */
 
 const defaultValues: StateConfig = {
-  categories: Map(),
+  categories: Map([[undefined, Category.NO_CATEGORY]]),
   iterations: Map(),
   messages:   List(),
   tasks:      Map(),
