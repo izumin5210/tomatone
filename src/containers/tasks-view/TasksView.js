@@ -50,7 +50,8 @@ export default class TasksView extends Component {
   }
 
   get tasks(): Map<number, Task> {
-    return this.props.state.tasks;
+    return this.props.state.tasks
+      .filter(task => this.currentCategory.includes(task));
   }
 
   get activeTasks(): Map<number, Task> {
@@ -64,10 +65,13 @@ export default class TasksView extends Component {
   get currentCategory(): Category {
     const { location, state } = this.props;
     const { query } = location;
-    if (query != null && query.category != null) {
-      return state.categories.find(({ name }) => name === query.category);
+    if (query != null) {
+      const category = state.categories.find(({ path }) => path === query.category);
+      if (category != null) {
+        return category;
+      }
     }
-    return Category.NO_CATEGORY;
+    return Category.ALL;
   }
 
   createTask(title: string) {

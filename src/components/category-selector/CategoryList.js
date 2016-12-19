@@ -21,9 +21,12 @@ export default function CategoryList({ categories, tasks, close }: Props) {
   const tasksByCategories = tasks.groupBy(task => task.categoryId);
   const items = categories
     .sortBy(category => category.name)
-    .map(({ id, name }) => {
-      const count = tasksByCategories.has(id) ? tasksByCategories.get(id).size : 0;
-      const to = (id == null) ? "/tasks" : { pathname: "/tasks", query: { category: name } };
+    .map(({ id, name, path }) => {
+      let count = tasksByCategories.has(id) ? tasksByCategories.get(id).size : 0;
+      if (id === Category.ALL.id) {
+        count = tasks.size;
+      }
+      const to = { pathname: "/tasks", query: { category: path } };
       return (
         <li className="CategoryList__item">
           <Link to={to} onClick={close} activeOnlyWhenExact>
