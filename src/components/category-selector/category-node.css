@@ -1,0 +1,74 @@
+:root {
+  --CategoryNode__height: 42px;
+
+  --CategoryNode__link: {
+    display: flex;
+    flex: 1 1 auto;
+    height: var(--CategoryNode__height);
+    padding: calc(1 * var(--spacing)) calc(2 * var(--spacing));
+    background-color: color(var(--color-bg_light) a(85%));
+    border-bottom: 1px solid var(--gray-light);
+
+    &:hover {
+      background-color: color(var(--gray-lighter) a(85%));
+    }
+
+    &:link,
+    &:visited {
+      color: var(--gray-dark);
+      text-decoration: none;
+    }
+  }
+
+  --CategoryNode__name: {
+    flex: 1 1 auto;
+  }
+}
+
+.CategoryNode {
+  display: flex;
+  flex-direction: column;
+}
+
+.CategoryNode__link {
+  @apply --CategoryNode__link;
+}
+
+.CategoryNode__link_active {
+  @apply --CategoryNode__link;
+
+  &:link,
+  &:visited {
+    font-weight: bold;
+    color: var(--primary-green-dark);
+  }
+}
+
+.CategoryNode__name {
+  @apply --CategoryNode__name;
+}
+
+.CategoryNode__name_opened,
+.CategoryNode__name_closed {
+  @apply --CategoryNode__name;
+
+  &::after {
+    font-size: 0.9rem;
+    font-family: "FontAwesome";
+    color: var(--gray);
+    margin-left: var(--spacing);
+  }
+}
+
+.CategoryNode__name_opened::after {
+  content: "\f147";
+}
+
+.CategoryNode__name_closed::after {
+  content: "\f196";
+}
+
+.CategoryNode__count {
+  flex: 0 0 auto;
+  color: var(--gray);
+}

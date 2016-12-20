@@ -1,0 +1,28 @@
+:root {
+  --CategoryTree__list: {
+    margin: 0;
+    padding: 0;
+    color: var(--gray-dark);
+  };
+}
+
+.CategoryTree_root {
+  overflow-y: scroll;
+}
+
+.CategoryTree__list {
+  @apply --CategoryTree__list;
+
+  & .CategoryNode__link::before,
+  & .CategoryNode__link_active::before {
+    content: "-";
+    margin: 0 var(--spacing);
+    color: var(--gray);
+  }
+}
+
+.CategoryTree__list_root {
+  @apply --CategoryTree__list;
+
+  max-height: calc(100vh - (var(--nav-height) + var(--category-selector-height)));
+}
