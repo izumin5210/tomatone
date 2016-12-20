@@ -36,6 +36,12 @@
 
 .CategoryNode__link_active {
   @apply --CategoryNode__link;
+
+  &:link,
+  &:visited {
+    font-weight: bold;
+    color: var(--primary-green-dark);
+  }
 }
 
 .CategoryNode__name {
