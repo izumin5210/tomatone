@@ -1,0 +1,61 @@
+:root {
+  --CategorySelector: {
+    position: fixed;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    z-index: var(--zindex-category-selector);
+  };
+
+  --CategorySelector__button-open: {
+    display: flex;
+    outline: none;
+    text-align: left;
+    cursor: pointer;
+    width: 100%;
+    height: var(--category-selector-height);
+    padding: calc(1.5 * var(--spacing)) calc(2 * var(--spacing));
+    background-color: var(--color-bg_light);
+    color: var(--gray);
+
+    &:hover {
+      background-color: var(--gray-lighter);
+    }
+
+    &::after {
+      flex: 0 0 auto;
+      display: block;
+      font-family: "FontAwesome";
+    }
+  };
+}
+
+.CategorySelector {
+  @apply --CategorySelector;
+}
+
+.CategorySelector_opened {
+  @apply --CategorySelector;
+
+  height: 100%;
+  background: color(var(--gray-darker) a(60%));
+}
+
+.CategorySelector__button-open {
+  @apply --CategorySelector__button-open;
+
+  &::after {
+    content: "\f078";
+  }
+}
+
+.CategorySelector__button-open_opened {
+  @apply --CategorySelector__button-open;
+
+  border-bottom: 1px solid var(--gray-light);
+
+  &::after {
+    content: "\f077";
+  }
+}
+

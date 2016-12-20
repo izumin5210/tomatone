@@ -151,7 +151,7 @@ export default class App extends Component {
             />
             <Match
               pattern="/tasks"
-              render={() => <TasksView state={state} />}
+              render={({ location }) => <TasksView {...{ location, state }} />}
             />
             <Match
               pattern="/history"

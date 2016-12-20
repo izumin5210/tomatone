@@ -1,9 +1,13 @@
 /* @flow */
 /* eslint-disable import/prefer-default-export */
 
-import parseTaskCategory from "./parse-task-category";
+import {
+  parseCategory,
+  parseTaskCategory,
+} from "./parse-task-category";
 
 export {
+  parseCategory,
   parseTaskCategory,
 };
 

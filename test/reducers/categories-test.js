@@ -14,9 +14,15 @@ import {
 } from "../../src/db";
 
 describe("categories reducer", () => {
+  let state: State;
+
   // TODO: Should move to test-helper
   beforeEach(() => db.delete().then(db.open));
   afterEach(() => db.delete().then(db.close));
+
+  beforeEach(() => {
+    state = new State({ categories: Map() });
+  });
 
   describe("#getAllCategories()", () => {
     beforeEach(() => {
@@ -33,7 +39,7 @@ describe("categories reducer", () => {
 
     context("when the state has no categories", () => {
       it("returns the new state that has all categories stored on IndexdDB", () => (
-        getAllCategories(new State())
+        getAllCategories(state)
           .then(({ categories }) => {
             assert(categories.size === 4);
           })
@@ -41,13 +47,10 @@ describe("categories reducer", () => {
     });
 
     context("when the state has an old category", () => {
-      let state: State;
       beforeEach(() => (
         Promise.resolve(db.categories.get(1))
           .then((category) => {
-            state = new State({
-              category: Map([[category.id, category]]),
-            });
+            state = state.set("categories", state.categories.set(category.id, category));
           })
           .then(() => db.categories.update(1, { name: "updated category" }))
       ));

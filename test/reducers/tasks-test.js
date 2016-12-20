@@ -15,7 +15,6 @@ import {
 import {
   Category,
   Task,
-  Timer,
 } from "../../src/entities";
 
 import {
@@ -27,9 +26,15 @@ import {
 } from "../../src/db";
 
 describe("tasks reducer", () => {
+  let state: State;
+
   // TODO: Should move to test-helper
   beforeEach(() => db.delete().then(db.open));
   afterEach(() => db.delete().then(db.close));
+
+  beforeEach(() => {
+    state = new State({ categories: Map() });
+  });
 
   describe("#getAllTasks()", () => {
     beforeEach(() => {
@@ -45,7 +50,7 @@ describe("tasks reducer", () => {
     });
 
     it("returns all iterations stored on IndexdDB", () => (
-      getAllTasks(new State())
+      getAllTasks(state)
         .then(({ tasks }) => {
           assert(tasks.size === 4);
         })
@@ -53,12 +58,10 @@ describe("tasks reducer", () => {
 
     it("returns new tasks the state has an older one", () => (
       Promise.resolve(db.tasks.get(1))
-        .then(task => new State({
-          task: Map([[task.id, task]]),
-        }))
-        .then(state => (
+        .then(task => state.set("tasks", state.tasks.set(task.id, task)))
+        .then(newState => (
           Promise.resolve(db.tasks.update(1, { title: "updated task" }))
-            .then(() => getAllTasks(state))
+            .then(() => getAllTasks(newState))
         ))
         .then(({ tasks }) => {
           assert(tasks.size === 4);
@@ -70,7 +73,7 @@ describe("tasks reducer", () => {
   describe("#createTask()", () => {
     context("when the new task has no category", () => {
       it("returns new state that has a created task", () => (
-        createTask(new State(), { title: "awesome task" })
+        createTask(state, { title: "awesome task" })
           .then(({ categories, tasks }) => {
             assert(categories.size === 0);
             assert(tasks.size === 1);
@@ -86,7 +89,7 @@ describe("tasks reducer", () => {
 
     context("when the new task has a new category", () => {
       it("returns new state that has a created task", () => (
-        createTask(new State(), { title: "awesome category/awesome task" })
+        createTask(state, { title: "awesome category/awesome task" })
           .then(({ categories, tasks }) => {
             assert(categories.size === 1);
             assert(tasks.size === 1);
@@ -103,7 +106,7 @@ describe("tasks reducer", () => {
 
     context("when the new task has a new nested category", () => {
       it("returns new state that has a created task", () => (
-        createTask(new State(), { title: "awesome category/nested category/awesome task" })
+        createTask(state, { title: "awesome category/nested category/awesome task" })
           .then(({ categories, tasks }) => {
             assert(categories.size === 2);
             assert(tasks.size === 1);
@@ -120,10 +123,8 @@ describe("tasks reducer", () => {
     });
 
     context("when the new task has an existing category", () => {
-      let state: State;
-      beforeEach(() => {
-        state = new State();
-        return Promise.resolve(db.categories.bulkPut([
+      beforeEach(() => (
+        Promise.resolve(db.categories.bulkPut([
           { name: "awesome category" },
           { name: "awesome category/nested category" },
         ]))
@@ -136,8 +137,8 @@ describe("tasks reducer", () => {
               .set(cat1.id, cat1)
               .set(cat2.id, cat2);
             state = state.set("categories", categories);
-          });
-      });
+          })
+      ));
 
       it("returns new state that has its category", () => (
         createTask(state, { title: "awesome category/alt-nested category/awesome task" })
@@ -159,13 +160,11 @@ describe("tasks reducer", () => {
   });
 
   describe("#updateTask()", () => {
-    let state: State;
     let task: Task;
     let category: Category;
 
-    beforeEach(() => {
-      state = new State();
-      return db.categories.bulkPut([
+    beforeEach(() => (
+      db.categories.bulkPut([
         { name: "awesome category" },
         { name: "awesome category/nested category" },
       ])
@@ -179,8 +178,8 @@ describe("tasks reducer", () => {
             .set(cat1.id, cat1)
             .set(cat2.id, cat2);
           state = state.set("categories", categories);
-        });
-    });
+        })
+    ));
 
     context("when the task has no categories", () => {
       beforeEach(() => (
@@ -292,9 +291,7 @@ describe("tasks reducer", () => {
         .then(id => db.tasks.get(id))
         .then(attrs => new Task(attrs))
         .then((task) => {
-          const state = new State({
-            tasks: Map([[task.id, task]]),
-          });
+          state = state.set("tasks", state.tasks.set(task.id, task));
           return completeTask(state, { task });
         })
         .then(({ tasks }) => {
@@ -309,10 +306,8 @@ describe("tasks reducer", () => {
         .then(id => db.tasks.get(id))
         .then(attrs => new Task(attrs))
         .then((task) => {
-          const state = new State({
-            tasks: Map([[task.id, task]]),
-            timer: new Timer({ selectedTaskId: task.id }),
-          });
+          state = state.set("tasks", state.tasks.set(task.id, task));
+          state = state.set("timer", state.timer.set("selectedTaskId", task.id));
           return completeTask(state, { task });
         })
         .then(({ tasks, timer }) => {
@@ -330,9 +325,7 @@ describe("tasks reducer", () => {
         .then(id => db.tasks.get(id))
         .then(attrs => new Task(attrs))
         .then((task) => {
-          const state = new State({
-            tasks: Map([[task.id, task]]),
-          });
+          state = state.set("tasks", state.tasks.set(task.id, task));
           return incompleteTask(state, { task });
         })
         .then(({ tasks }) => {
@@ -347,9 +340,7 @@ describe("tasks reducer", () => {
     it("returns new state that has the selected task", () => {
       const task1 = new Task({ id: 1, title: "awesome task 1" });
       const task2 = new Task({ id: 2, title: "awesome task 2" });
-      const state = new State({
-        tasks: Map([[task1.id, task1], [task2.id, task2]]),
-      });
+      state = state.set("tasks", state.tasks.set(task1.id, task1).set(task2.id, task2));
       const newState = selectTask(state, { task: task2 });
       assert(newState.timer.selectedTaskId === task2.id);
     });
@@ -357,18 +348,14 @@ describe("tasks reducer", () => {
     it("returns new state that has no selected task", () => {
       const task1 = new Task({ id: 1, title: "awesome task 1" });
       const task2 = new Task({ id: 2, title: "awesome task 2" });
-      const state = new State({
-        tasks: Map([[task1.id, task1], [task2.id, task2]]),
-        timer: new Timer({ selectedTaskId: task2.id }),
-      });
+      state = state.set("tasks", state.tasks.set(task1.id, task1).set(task2.id, task2));
+      state = state.set("timer", state.timer.set("selectedTaskId", task2.id));
       const newState = selectTask(state, { task: undefined });
       assert(newState.timer.selectedTaskId == null);
     });
   });
 
   describe("#deleteTask()", () => {
-    let state: State;
-
     beforeEach(() => (
       db.tasks.bulkPut([
         { title: "awesome task 1" },
@@ -380,7 +367,7 @@ describe("tasks reducer", () => {
             .then((tasks) => {
               state = tasks.reduce(
                 (s, t) => s.set("tasks", s.tasks.set(t.id, t)),
-                new State(),
+                state,
               );
             })
         ))
@@ -410,8 +397,6 @@ describe("tasks reducer", () => {
   });
 
   describe("#updateTaskOrder()", () => {
-    let state: State;
-
     beforeEach(() => (
       Promise.resolve(db.tasks.bulkPut([
         { title: "awesome task 1", order: 0 },
@@ -426,7 +411,7 @@ describe("tasks reducer", () => {
         .then(list => list.map(attrs => new Task(attrs)))
         .then(tasks => (state = tasks.reduce(
           (s, t) => s.set("tasks", s.tasks.set(t.id, t)),
-          new State(),
+          state,
         )))
     ));
 

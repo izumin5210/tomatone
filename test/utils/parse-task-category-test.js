@@ -1,5 +1,5 @@
 /* @flow */
-import parseTaskCategory from "../../src/utils/parse-task-category";
+import { parseTaskCategory } from "../../src/utils/parse-task-category";
 
 describe("parseTaskCategory()", () => {
   let title: string;
