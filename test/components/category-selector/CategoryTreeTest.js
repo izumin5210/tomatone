@@ -69,7 +69,7 @@ describe("<CategoryTree />", () => {
     let items;
 
     beforeEach(() => {
-      items = wrapper.find(".CategoryTree_root > CategoryNode");
+      items = wrapper.find(".CategoryTree__list_root > CategoryNode");
     });
 
     it("has 6 nodes", () => {

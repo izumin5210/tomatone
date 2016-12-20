@@ -48,8 +48,10 @@ export default function CategoryTree(
     .toArray();
   const modifier = (depth === 1) ? "_root" : "";
   return (
-    <ul className={`CategoryTree${modifier}`}>
-      {items}
-    </ul>
+    <div className={`CategoryTree${modifier}`}>
+      <ul className={`CategoryTree__list${modifier}`}>
+        {items}
+      </ul>
+    </div>
   );
 }
