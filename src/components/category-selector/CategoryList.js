@@ -1,51 +1,54 @@
 /* @flow */
 import React    from "react";
-import { Link } from "react-router";
 import { Map }  from "immutable";
 
 import {
   Category,
-  Task,
 } from "../../entities";
+
+import CategoryNode from "./CategoryNode";
 
 // FIXME: I want to add align option to flowtype/space-after-type-colon rule...
 /* eslint-disable no-multi-spaces */
 export type Props = {
-  categories: Map<number, Category>;
-  tasks:      Map<number, Task>;
-  close:      () => void;
+  currentCategory: Category;
+  categories:      Map<number, Category>;
+  taskCounts:      Map<number, number>;
+  close:           () => void;
+  depth:           number;
 };
 /* eslint-enable */
 
-export default function CategoryList({ categories, tasks, close }: Props) {
-  const tasksByCategories = tasks.groupBy(task => task.categoryId);
+export default function CategoryList(
+  { currentCategory, categories, taskCounts, close, depth }: Props,
+) {
   const items = categories
+    .filter(category => category.depth === depth)
     .sortBy(category => category.name)
-    .map(({ id, name, path }) => {
-      let count = tasksByCategories.has(id) ? tasksByCategories.get(id).size : 0;
-      if (id === Category.ALL.id) {
-        count = tasks.size;
-      }
-      const to = { pathname: "/tasks", query: { category: path } };
+    .map((category) => {
+      const childCategories = categories
+        .filter(({ name }) => name.startsWith(category.name))
+        .filterNot(({ id }) => id === category.id);
       return (
-        <li key={`category-${id}`} className="CategoryList__item">
-          <Link to={to} onClick={close} activeOnlyWhenExact>
-            {({ isActive, onClick, href }) => (
-              <a
-                {...{ href, onClick }}
-                className={`CategoryList__item-link${isActive ? "_active" : ""}`}
-              >
-                <span className="CategoryList__item-name">{name}</span>
-                <span className="CategoryList__item-count">{count}</span>
-              </a>
-            )}
-          </Link>
-        </li>
+        <CategoryNode
+          key={`category-list-item-${category.id}`}
+          {...{ currentCategory, category, taskCounts, close }}
+        >
+          { !childCategories.isEmpty() ? (
+            <CategoryList
+              {...{ currentCategory, taskCounts }}
+              categories={childCategories}
+              close={close}
+              depth={depth + 1}
+            />
+          ) : null }
+        </CategoryNode>
       );
     })
     .toArray();
+  const modifier = (depth === 1) ? "_root" : "";
   return (
-    <ul className="CategoryList">
+    <ul className={`CategoryList${modifier}`}>
       {items}
     </ul>
   );

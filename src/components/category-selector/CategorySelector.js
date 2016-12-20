@@ -44,6 +44,9 @@ export default class CategorySelector extends Component {
     const { currentCategory, categories, tasks } = this.props;
     const { opened } = this.state;
     const modifier = opened ? "_opened" : "";
+    const taskCounts = tasks
+      .countBy(task => task.categoryId)
+      .set(Category.ALL.id, tasks.size);
 
     /* eslint-disable jsx-a11y/no-static-element-interactions */
     return (
@@ -62,8 +65,9 @@ export default class CategorySelector extends Component {
           />
         </button>
         { opened && <CategoryList
-          {...{ categories, tasks }}
+          {...{ currentCategory, categories, taskCounts }}
           close={() => this.setOpened(false)}
+          depth={1}
         /> }
       </div>
     );
