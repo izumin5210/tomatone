@@ -124,6 +124,7 @@ export default class TasksView extends Component {
           {...taskListProps}
         />
         <TaskComposer
+          categories={this.props.state.categories}
           createTask={t => this.createTask(t)}
         />
       </div>

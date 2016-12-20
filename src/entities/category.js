@@ -68,4 +68,8 @@ export default class Category extends CategoryRecord {
     }
     return `/${this.name}`;
   }
+
+  get isMeta(): boolean {
+    return (this.id === Category.ALL.id) || (this.id === Category.NO_CATEGORY.id);
+  }
 }
