@@ -1,13 +1,13 @@
 :root {
-  --CategoryList: {
+  --CategoryTree: {
     margin: 0;
     padding: 0;
     color: var(--gray-dark);
   }
 }
 
-.CategoryList {
-  @apply --CategoryList;
+.CategoryTree {
+  @apply --CategoryTree;
 
   & .CategoryNode__link::before,
   & .CategoryNode__link_active::before {
@@ -17,6 +17,6 @@
   }
 }
 
-.CategoryList_root {
-  @apply --CategoryList;
+.CategoryTree_root {
+  @apply --CategoryTree;
 }

@@ -10,8 +10,8 @@ import {
 } from "../../../src/entities";
 
 /* eslint-disable no-duplicate-imports */
-import CategoryList   from "../../../src/components/category-selector/CategoryList";
-import type { Props } from "../../../src/components/category-selector/CategoryList";
+import CategoryTree   from "../../../src/components/category-selector/CategoryTree";
+import type { Props } from "../../../src/components/category-selector/CategoryTree";
 /* eslint-enable */
 
 function createWrapper(props: Props) {
@@ -23,12 +23,12 @@ function createWrapper(props: Props) {
       onPush={() => {}}
       onReplace={() => {}}
     >
-      <CategoryList {...props} />
+      <CategoryTree {...props} />
     </StaticRouter>
   ));
 }
 
-describe("<CategoryList />", () => {
+describe("<CategoryTree />", () => {
   let wrapper;
 
   let categories: Map<number, Category>;
@@ -69,7 +69,7 @@ describe("<CategoryList />", () => {
     let items;
 
     beforeEach(() => {
-      items = wrapper.find(".CategoryList_root > CategoryNode");
+      items = wrapper.find(".CategoryTree_root > CategoryNode");
     });
 
     it("has 6 nodes", () => {

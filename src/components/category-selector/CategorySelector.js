@@ -8,7 +8,7 @@ import {
 } from "../../entities";
 
 import CategoryBreadcrumbs from "./CategoryBreadcrumbs";
-import CategoryList        from "./CategoryList";
+import CategoryTree        from "./CategoryTree";
 
 // FIXME: I want to add align option to flowtype/space-after-type-colon rule...
 /* eslint-disable no-multi-spaces */
@@ -64,7 +64,7 @@ export default class CategorySelector extends Component {
             {...{ currentCategory, categories }}
           />
         </button>
-        { opened && <CategoryList
+        { opened && <CategoryTree
           {...{ currentCategory, categories, taskCounts }}
           close={() => this.setOpened(false)}
           depth={1}

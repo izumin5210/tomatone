@@ -19,7 +19,7 @@ export type Props = {
 };
 /* eslint-enable */
 
-export default function CategoryList(
+export default function CategoryTree(
   { currentCategory, categories, taskCounts, close, depth }: Props,
 ) {
   const items = categories
@@ -31,11 +31,11 @@ export default function CategoryList(
         .filterNot(({ id }) => id === category.id);
       return (
         <CategoryNode
-          key={`category-list-item-${category.id}`}
+          key={`category-tree-item-${category.id}`}
           {...{ currentCategory, category, taskCounts, close }}
         >
           { !childCategories.isEmpty() ? (
-            <CategoryList
+            <CategoryTree
               {...{ currentCategory, taskCounts }}
               categories={childCategories}
               close={close}
@@ -48,7 +48,7 @@ export default function CategoryList(
     .toArray();
   const modifier = (depth === 1) ? "_root" : "";
   return (
-    <ul className={`CategoryList${modifier}`}>
+    <ul className={`CategoryTree${modifier}`}>
       {items}
     </ul>
   );
