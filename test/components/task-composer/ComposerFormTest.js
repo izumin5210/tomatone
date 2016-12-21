@@ -1,7 +1,9 @@
 /* @flow */
 
-import { shallow }  from "enzyme";
+import { mount }  from "enzyme";
 import { spy }      from "sinon";
+
+import { Map } from "immutable";
 
 import ComposerForm   from "../../../src/components/task-composer/ComposerForm";
 /* eslint-disable no-duplicate-imports */
@@ -14,6 +16,7 @@ describe("<ComposerForm />", () => {
 
   beforeEach(() => {
     props = {
+      categories: Map(),
       createTask: spy(),
       close:      spy(),
     };
@@ -23,7 +26,7 @@ describe("<ComposerForm />", () => {
   });
 
   it("create a new task when the btn-create is clicked", () => {
-    const wrapper = shallow(<ComposerForm {...props} />);
+    const wrapper = mount(<ComposerForm {...props} />);
     wrapper.find(".ComposerForm__input-title")
       .simulate("change", { target: { value: "new task" } });
     wrapper.find(".ComposerForm__btn-create").simulate("click", event);
@@ -33,7 +36,7 @@ describe("<ComposerForm />", () => {
   });
 
   it("create a new task when the form is submitted", () => {
-    const wrapper = shallow(<ComposerForm {...props} />);
+    const wrapper = mount(<ComposerForm {...props} />);
     wrapper.find(".ComposerForm__input-title")
       .simulate("change", { target: { value: "new task" } });
     wrapper.find(".ComposerForm").simulate("submit", event);
@@ -43,14 +46,14 @@ describe("<ComposerForm />", () => {
   });
 
   it("does not create new task when the form is empty and the btn-create is clicked", () => {
-    const wrapper = shallow(<ComposerForm {...props} />);
+    const wrapper = mount(<ComposerForm {...props} />);
     wrapper.find(".ComposerForm__btn-create").simulate("click", event);
     assert(!props.createTask.called);
     assert(!props.close.calledOnce);
   });
 
   it("does not create new task when the form is empty and the form is submitted", () => {
-    const wrapper = shallow(<ComposerForm {...props} />);
+    const wrapper = mount(<ComposerForm {...props} />);
     wrapper.find(".ComposerForm").simulate("submit", event);
     assert(!props.createTask.called);
     assert(!props.close.calledOnce);
