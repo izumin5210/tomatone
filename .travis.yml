@@ -18,6 +18,9 @@ addons:
   #   packages:
   #   - libgnome-keyring-dev
   #   - icnsutils
+before_install:
+- brew tap tcnksm/ghr
+- brew install ghr
 install:
 - nvm install 6
 - npm install
@@ -26,7 +29,10 @@ script:
 - npm run test:all
 - npm run build
 after_success:
-- test ${TRAVIS_TAG} && npm run package
+- ((test ${TRAVIS_TAG}) || (test $TRAVIS_BRANCH="master")) &&
+  npm run package &&
+  (test $TRAVIS_BRANCH="master") &&
+  ghr --username $GITHUB_USER --token $GITHUB_TOKEN --replace --prerelease --debug pre-release release/mac/tomatone-*.dmg
 deploy:
   provider: releases
   api_key:
