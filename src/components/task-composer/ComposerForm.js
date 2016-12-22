@@ -2,11 +2,17 @@
 import React, { Component } from "react";
 import Autocomplete         from "react-autocomplete";
 import { Map }              from "immutable";
+import Fuse                 from "fuse.js";
 
 import { Category } from "../../entities";
 
 // FIXME: I want to add align option to flowtype/space-after-type-colon rule...
 /* eslint-disable no-multi-spaces */
+type FuseItem = {
+  id:   number;
+  name: string;
+};
+
 export type Props = {
   categories: Map<number, Category>;
   createTask: (title: string) => void;
@@ -14,34 +20,53 @@ export type Props = {
 };
 
 export type State = {
-  title:   string;
-  focused: boolean;
+  title:            string;
+  completionResult: Array<FuseItem>;
+  focused:          boolean;
 };
 /* eslint-enable */
 
 export default class ComposerForm extends Component {
 
-  static shouldItemRender({ name }: Category, value: string): boolean {
-    // FIXME
-    return name.toLowerCase().indexOf(value.toLowerCase()) !== -1;
-  }
+  static fuseOptions = {
+    shouldSort:     true,
+    tokenize:       true,
+    /* eslint-disable no-useless-escape */
+    tokenSeparator: /[\s\/]+/g,
+    /* eslint-enable */
+    matchAllTokens: true,
+    keys:           ["name"],
+  };
 
-  static sortItems({ name: name1 }, { name: name2 }: Category, value: string): number {
-    // FIXME
-    const c1 = name1.toLowerCase().indexOf(value.toLowerCase());
-    const c2 = name2.toLowerCase().indexOf(value.toLowerCase());
-    return c1 > c2 ? 1 : -1;
+  static createListForFuse(categories: Map<number, Category>): Array<FuseItem> {
+    return categories
+      .filterNot(cat => cat.isMeta)
+      .map(({ id, name }) => ({ id, name }))
+      .toArray();
   }
 
   constructor(props: Props) {
     super(props);
+    this.fuse = new Fuse(
+      ComposerForm.createListForFuse(props.categories),
+      ComposerForm.fuseOptions,
+    );
     this.state = {
-      title:   "",
-      focused: false,
+      title:            "",
+      completionResult: this.fuse.search(""),
+      focused:          false,
     };
   }
 
   state: State;
+
+  componentWillReceiveProps({ categories }: Props) {
+    if (categories.hashCode() !== this.props.categories.hashCode()) {
+      this.fuse.set(ComposerForm.createListForFuse(categories));
+      const completionResult = this.fuse.search(this.state.title);
+      this.setState({ completionResult });
+    }
+  }
 
   onTitleSubmit(e: any) {
     e.preventDefault();
@@ -53,10 +78,25 @@ export default class ComposerForm extends Component {
   }
 
   onTitleChange(title: string) {
-    this.setState({ title });
+    if (this.state.title !== title) {
+      const completionResult = this.fuse.search(title);
+      this.setState({ title, completionResult });
+    }
+  }
+
+  shouldItemRender(id: number): boolean {
+    return this.state.completionResult.find(({ id: otherId }) => id === otherId) != null;
+  }
+
+  sortItems(id1: number, id2: number): number {
+    const ids = this.state.completionResult
+      .filter(({ id }) => (id === id1) || (id === id2))
+      .map(({ id }) => id);
+    return ids.indexOf(id1) > ids.indexOf(id2) ? 1 : -1;
   }
 
   props: Props;
+  fuse: Fuse;
 
   render() {
     const inputTitleId = "ComposerForm__input-title";
@@ -79,10 +119,10 @@ export default class ComposerForm extends Component {
               onFocus:   () => this.setState({ focused: true }),
               onBlur:    () => this.setState({ focused: false }),
             }}
-            items={this.props.categories.filterNot(c => c.isMeta).toArray()}
-            getItemValue={item => item.name}
-            shouldItemRender={(cat, v) => ComposerForm.shouldItemRender(cat, v)}
-            sortItems={(cat1, cat2, v) => ComposerForm.sortItems(cat1, cat2, v)}
+            items={this.state.completionResult}
+            getItemValue={({ name }) => name}
+            shouldItemRender={({ id }) => this.shouldItemRender(id)}
+            sortItems={({ id: id1 }, { id: id2 }) => this.sortItems(id1, id2)}
             onChange={(e, v) => this.onTitleChange(v)}
             onSelect={v => this.onTitleChange(v)}
             renderMenu={(items, v, style) => (
