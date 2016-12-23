@@ -2,8 +2,7 @@
   "presets": [
     "es2015",
     "stage-2",
-    "react",
-    "power-assert"
+    "react"
   ],
   "plugins": [
     "syntax-flow",
@@ -15,9 +14,15 @@
     "development": {
       "plugins": [
         "react-hot-loader/babel"
+      ],
+      "presets": [
+        "power-assert"
       ]
     },
     "production": {
+      "plugins": [
+        "unassert"
+      ],
       "presets": [
         "react-optimize"
       ]
