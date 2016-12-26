@@ -59,9 +59,9 @@ describe("<CategoryNode />", () => {
     });
 
     it("does not apply modifiers for .CategoryNode__name", () => {
-      assert(!wrapper.find(".CategoryNode__name").isEmpty());
-      assert(wrapper.find(".CategoryNode__name_opened").isEmpty());
-      assert(wrapper.find(".CategoryNode__name_closed").isEmpty());
+      assert(wrapper.find(".CategoryNode__name").exists());
+      assert(!wrapper.find(".CategoryNode__name_opened").exists());
+      assert(!wrapper.find(".CategoryNode__name_closed").exists());
     });
 
     context("when the .CategoryNode__link is clicked", () => {
@@ -86,13 +86,13 @@ describe("<CategoryNode />", () => {
       });
 
       it("applies a _closed modifier for .CategoryNode__name", () => {
-        assert(wrapper.find(".CategoryNode__name").isEmpty());
-        assert(wrapper.find(".CategoryNode__name_opened").isEmpty());
-        assert(!wrapper.find(".CategoryNode__name_closed").isEmpty());
+        assert(!wrapper.find(".CategoryNode__name").exists());
+        assert(!wrapper.find(".CategoryNode__name_opened").exists());
+        assert(wrapper.find(".CategoryNode__name_closed").exists());
       });
 
       it("does not display children", () => {
-        assert(wrapper.find("#CategoryNode__children").isEmpty());
+        assert(!wrapper.find("#CategoryNode__children").exists());
       });
 
       context("when the .CategoryNode__name_closed is clicked", () => {
@@ -101,13 +101,13 @@ describe("<CategoryNode />", () => {
         });
 
         it("applies a _opened modifier for .CategoryNode__name", () => {
-          assert(wrapper.find(".CategoryNode__name").isEmpty());
-          assert(!wrapper.find(".CategoryNode__name_opened").isEmpty());
-          assert(wrapper.find(".CategoryNode__name_closed").isEmpty());
+          assert(!wrapper.find(".CategoryNode__name").exists());
+          assert(wrapper.find(".CategoryNode__name_opened").exists());
+          assert(!wrapper.find(".CategoryNode__name_closed").exists());
         });
 
         it("displays children", () => {
-          assert(!wrapper.find("#CategoryNode__children").isEmpty());
+          assert(wrapper.find("#CategoryNode__children").exists());
         });
 
         it("does not call close()", () => {
@@ -120,13 +120,13 @@ describe("<CategoryNode />", () => {
           });
 
           it("applies a _closed modifier for .CategoryNode__name", () => {
-            assert(wrapper.find(".CategoryNode__name").isEmpty());
-            assert(wrapper.find(".CategoryNode__name_opened").isEmpty());
-            assert(!wrapper.find(".CategoryNode__name_closed").isEmpty());
+            assert(!wrapper.find(".CategoryNode__name").exists());
+            assert(!wrapper.find(".CategoryNode__name_opened").exists());
+            assert(wrapper.find(".CategoryNode__name_closed").exists());
           });
 
           it("does not display children", () => {
-            assert(wrapper.find("#CategoryNode__children").isEmpty());
+            assert(!wrapper.find("#CategoryNode__children").exists());
           });
 
           it("does not call close()", () => {
@@ -143,13 +143,13 @@ describe("<CategoryNode />", () => {
       });
 
       it("applies a _opened modifier for .CategoryNode__name", () => {
-        assert(wrapper.find(".CategoryNode__name").isEmpty());
-        assert(!wrapper.find(".CategoryNode__name_opened").isEmpty());
-        assert(wrapper.find(".CategoryNode__name_closed").isEmpty());
+        assert(!wrapper.find(".CategoryNode__name").exists());
+        assert(wrapper.find(".CategoryNode__name_opened").exists());
+        assert(!wrapper.find(".CategoryNode__name_closed").exists());
       });
 
       it("displays children", () => {
-        assert(!wrapper.find("#CategoryNode__children").isEmpty());
+        assert(wrapper.find("#CategoryNode__children").exists());
       });
     });
 
@@ -163,13 +163,13 @@ describe("<CategoryNode />", () => {
       });
 
       it("applies a _opened modifier for .CategoryNode__name", () => {
-        assert(wrapper.find(".CategoryNode__name").isEmpty());
-        assert(!wrapper.find(".CategoryNode__name_opened").isEmpty());
-        assert(wrapper.find(".CategoryNode__name_closed").isEmpty());
+        assert(!wrapper.find(".CategoryNode__name").exists());
+        assert(wrapper.find(".CategoryNode__name_opened").exists());
+        assert(!wrapper.find(".CategoryNode__name_closed").exists());
       });
 
       it("displays children", () => {
-        assert(!wrapper.find("#CategoryNode__children").isEmpty());
+        assert(wrapper.find("#CategoryNode__children").exists());
       });
     });
   });
