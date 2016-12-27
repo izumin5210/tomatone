@@ -9,6 +9,7 @@ matrix:
   #   env: CC=clang CXX=clang++ npm_config_clang=1
   #   compiler: clang
 cache:
+  yarn: true
   directories:
   - node_modules
   - "$HOME/.electron"
@@ -21,10 +22,12 @@ addons:
 before_install:
 - brew tap tcnksm/ghr
 - brew install ghr
-install:
 - nvm install 6
-- npm install
-- npm prune
+- nvm use 6
+- curl -o- -L https://yarnpkg.com/install.sh | bash
+- export PATH=$HOME/.yarn/bin:$PATH
+install:
+- yarn
 script:
 - npm run test:all
 - npm run build
