@@ -2,6 +2,7 @@
 .*/node_modules/config-chain/*
 .*/node_modules/npm/*
 .*/node_modules/electron-packager/*
+.*/node_modules/stylelint/.*
 .*/react/node_modules/.*
 .*/fbjs/node_modules/.*
 
