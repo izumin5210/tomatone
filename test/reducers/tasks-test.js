@@ -171,14 +171,30 @@ describe("tasks reducer", () => {
       });
 
       context("when updated task has a new category", () => {
+        const name = "awesome category/new category";
+
+        beforeEach(() => {
+          task = task.set("title", `${name}/updated task`);
+        });
+
         it("returns new state that includes the updated task", async () => {
-          task = task.set("title", "awesome category/new category/updated task");
           const { tasks, categories } = await updateTask(state, { task });
           assert(tasks.size === 1);
-          assert(categories.size === 3);
+          assert(categories.size === 2);
           assert(tasks.get(1).title === "updated task");
           assert(tasks.get(1).categoryId === 3);
-          assert(categories.get(3).name === "awesome category/new category");
+        });
+
+        it("creates a new category", async () => {
+          const { categories } = await updateTask(state, { task });
+          assert(categories.get(3).name === name);
+          assert((await db.categories.get(3)).name === name);
+        });
+
+        it("deletes an unused category", async () => {
+          const { categories } = await updateTask(state, { task });
+          assert(!categories.has(2));
+          assert(await db.categories.get(2) == null);
         });
       });
 
@@ -222,14 +238,30 @@ describe("tasks reducer", () => {
       });
 
       context("when updated task has a new category", () => {
+        const name = "awesome category/new category";
+
+        beforeEach(() => {
+          task = task.set("title", `${name}/updated task`);
+        });
+
         it("returns new state that includes the updated task", async () => {
-          task = task.set("title", "awesome category/new category/updated task");
           const { tasks, categories } = await updateTask(state, { task });
           assert(tasks.size === 1);
-          assert(categories.size === 3);
+          assert(categories.size === 2);
           assert(tasks.get(1).title === "updated task");
           assert(tasks.get(1).categoryId === 3);
-          assert(categories.get(3).name === "awesome category/new category");
+        });
+
+        it("creates a new category", async () => {
+          const { categories } = await updateTask(state, { task });
+          assert(categories.get(3).name === name);
+          assert((await db.categories.get(3)).name === name);
+        });
+
+        it("deletes an unused category", async () => {
+          const { categories } = await updateTask(state, { task });
+          assert(!categories.has(2));
+          assert(await db.categories.get(2) == null);
         });
       });
 
@@ -304,31 +336,47 @@ describe("tasks reducer", () => {
 
   describe("#deleteTask()", () => {
     beforeEach(async () => {
+      await db.categories.bulkPut([
+        { name: "category 1" },
+        { name: "category 1/category 2" },
+      ]);
       await db.tasks.bulkPut([
         { title: "awesome task 1" },
         { title: "awesome task 2" },
+        { title: "awesome task 3", categoryId: 2 },
       ]);
-      const tasks = (await db.tasks.toArray()).map(attrs => new Task(attrs));
-      state = tasks.reduce(
-        (s, t) => s.set("tasks", s.tasks.set(t.id, t)),
-        state,
-      );
+      const tasks = (await db.tasks.toArray()).map(attrs => new Task(attrs))
+        .reduce((m, t) => m.set(t.id, t), Map());
+      const categories = (await db.categories.toArray()).map(attrs => new Category(attrs))
+        .reduce((m, c) => m.set(c.id, c), Map());
+      state = state.set("categories", categories).set("tasks", tasks);
     });
 
     it("returns new state that removed the deleted task", async () => {
       state = state.set("timer", state.timer.updateTask(state.tasks.get(1)));
       state = await deleteTask(state, { task: state.tasks.get(2) });
-      assert(state.tasks.size === 1);
+      assert(state.tasks.size === 2);
+      assert(state.tasks.size === 2);
+      assert(state.categories.size === 2);
       assert(state.timer.selectedTaskId != null);
-      assert(await db.tasks.count() === 1);
+      assert(await db.tasks.count() === 2);
     });
 
     it("returns new state that removed the deleted task and clear selected task", async () => {
       state = state.set("timer", state.timer.updateTask(state.tasks.get(2)));
       state = await deleteTask(state, { task: state.tasks.get(2) });
-      assert(state.tasks.size === 1);
+      assert(state.tasks.size === 2);
+      assert(state.categories.size === 2);
       assert(state.timer.selectedTaskId == null);
-      assert(await db.tasks.count() === 1);
+      assert(await db.tasks.count() === 2);
+    });
+
+    it("returns new state that removed the deleted task and empty categories", async () => {
+      state = await deleteTask(state, { task: state.tasks.get(3) });
+      assert(state.tasks.size === 2);
+      assert(state.categories.size === 0);
+      assert(await db.tasks.count() === 2);
+      assert(await db.categories.count() === 0);
     });
   });
 
