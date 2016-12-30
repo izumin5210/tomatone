@@ -6,6 +6,10 @@ import {
 } from "../../src/reducers/iterations";
 
 import {
+  Iteration,
+} from "../../src/entities";
+
+import {
   State,
 } from "../../src/models";
 
@@ -19,9 +23,9 @@ describe("iterations reducer", () => {
   afterEach(() => db.delete().then(db.close));
 
   describe("#getAllIterations()", () => {
-    beforeEach(() => {
+    beforeEach(async () => {
       let i = 1;
-      const promise = db.iterations.bulkPut([
+      await db.iterations.bulkPut([
         { type: "WORK", numOfIteration: i },
         { type: "SHORT_BREAK", numOfIteration: (i += 1) },
         { type: "WORK", numOfIteration: i },
@@ -30,33 +34,24 @@ describe("iterations reducer", () => {
         { type: "SHORT_BREAK", numOfIteration: (i += 1) },
         { type: "WORK", numOfIteration: i },
         { type: "LONG_BREAK", numOfIteration: (i += 1) },
-      ])
-        .then(() => db.iterations.count())
-        .then(count => assert(count === 8));
-      return Promise.resolve(promise);
+      ]);
+      assert(await db.iterations.count() === 8);
     });
 
-    it("returns all iterations stored on IndexedBD", () => {
-      const state = new State();
-      return getAllIterations(state)
-        .then((nextState) => {
-          assert(nextState.iterations.size === 8);
-        });
+    it("returns all iterations stored on IndexedBD", async () => {
+      const { iterations } = await getAllIterations(new State());
+      assert(iterations.size === 8);
     });
 
-    it("returns new iterations when the state has an older one", () => (
-      Promise.resolve(db.iterations.get(1))
-        .then(itr => new State({
-          iterations: Map([[itr.id, itr]]),
-        }))
-        .then(state => (
-          Promise.resolve(db.iterations.update(1, { totalTimeInMillis: 3 * 60 * 1000 }))
-            .then(() => getAllIterations(state))
-        ))
-        .then((state) => {
-          assert(state.iterations.size === 8);
-          assert(state.iterations.get(1).totalTimeInMillis != null);
-        })
-    ));
+    it("returns new iterations when the state has an older one", async () => {
+      const itr = new Iteration(await db.iterations.get(1));
+      const state = new State({
+        iterations: Map([[itr.id, itr]]),
+      });
+      await db.iterations.update(1, { totalTimeInMillis: 3 * 60 * 1000 });
+      const { iterations } = await getAllIterations(state);
+      assert(iterations.size === 8);
+      assert(iterations.get(1).totalTimeInMillis != null);
+    });
   });
 });
