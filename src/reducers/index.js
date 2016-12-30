@@ -30,6 +30,7 @@ import {
 
 import {
   getAllCategories,
+  deleteUnusedCategories,
 } from "./categories";
 
 import {
@@ -60,6 +61,13 @@ export default class Reducer {
   // FIXME: apply types
   connect(self: any, subscribe: any) {
     this.reducer.on(":update", state => self.setState({ state }));
+
+    subscribe(TimerActions.INIT, async () => {
+      await this.update(getAllTasks);
+      await this.update(getAllCategories);
+      await this.update(getAllIterations);
+      await this.update(deleteUnusedCategories);
+    });
 
     subscribe(TimerActions.START, () => this.update(startTimer));
     subscribe(TimerActions.STOP, () => this.update(stopTimer));
@@ -138,8 +146,8 @@ export default class Reducer {
     );
   }
 
-  update(fn: (s: State, ...args: any) => State | Promise<State>) {
-    this.reducer.update(fn);
+  update(fn: (s: State, ...args: any) => State | Promise<State>): Promise<State> {
+    return this.reducer.update(fn);
   }
 
   getState(): State {
