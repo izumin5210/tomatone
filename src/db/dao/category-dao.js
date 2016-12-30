@@ -52,6 +52,11 @@ export default class CategoryDao {
       .then(() => category);
   }
 
+  async deleteAll(categories: List<Category>): Promise<List<Category>> {
+    await this.table.bulkDelete(categories.map(({ id }) => id).toArray());
+    return categories;
+  }
+
   get table(): Dexie.WriteableTable {
     return this.db.categories;
   }

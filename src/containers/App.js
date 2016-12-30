@@ -78,6 +78,7 @@ export default class App extends Component {
 
   componentDidMount() {
     this.checkUpdates(this.state);
+    this.getChildContext().dispatch(TimerActions.INIT);
     const promise = Promise.all([
       this.state.tickingSoundPlayer.fetch(),
       this.state.finishSoundPlayer.fetch(),
