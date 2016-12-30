@@ -11,6 +11,12 @@
   "env": {
     "development": {
       "plugins": [
+        [
+          "espower",
+          {
+            "embedAst": true
+          }
+        ],
         "react-hot-loader/babel"
       ],
       "presets": [
