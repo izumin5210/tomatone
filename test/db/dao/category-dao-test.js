@@ -26,84 +26,71 @@ describe("CategoryDao", () => {
   });
 
   describe("#getAll()", () => {
-    it("returns empty list", () => (
-      dao.getAll()
-        .then((categories) => {
-          assert(categories.size === 0);
-        })
-    ));
+    it("returns empty list", async () => {
+      const categories = await dao.getAll();
+      assert(categories.size === 0);
+    });
 
-    it("returns all saved iterations", () => (
-      db.categories
-        .bulkPut([
-          { name: "awesome category 1", createdAt: Date.now() },
-          { name: "awesome category 2", createdAt: Date.now() },
-          { name: "awesome category 3", createdAt: Date.now() },
-          { name: "awesome category 4", createdAt: Date.now() },
-        ])
-        .then(() => db.categories.count())
-        .then(count => assert(count === 4))
-        .then(() => dao.getAll())
-        .then(categories => assert(categories.size === 4))
-    ));
+    it("returns all saved iterations", async () => {
+      await db.categories.bulkPut([
+        { name: "awesome category 1", createdAt: Date.now() },
+        { name: "awesome category 2", createdAt: Date.now() },
+        { name: "awesome category 3", createdAt: Date.now() },
+        { name: "awesome category 4", createdAt: Date.now() },
+      ]);
+      assert(await db.categories.count() === 4);
+      const categories = await dao.getAll();
+      assert(categories.size === 4);
+    });
   });
 
   describe("#findOrCreateByName()", () => {
     const name = "awesome category";
-    beforeEach(() => (
-      Promise.resolve(db.categories.put({ name, createdAt: now }))
-        .then(() => dateTimeProvider.tick(10))
-    ));
+
+    beforeEach(async () => {
+      await db.categories.put({ name, createdAt: now });
+      dateTimeProvider.tick(10);
+    });
 
     context("when a category that has the given name has already exists", () => {
-      it("returns the existing category", () => (
-        dao.findOrCreateByName(name)
-          .then((category) => {
-            assert(category.id === 1);
-            assert(category.name === name);
-            assert(category.createdAt === now);
-            return Promise.resolve(db.categories.count());
-          })
-            .then(count => assert(count === 1))
-      ));
+      it("returns the existing category", async () => {
+        const category = await dao.findOrCreateByName(name);
+        assert(category.id === 1);
+        assert(category.name === name);
+        assert(category.createdAt === now);
+        assert(await db.categories.count() === 1);
+      });
     });
 
     context("when a category that has the given name has not exists", () => {
-      it("returns a new category", () => (
-        dao.findOrCreateByName("alternative category")
-          .then((category) => {
-            assert(category.id === 2);
-            assert(category.name === "alternative category");
-            assert(category.createdAt === now + 10);
-            return Promise.resolve(db.categories.count());
-          })
-            .then(count => assert(count === 2))
-      ));
+      it("returns a new category", async () => {
+        const category = await dao.findOrCreateByName("alternative category");
+        assert(category.id === 2);
+        assert(category.name === "alternative category");
+        assert(category.createdAt === now + 10);
+        assert(await db.categories.count() === 2);
+      });
     });
   });
 
   describe("#update()", () => {
-    it("returns an updated category", () => (
-      db.categories.put({ name: "awesome category" })
-        .then(id => db.categories.get(id))
-        .then(attrs => new Category(attrs))
-        .then(category => category.set("name", "alternative category"))
-        .then(category => dao.update(category))
-        .then(category => assert(category.name === "alternative category"))
-        .then(() => db.categories.count())
-        .then(count => assert(count === 1))
-    ));
+    it("returns an updated category", async () => {
+      const id = await db.categories.put({ name: "awesome category" });
+      let category = new Category(await db.categories.get(id))
+        .set("name", "alternative category");
+      category = await dao.update(category);
+      assert(category.name === "alternative category");
+      assert(await db.categories.count() === 1);
+    });
   });
 
   describe("#delete()", () => {
-    it("returns the deleted category", () => (
-      db.categories.put({ title: "awesome category" })
-        .then(id => db.categories.get(id))
-        .then(attrs => new Category(attrs))
-        .then(category => dao.delete(category))
-        .then(() => db.categories.count())
-        .then(c => assert(c === 0))
-    ));
+    it("returns the deleted category", async () => {
+      const id = await db.categories.put({ title: "awesome category" });
+      const category = new Category(await db.categories.get(id));
+      await dao.delete(category);
+      assert(await db.categories.count() === 0);
+    });
   });
 
   describe("#deleteAll()", () => {
