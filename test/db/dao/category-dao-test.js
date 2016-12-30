@@ -1,4 +1,5 @@
 /* @flow */
+import { List } from "immutable";
 import Category from "../../../src/entities/category";
 
 import {
@@ -103,5 +104,26 @@ describe("CategoryDao", () => {
         .then(() => db.categories.count())
         .then(c => assert(c === 0))
     ));
+  });
+
+  describe("#deleteAll()", () => {
+    it("returns deleted categories", async () => {
+      await db.categories.bulkPut([
+        { name: "c1" },
+        { name: "c2" },
+        { name: "c1/c3" },
+        { name: "c1/c3/c4" },
+      ]);
+      let categories = (await db.categories.toArray())
+        .map(attrs => new Category(attrs));
+      categories = List.of(categories[1], categories[3]);
+      categories = await dao.deleteAll(categories);
+      assert(categories.size === 2);
+      assert(categories.find(({ id }) => id === 2) != null);
+      assert(categories.find(({ id }) => id === 4) != null);
+      assert(await db.categories.get(2) == null);
+      assert(await db.categories.get(4) == null);
+      assert(await db.categories.count() === 2);
+    });
   });
 });
