@@ -18,5 +18,8 @@ export {
   categoryDao,
   iterationDao,
   taskDao,
+  CategoryDao,
+  IterationDao,
+  TaskDao,
 };
 /* eslint-enable */

@@ -3,9 +3,11 @@ import { Map, Range } from "immutable";
 
 import {
   Category,
+  Task,
 } from "../entities";
 
 import {
+  cleanupCategories,
   State,
 } from "../models";
 
@@ -25,6 +27,7 @@ import type {
 } from "../actions/tasks";
 
 import {
+  parseCategory,
   parseTaskCategory,
 } from "../utils";
 
@@ -33,6 +36,23 @@ function findOrCreateCategories(categoryNames: Array<string>): Promise<Array<Cat
     const name = categoryNames.slice(0, i + 1).join("/");
     return categoryDao.findOrCreateByName(name);
   }));
+}
+
+async function cleanupDeletedTaskCategories(state: State, deletedTask: Task): Promise<State> {
+  const category = state.categories.get(deletedTask.categoryId);
+  if (category == null) {
+    return state;
+  }
+  const categoryNames = parseCategory(category.name);
+  if (categoryNames.length === 0) {
+    return state;
+  }
+  const rootName = categoryNames[0];
+  const targetCategories = state.categories.filter(({ name }) => name.startsWith(rootName));
+  const deletedCategories = await cleanupCategories(targetCategories, state.tasks, categoryDao);
+  const remainCategories = state.categories
+    .filterNot(({ id }) => deletedCategories.find(c => c.id === id) != null);
+  return state.set("categories", remainCategories);
 }
 
 export function getAllTasks(state: State): Promise<State> {
@@ -59,15 +79,16 @@ export async function createTask(state: State, { title }: CreateAction): Promise
 export async function updateTask(state: State, { task }: UpdateAction): Promise<State> {
   const { categoryNames, taskTitle } = parseTaskCategory(task.title);
   const categories = await findOrCreateCategories(categoryNames);
-  const newState = state.set(
+  let newState = state.set(
     "categories",
     categories.reduce((map, cat) => map.set(cat.id, cat), state.categories),
   );
   const category = categories[categories.length - 1];
   const categoryId = (category == null) ? undefined : category.id;
-  const updatedTask = task.set("title", taskTitle).set("categoryId", categoryId);
-  return taskDao.update(updatedTask)
-    .then(t => newState.set("tasks", newState.tasks.set(t.id, t)));
+  const targetTask = task.set("title", taskTitle).set("categoryId", categoryId);
+  const updatedTask = await taskDao.update(targetTask);
+  newState = newState.set("tasks", newState.tasks.set(updatedTask.id, updatedTask));
+  return cleanupDeletedTaskCategories(newState, targetTask);
 }
 
 export function completeTask(state: State, action: CompleteAction): Promise<State> {
@@ -90,15 +111,13 @@ export function selectTask(state: State, { task }: SelectAction): State {
   return state.set("timer", state.timer.updateTask(task));
 }
 
-export function deleteTask(state: State, action: DeleteAction): Promise<State> {
-  return taskDao.delete(action.task)
-    .then((task) => {
-      const newState = state.set("tasks", state.tasks.delete(task.id));
-      if (state.timer.selectedTaskId === task.id) {
-        return newState.set("timer", newState.timer.updateTask(null));
-      }
-      return newState;
-    });
+export async function deleteTask(state: State, action: DeleteAction): Promise<State> {
+  const deletedTask = await taskDao.delete(action.task);
+  let newState = state.set("tasks", state.tasks.delete(deletedTask.id));
+  if (newState.timer.selectedTaskId === deletedTask.id) {
+    newState = newState.set("timer", newState.timer.updateTask(null));
+  }
+  return cleanupDeletedTaskCategories(newState, action.task);
 }
 
 export function updateTaskOrder(
