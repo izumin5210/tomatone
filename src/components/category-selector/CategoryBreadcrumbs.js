@@ -26,7 +26,7 @@ export default function CategoryBreadcrumbs({ currentCategory, categories }: Pro
       .map(cat => (
         <li key={`category-${cat.id}`} className="CategoryBreadcrumbs__item">
           <Link
-            to={{ pathname: "/tasks", query: { category: cat.path } }}
+            to={{ query: { category: cat.path } }}
           >
             {cat.subName}
           </Link>

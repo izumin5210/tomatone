@@ -31,6 +31,7 @@ import {
 import {
   getAllCategories,
   deleteUnusedCategories,
+  selectCategory,
 } from "./categories";
 
 import {
@@ -98,6 +99,13 @@ export default class Reducer {
       CategoriesActions.GET_ALL,
       () => this.update(getAllCategories),
     );
+    subscribe(
+      CategoriesActions.SELECT,
+      (props: CategoriesActions.SelectAction) => (
+        this.update((s: State) => selectCategory(s, props))
+      ),
+    );
+
     subscribe(
       TasksActions.GET_ALL,
       () => this.update(getAllTasks),

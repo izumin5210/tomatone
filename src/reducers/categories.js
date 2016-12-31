@@ -10,6 +10,9 @@ import {
   categoryDao,
 } from "../db";
 
+import type {
+  SelectAction,
+} from "../actions/categories";
 
 type Node = {
   id: number;
@@ -17,7 +20,6 @@ type Node = {
   childIds: Set<number>;
   children: Array<Node>;
 };
-
 
 export function getAllCategories(state: State): Promise<State> {
   return categoryDao.getAll()
@@ -33,4 +35,8 @@ export async function deleteUnusedCategories(state: State): Promise<State> {
   const categories = state.categories
     .filterNot(({ id }) => deletedCategories.find(c => c.id === id) != null);
   return state.set("categories", categories);
+}
+
+export function selectCategory(state: State, { category }: SelectAction): State {
+  return state.set("timer", state.timer.updateCategory(category));
 }

@@ -42,6 +42,10 @@ export default class State extends StateRecord {
     return this.tasks.get(this.timer.selectedTaskId);
   }
 
+  currentCategory(): Category {
+    return this.categories.get(this.timer.selectedCategoryId);
+  }
+
   hasStarted(): boolean {
     return this.timer.hasStarted();
   }
