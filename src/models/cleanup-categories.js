@@ -6,7 +6,7 @@ import {
   Task,
 } from "../entities";
 
-import {
+import type {
   CategoryDao,
 } from "../db";
 
