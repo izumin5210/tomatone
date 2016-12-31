@@ -3,6 +3,12 @@
 [![Dependency Status](https://gemnasium.com/badges/github.com/izumin5210/tomatone.svg)](https://gemnasium.com/github.com/izumin5210/tomatone)
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)][license]
 
+Simple pomodoro timer in your menubar
+
+## Features
+![](art/tomatone1.png)
+![](art/tomatone2.gif)
+
 ## License
 Licensed under [MIT License][license].
 
