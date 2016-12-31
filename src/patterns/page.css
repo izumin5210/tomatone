@@ -1,7 +1,6 @@
 :root {
   --Page: {
     background: var(--gray-lightest);
-    padding-top: calc(var(--nav-height) + var(--spacing));
   }
 
   --Page__caption: {
