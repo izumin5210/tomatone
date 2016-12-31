@@ -41,10 +41,8 @@ export default class Category extends CategoryRecord {
   }
 
   includes(task: ?Task): boolean {
-    if (task == null) {
-      return this.id == null;
-    }
-    return (this.name === Category.ALL.name) || (this.id === task.categoryId);
+    const categoryId = (task == null) ? null : task.categoryId;
+    return (this.name === Category.ALL.name) || (this.id === categoryId);
   }
 
   isParentOf(category: Category): boolean {
