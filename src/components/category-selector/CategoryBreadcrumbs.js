@@ -27,6 +27,7 @@ export default function CategoryBreadcrumbs({ currentCategory, categories }: Pro
         <li key={`category-${cat.id}`} className="CategoryBreadcrumbs__item">
           <Link
             to={{ query: { category: cat.path } }}
+            onClick={e => e.stopPropagation()}
           >
             {cat.subName}
           </Link>
