@@ -6,6 +6,7 @@ import {
 } from "../../models";
 
 import {
+  CategorySelector,
   IterationList,
 } from "../../components";
 
@@ -14,11 +15,15 @@ type Props = {
 };
 
 export default function HistoryView({ state }: Props) {
-  const { iterations, tasks } = state;
+  const { categories, iterations, tasks } = state;
+  const currentCategory = state.currentCategory();
   return (
     <div className="HistoryView">
+      <CategorySelector
+        {...{ currentCategory, categories, tasks }}
+      />
       <IterationList
-        {...{ iterations, tasks }}
+        {...{ currentCategory, iterations, tasks }}
       />
     </div>
   );

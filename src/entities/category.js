@@ -40,7 +40,10 @@ export default class Category extends CategoryRecord {
     });
   }
 
-  includes(task: Task): boolean {
+  includes(task: ?Task): boolean {
+    if (task == null) {
+      return this.id == null;
+    }
     return (this.name === Category.ALL.name) || (this.id === task.categoryId);
   }
 

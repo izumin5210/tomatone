@@ -6,22 +6,25 @@ import { Map }              from "immutable";
 import IterationItem from "./IterationItem";
 
 import {
+  Category,
   Iteration,
   Task,
 } from "../../entities";
 
 /* eslint-disable no-multi-spaces */
 type Props = {
-   iterations: Map<number, Iteration>;
-   tasks:      Map<number, Task>;
+  currentCategory: Category;
+  iterations:      Map<number, Iteration>;
+  tasks:           Map<number, Task>;
 };
 /* eslint-enable */
 
 export default class IterationList extends Component {
 
   getListItems() {
-    const { iterations, tasks } = this.props;
+    const { currentCategory, iterations, tasks } = this.props;
     return iterations
+      .filter(({ taskId }) => currentCategory.includes(tasks.get(taskId)))
       .sortBy(itr => -itr.id)
       .groupBy(itr => moment(itr.startedAt).format("YYYY-MM-DD"))
       .map((itrs, date) => {
