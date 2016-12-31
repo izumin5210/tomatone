@@ -1,5 +1,6 @@
 /* @flow */
 import { Map, Range } from "immutable";
+import assert from "power-assert"; // eslint-disable-line
 
 import {
   Category,

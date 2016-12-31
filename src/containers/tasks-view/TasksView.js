@@ -3,6 +3,8 @@ import React, { Component } from "react";
 import { dispatcher }       from "react-dispatcher-decorator";
 import { Map }              from "immutable";
 
+import assert from "power-assert"; // eslint-disable-line
+
 import {
   Category,
   Task,
@@ -85,6 +87,7 @@ export default class TasksView extends Component {
   }
 
   updateTaskOrder(task: Task, dest: number) {
+    assert(task.order !== dest);
     this.context.dispatch(TasksActions.UPDATE_ORDER, { task, order: dest });
   }
 

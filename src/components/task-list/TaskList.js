@@ -4,6 +4,8 @@ import { DragDropContext }  from "react-dnd";
 import ReactDndHtml5Backend from "react-dnd-html5-backend";
 import { List, Map }        from "immutable";
 
+import assert from "power-assert"; // eslint-disable-line
+
 import {
   Category,
   Task,
@@ -67,13 +69,23 @@ export default class TaskList extends Component {
   }
 
   onDrag(task: Task, dest: number) {
+    if (this.state.orders.get(task.id) === dest) {
+      return;
+    }
     this.scheduleUpdate(() => {
+      assert(this.state.orders.get(task.id) !== dest);
       const src = this.state.orders.indexOf(task.id);
       const orders = this.state.orders
         .delete(src)
         .insert(dest + (dest > src ? 1 : 0), task.id);
       return { orders };
     });
+  }
+
+  onDrop(task: Task, dest: number) {
+    if (task.order !== dest) {
+      this.props.updateTaskOrder(task, dest);
+    }
   }
 
   getTaskItem(task: Task, order: number) {
@@ -88,8 +100,8 @@ export default class TaskList extends Component {
         delete={() => this.props.deleteTask(task)}
         select={() => this.onTaskSelect(task)}
         selected={this.props.selectedTaskId === task.id}
-        updateOrder={this.props.updateTaskOrder}
         drag={(t: Task, o: number) => this.onDrag(t, o)}
+        drop={(t: Task, o: number) => this.onDrop(t, o)}
       />
     );
   }

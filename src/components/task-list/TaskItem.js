@@ -19,8 +19,8 @@ export type Props = {
   delete:            () => void;
   select:            () => void;
   selected:          boolean;
-  updateOrder:       (task: Task, dest: number) => void;
   drag:              (task: Task, dest: number) => void;
+  drop:              (task: Task, dest: number) => void;
   connectDragSource: (e: any) => any;
   connectDropTarget: (e: any) => any;
   isDragging:        boolean,
@@ -33,11 +33,8 @@ const getType = (task: Task) => (task.hasCompleted() ? "completed-tasks" : "task
 @DropTarget(
   ({ task }: Props) => getType(task),
   {
-    drop({ order, updateOrder }: Props, monitor) {
-      const src = monitor.getItem();
-      if (order !== src.order) {
-        updateOrder(src.task, order);
-      }
+    drop({ order, drop }: Props, monitor) {
+      drop(monitor.getItem().task, order);
     },
 
     hover({ order, drag }: Props, monitor) {
