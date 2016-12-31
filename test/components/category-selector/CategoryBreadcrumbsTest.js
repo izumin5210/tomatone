@@ -50,7 +50,7 @@ describe("<CategoryBreadcrumbs />", () => {
       const items = wrapper.find(".CategoryBreadcrumbs__item Link");
       assert(items.length === 1);
       {
-        const href = "href=\"/tasks?category=%2Fcategory1\"";
+        const href = "href=\"/?category=%2Fcategory1\"";
         assert(items.at(0).text() === "category1");
         assert(items.at(0).html().indexOf(href) !== -1);
       }
@@ -67,17 +67,17 @@ describe("<CategoryBreadcrumbs />", () => {
       const items = wrapper.find(".CategoryBreadcrumbs__item Link");
       assert(items.length === 3);
       {
-        const href = "href=\"/tasks?category=%2Fcategory1\"";
+        const href = "href=\"/?category=%2Fcategory1\"";
         assert(items.at(0).text() === "category1");
         assert(items.at(0).html().indexOf(href) !== -1);
       }
       {
-        const href = "href=\"/tasks?category=%2Fcategory1%2Fcategory2\"";
+        const href = "href=\"/?category=%2Fcategory1%2Fcategory2\"";
         assert(items.at(1).text() === "category2");
         assert(items.at(1).html().indexOf(href) !== -1);
       }
       {
-        const href = "href=\"/tasks?category=%2Fcategory1%2Fcategory2%2Fcategory3\"";
+        const href = "href=\"/?category=%2Fcategory1%2Fcategory2%2Fcategory3\"";
         assert(items.at(2).text() === "category3");
         assert(items.at(2).html().indexOf(href) !== -1);
       }

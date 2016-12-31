@@ -25,12 +25,12 @@ import {
 /* eslint-disable no-multi-spaces */
 type Props = {
   state:    State;
-  location: any;
 };
 /* eslint-enable */
 
 @dispatcher
 export default class TasksView extends Component {
+
   getTaskListProps() {
     return {
       categories:      this.props.state.categories,
@@ -57,15 +57,7 @@ export default class TasksView extends Component {
   }
 
   get currentCategory(): Category {
-    const { location, state } = this.props;
-    const { query } = location;
-    if (query != null) {
-      const category = state.categories.find(({ path }) => path === query.category);
-      if (category != null) {
-        return category;
-      }
-    }
-    return Category.ALL;
+    return this.props.state.currentCategory();
   }
 
   createTask(title: string) {

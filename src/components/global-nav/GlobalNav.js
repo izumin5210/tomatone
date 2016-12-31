@@ -2,18 +2,25 @@
 import React from "react";
 import { Link } from "react-router";
 
-export default function GlobalNav() {
+import { Category } from "../../entities";
+
+type Props = {
+  category: ?Category;
+};
+
+export default function GlobalNav({ category }: Props) {
+  const query = { category: (category == null) ? null : category.path };
   const links = [
     {
-      to:   "/",
+      to:   { pathname: "/", query },
       icon: "clock-o",
     },
     {
-      to:   "/tasks",
+      to:   { pathname: "/tasks", query },
       icon: "tasks",
     },
     {
-      to:   "/history",
+      to:   { pathname: "/history", query },
       icon: "history",
     },
   ];

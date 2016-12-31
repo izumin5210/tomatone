@@ -154,7 +154,7 @@ export default class App extends Component {
     return (
       <div className="App">
         <header className={`App__header${modifier}`}>
-          <GlobalNav />
+          <GlobalNav category={state.currentCategory()} />
         </header>
         <main className="App__main">
           <Match
@@ -164,7 +164,7 @@ export default class App extends Component {
           />
           <Match
             pattern="/tasks"
-            render={({ location }) => <TasksView {...{ location, state }} />}
+            render={() => <TasksView {...{ state }} />}
           />
           <Match
             pattern="/history"

@@ -46,7 +46,7 @@ export default class CategoryNode extends Component {
     const { category, taskCounts, close, children } = this.props;
     const { path, subName } = category;
     const { opened } = this.state;
-    const to = { pathname: "/tasks", query: { category: path } };
+    const to = { query: { category: path } };
     let modifier = "";
     if (this.hasChildCategories) {
       modifier = `_${opened ? "opened" : "closed"}`;
