@@ -26,7 +26,10 @@ export default function GlobalNav({ category }: Props) {
   ];
   const items = links.map(link => (
     <li className="GlobalNav__item" key={link.icon} >
-      <Link to={link.to} activeOnlyWhenExact >
+      <Link
+        to={link.to}
+        isActive={({ pathname }, props) => pathname === props.pathname}
+      >
         {({ isActive, onClick, href }) => (
           <a
             href={href}

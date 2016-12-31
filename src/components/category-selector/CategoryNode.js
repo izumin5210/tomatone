@@ -69,6 +69,12 @@ export default class CategoryNode extends Component {
               close();
             }
           }}
+          isActive={({ query }, props) => {
+            if (query == null) {
+              return props.query.category == null;
+            }
+            return query.category === props.query.category;
+          }}
         >
           {({ isActive, onClick, href }) => (
             <a
