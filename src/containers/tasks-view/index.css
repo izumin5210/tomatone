@@ -1,7 +1,13 @@
+:root {
+  --TasksView__margin-top: calc(var(--nav-height) + var(--category-selector-height) + var(--spacing));
+}
+
 .TasksView {
   @apply --Page;
 
-  padding-top: calc(var(--nav-height) + var(--category-selector-height) + var(--spacing));
+  margin-top: var(--TasksView__margin-top);
+  height: calc(100vh - var(--TasksView__margin-top));
+  overflow-y: scroll;
 }
 
 .TasksView__caption {

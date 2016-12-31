@@ -1,5 +1,11 @@
+:root {
+  --HistoryView__margin-top: calc(var(--nav-height) + var(--category-selector-height) + var(--spacing));
+}
+
 .HistoryView {
   @apply --Page;
 
-  padding-top: calc(var(--nav-height) + var(--category-selector-height) + var(--spacing));
+  margin-top: var(--HistoryView__margin-top);
+  height: calc(100vh - var(--HistoryView__margin-top));
+  overflow-y: scroll;
 }
