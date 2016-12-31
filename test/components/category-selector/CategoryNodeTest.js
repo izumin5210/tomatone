@@ -18,7 +18,7 @@ function createWrapper(props: Props) {
   // https://github.com/ReactTraining/react-router/blob/553b56a750072641b532c1113336a706d6f62648/modules/__tests__/Link-test.js#L259-L277
   return mount((
     <StaticRouter
-      location="/"
+      location={{ pathname: "/", query: { category: "/" } }}
       action="POP"
       onPush={() => {}}
       onReplace={() => {}}
