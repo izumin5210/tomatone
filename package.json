@@ -33,7 +33,6 @@
     "files": [
       "src/icon*.png",
       "dist/",
-      "node_modules/",
       "package.json",
       "resources/"
     ]

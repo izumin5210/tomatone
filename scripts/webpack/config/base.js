@@ -1,5 +1,9 @@
-import path from "path";
+import webpack        from "webpack";
 import FlowtypePlugin from "flowtype-loader/plugin";
+import path from "path";
+
+const nodeEnv = process.env.NODE_ENV;
+const isProduction = nodeEnv === "production";
 
 const config = {
   module: {
@@ -63,6 +67,17 @@ const config = {
   },
 
   plugins: [
+    new webpack.DefinePlugin({
+      "process.env.NODE_ENV": JSON.stringify(nodeEnv),
+    }),
+
+    new webpack.LoaderOptionsPlugin({
+      debug: !isProduction,
+      minimize: isProduction,
+    }),
+
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+
     new FlowtypePlugin(),
   ],
 
