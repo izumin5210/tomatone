@@ -1,16 +1,13 @@
 {
   "presets": [
-    "es2015",
     "stage-2",
     "react"
-  ],
-  "plugins": [
-    "transform-class-properties",
-    "transform-decorators-legacy",
   ],
   "env": {
     "development": {
       "plugins": [
+        "transform-class-properties",
+        "transform-decorators-legacy",
         [
           "espower",
           {
@@ -20,14 +17,23 @@
         "react-hot-loader/babel"
       ],
       "presets": [
+        "es2015",
         "power-assert"
       ]
     },
     "production": {
       "plugins": [
+        "transform-class-properties",
+        "transform-decorators-legacy",
         "unassert"
       ],
       "presets": [
+        [
+          "es2015",
+          {
+            "modules": false
+          }
+        ],
         "react-optimize"
       ]
     }

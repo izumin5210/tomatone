@@ -1,9 +1,9 @@
-import webpack            from "webpack";
-import merge              from "webpack-merge";
-import HtmlWebpackPlugin  from "html-webpack-plugin";
-import ExtractTextPlugin  from "extract-text-webpack-plugin";
+const webpack            = require("webpack");
+const merge              = require("webpack-merge");
+const HtmlWebpackPlugin  = require("html-webpack-plugin");
+const ExtractTextPlugin  = require("extract-text-webpack-plugin");
 
-import baseConfig from "../base";
+const baseConfig = require("../base");
 
 const styleExtractor = new ExtractTextPlugin({ filename: "style.css", allChunks: true });
 
@@ -35,8 +35,7 @@ const config = merge.smart(baseConfig, {
 
   plugins: [
     new webpack.LoaderOptionsPlugin({
-      debug: false,
-      minimize: true,
+      test: /\.css$/,
       options: {
         postcss: (bundle) => {
           return [
@@ -58,16 +57,23 @@ const config = merge.smart(baseConfig, {
 
     new webpack.optimize.OccurrenceOrderPlugin(),
 
-    new webpack.DefinePlugin({
-      "process.env.NODE_ENV": JSON.stringify("production")
-    }),
-
     styleExtractor,
 
     new webpack.optimize.UglifyJsPlugin({
-      compressor: {
+      compress: {
+        warnings: false,
         screw_ie8: true,
-        warnings: false
+        conditionals: true,
+        unused: true,
+        comparisons: true,
+        sequences: true,
+        dead_code: true,
+        evaluate: true,
+        if_return: true,
+        join_vars: true,
+      },
+      output: {
+        comments: false
       },
     }),
 
@@ -82,4 +88,4 @@ const config = merge.smart(baseConfig, {
   target: "electron-renderer",
 });
 
-export default config;
+module.exports = config;

@@ -33,7 +33,6 @@
     "files": [
       "src/icon*.png",
       "dist/",
-      "node_modules/",
       "package.json",
       "resources/"
     ]
@@ -55,7 +54,6 @@
     "react-dnd": "^2.1.4",
     "react-dnd-html5-backend": "^2.1.2",
     "react-dom": "^15.4.0",
-    "react-hot-loader": "^3.0.0-beta.6",
     "react-router": "^4.0.0-alpha.6",
     "sanitize.css": "^4.1.0",
     "source-map-support": "^0.4.6"
@@ -114,6 +112,7 @@
     "promise-test-helper": "^0.2.1",
     "react-addons-test-utils": "^15.4.0",
     "react-dnd-test-backend": "^1.0.2",
+    "react-hot-loader": "next",
     "sinon": "^1.17.6",
     "style-loader": "^0.13.1",
     "stylelint": "^7.5.0",
