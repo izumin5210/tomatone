@@ -1,9 +1,9 @@
-import webpack            from "webpack";
-import merge              from "webpack-merge";
-import HtmlWebpackPlugin  from "html-webpack-plugin";
-import ExtractTextPlugin  from "extract-text-webpack-plugin";
+const webpack            = require("webpack");
+const merge              = require("webpack-merge");
+const HtmlWebpackPlugin  = require("html-webpack-plugin");
+const ExtractTextPlugin  = require("extract-text-webpack-plugin");
 
-import baseConfig from "../base";
+const baseConfig = require("../base");
 
 const styleExtractor = new ExtractTextPlugin({ filename: "style.css", allChunks: true });
 
@@ -88,4 +88,4 @@ const config = merge.smart(baseConfig, {
   target: "electron-renderer",
 });
 
-export default config;
+module.exports = config;

@@ -1,6 +1,6 @@
-import webpack        from "webpack";
-import FlowtypePlugin from "flowtype-loader/plugin";
-import path from "path";
+const webpack        = require("webpack");
+const FlowtypePlugin = require("flowtype-loader/plugin");
+const path = require("path");
 
 const nodeEnv = process.env.NODE_ENV;
 const isProduction = nodeEnv === "production";
@@ -85,4 +85,4 @@ const config = {
   ],
 };
 
-export default config;
+module.exports = config;

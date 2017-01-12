@@ -1,7 +1,7 @@
-import webpack  from "webpack";
-import merge    from "webpack-merge";
+const webpack  = require("webpack");
+const merge    = require("webpack-merge");
 
-import baseConfig from "../base";
+const baseConfig = require("../base");
 
 const PORT = process.env.PORT || 8888;
 
@@ -63,4 +63,4 @@ const config = merge.smart(baseConfig, {
   target: "electron-renderer",
 });
 
-export default config;
+module.exports = config;
