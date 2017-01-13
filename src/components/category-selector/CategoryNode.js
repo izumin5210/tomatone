@@ -23,6 +23,14 @@ type State = {
 /* eslint-enable */
 
 export default class CategoryNode extends Component {
+
+  static isLinkActive({ query }, props): boolean {
+    if (query == null) {
+      return props.query.category == null;
+    }
+    return query.category === props.query.category;
+  }
+
   constructor(props: Props) {
     super(props);
     const { currentCategory, category } = props;
@@ -32,7 +40,17 @@ export default class CategoryNode extends Component {
   }
 
   state: State;
-  props: Props
+
+  onLinkClicked(e: { preventDefault: () => void }) {
+    if (this.hasChildCategories) {
+      this.setState({ opened: !this.state.opened });
+    } else {
+      this.props.close();
+    }
+    if (!this.hasTasks) {
+      e.preventDefault();
+    }
+  }
 
   get hasChildCategories(): boolean {
     return this.props.children != null;
@@ -42,15 +60,41 @@ export default class CategoryNode extends Component {
     return this.state.opened && this.hasChildCategories;
   }
 
-  render() {
-    const { category, taskCounts, close, children } = this.props;
-    const { path, subName } = category;
-    const { opened } = this.state;
-    const to = { query: { category: path } };
+  get hasTasks(): boolean {
+    return this.props.taskCounts.has(this.props.category.id);
+  }
+
+  props: Props
+
+  renderLink({ isActive, onClick, href }: any) {
+    const { category, taskCounts } = this.props;
+    const { id, subName, depth } = category;
     let modifier = "";
     if (this.hasChildCategories) {
-      modifier = `_${opened ? "opened" : "closed"}`;
+      modifier = `_${this.state.opened ? "opened" : "closed"}`;
     }
+    return (
+      <a
+        {...{ href, onClick }}
+        className={`CategoryNode__link${isActive ? "_active" : ""}`}
+        style={{
+          // FIXME
+          paddingLeft: `${16 + (Math.max(depth - 2, 0) * 16)}px`,
+        }}
+      >
+        <span className={`CategoryNode__name${modifier}`}>
+          {subName}
+        </span>
+        { this.hasTasks &&
+          <span className="CategoryNode__count">{taskCounts.get(id, 0)}</span>
+
+        }
+      </a>
+    );
+  }
+
+  render() {
+    const { category, children } = this.props;
 
     /* eslint-disable jsx-a11y/no-static-element-interactions */
     return (
@@ -61,38 +105,13 @@ export default class CategoryNode extends Component {
         }}
       >
         <Link
-          to={to}
-          onClick={() => {
-            if (this.hasChildCategories) {
-              this.setState({ opened: !opened });
-            } else {
-              close();
-            }
-          }}
-          isActive={({ query }, props) => {
-            if (query == null) {
-              return props.query.category == null;
-            }
-            return query.category === props.query.category;
-          }}
+          to={{ query: { category: category.path } }}
+          onClick={e => this.onLinkClicked(e)}
+          isActive={(location, props) => CategoryNode.isLinkActive(location, props)}
         >
-          {({ isActive, onClick, href }) => (
-            <a
-              {...{ href, onClick }}
-              className={`CategoryNode__link${isActive ? "_active" : ""}`}
-              style={{
-                // FIXME
-                paddingLeft: `${16 + (Math.max(category.depth - 2, 0) * 16)}px`,
-              }}
-            >
-              <span className={`CategoryNode__name${modifier}`}>
-                {subName}
-              </span>
-              <span className="CategoryNode__count">{taskCounts.get(category.id, 0)}</span>
-            </a>
-          )}
+          {props => this.renderLink(props)}
         </Link>
-        { opened && children }
+        { this.state.opened && children }
       </li>
     );
     /* eslint-enable */
