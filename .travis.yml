@@ -33,6 +33,7 @@ after_success:
 - ((test "${TRAVIS_TAG}" != "pre-release") && (test "${TRAVIS_BRANCH}" = "master") && (test "${TRAVIS_PULL_REQUEST}" = "false")) &&
   brew tap tcnksm/ghr &&
   brew install ghr &&
+  yarn run package &&
   ghr --username $GH_USER --token $GH_TOKEN --recreate --prerelease --debug pre-release release/mac/tomatone-*.dmg
 - (test "${TRAVIS_TAG}" && (test "${TRAVIS_TAG}" != "pre-release")) &&
   yarn run package:release
