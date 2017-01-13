@@ -20,8 +20,6 @@ addons:
   #   - libgnome-keyring-dev
   #   - icnsutils
 before_install:
-- brew tap tcnksm/ghr
-- brew install ghr
 - nvm install 6
 - nvm use 6
 - curl -o- -L https://yarnpkg.com/install.sh | bash
@@ -32,17 +30,7 @@ script:
 - yarn test
 - yarn run build
 after_success:
-- ((test ${TRAVIS_TAG}) || (test ${TRAVIS_BRANCH} = "master")) &&
-  yarn run package &&
-  ((test ${TRAVIS_TAG} != "pre-release") && (test ${TRAVIS_BRANCH} = "master")) &&
-  ghr --username $GITHUB_USER --token $GITHUB_TOKEN --recreate --prerelease --debug pre-release release/mac/tomatone-*.dmg
-deploy:
-  provider: releases
-  api_key:
-    secure: 0C0ify2LC21eb0+7Tn6S0RnECRcABW1yitsg8ubB/RKRK4jWrh64YLNRTq9tjMre73XsFxkR7V4/aHZxusbMyPJga1wuDwIvyF6yynySy371PAzWn40TRlWMIsd4zAjFsBiVGYOel1xCmO5/6ay/cLSlneOd8ogAc9paWPHm+hCzG+ky6gVCDaRLGpPEoB7GLJLI6ednmQCBWRWv7xS3hyal8I1wjH3EyjqBLnlSjUCS17FUUqH+Oag2X5ubmjKXwFDJTiPBzY5aPCjT7lYNN2BwNS2lBfsPkW5ZqG2PtR9V+9cV11ik+tsnmDWywXqBoue0qLX0B4kqso4Jdx3FWJXtYvhTnpimziaCm/8CUnu0gzQsB6oQLGe39GXMldI3lryEdilGKQ8WAU+mUAnai5Rf3EwGuJzPYqXAjlIzYhjHKQltT0xJ58XXCR7yQ8wk/hfBAmGrvRCTqL3FB6XvaHTaR0hhIuwUIV6gsPLRmRMoOZQhghZItvix6p+bsL/YQM5LvpYF62JfQwKnRzKxeAy2oarIVgW5gYJA8CcAQ7sIo/e66qXypJDote9p2Yg3JNjcQBx0jHrm7+LgXmrt0zTpEQDlnWSmccfWtkV9RF94csWXgMbDUBTGUnWnjdG2znxJmTjMf6az3TiZ7N2dpxMTo49w6Jr2PXBw7tTKmo4=
-  file_glob: true
-  file: "release/mac/tomatone-*.dmg"
-  skip_cleanup: true
-  on:
-    repo: izumin5210/tomatone
-    tags: true
+- ((test "${TRAVIS_TAG}" != "pre-release") && (test "${TRAVIS_BRANCH}" = "master") && (test "${TRAVIS_PULL_REQUEST}" = "false")) &&
+  yarn run package:prerelease
+- (test "${TRAVIS_TAG}" && (test "${TRAVIS_TAG}" != "pre-release")) &&
+  yarn run package:release
