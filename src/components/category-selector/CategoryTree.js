@@ -27,7 +27,7 @@ export default function CategoryTree(
     .sortBy(category => category.name)
     .map((category) => {
       const childCategories = categories
-        .filter(({ name }) => name.startsWith(category.name))
+        .filter(sub => category.isParentOf(sub))
         .filterNot(({ id }) => id === category.id);
       return (
         <CategoryNode
