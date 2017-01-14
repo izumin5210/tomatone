@@ -24,20 +24,19 @@
   line-height: 1;
 }
 
-.TaskItemContent::after {
-  @apply --TaskItemContent__icon_right;
-  @apply --TaskItemContent__button_small;
-  @apply --TaskItemContent__button_small_visible;
-
-  flex: 0 0 auto;
-  content: "\f08d";
-  font-family: "FontAwesome";
-  display: none;
-}
-
-.TaskItemContent__title,
+.TaskItemContent__heading,
 .TaskItemContent__form-edit {
   flex: 1 1;
+}
+
+.TaskItemContent__title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: normal;
+}
+
+.CategoryPath + .TaskItemContent__title {
+  margin-top: calc(0.5 * var(--spacing));
 }
 
 .TaskItemContent__form-edit {
@@ -61,6 +60,7 @@
   @apply --TaskItemContent__button_small;
 }
 
-.TaskItem:hover .TaskItemContent__button_small {
+.TaskItem:hover .TaskItemContent__button_small,
+.TaskItem_selected:hover .TaskItemContent__button_small {
   @apply --TaskItemContent__button_small_visible;
 }

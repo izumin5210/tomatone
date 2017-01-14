@@ -2,17 +2,20 @@
 import React, { Component }       from "react";
 import { DropTarget, DragSource } from "react-dnd";
 
-import {
+import type { Map } from "immutable";
+
+import TaskItemContent from "./TaskItemContent";
+
+import type {
   Category,
   Task,
 } from "../../entities";
 
-import TaskItemContent from "./TaskItemContent";
-
 /* eslint-disable no-multi-spaces, react/no-unused-prop-types */
 export type Props = {
   task:              Task;
-  category:          ?Category;
+  category:          Category;
+  categories:        Map<number, Category>;
   order:             number;
   check:             () => void;
   update:            (editedTask: Task) => void;
@@ -116,6 +119,7 @@ export default class TaskItem extends Component {
         <TaskItemContent
           task={this.props.task}
           category={this.props.category}
+          categories={this.props.categories}
           delete={this.props.delete}
           update={this.props.update}
         />
@@ -124,7 +128,8 @@ export default class TaskItem extends Component {
   }
 
   render() {
-    const { task, connectDragSource, connectDropTarget, isDragging, canDrop } = this.props;
+    const { task, selected } = this.props;
+    const { connectDragSource, connectDropTarget, isDragging, canDrop } = this.props;
     const completeId = `TaskItem__complete_${task.id}`;
     const selectId = `TaskItem__select_${task.id}`;
 
@@ -133,6 +138,8 @@ export default class TaskItem extends Component {
       modifier = canDrop ? "_dragging" : "_not-droppable";
     } else if (canDrop) {
       modifier = "_droppable";
+    } else if (selected) {
+      modifier = "_selected";
     }
 
     return connectDragSource(connectDropTarget((
