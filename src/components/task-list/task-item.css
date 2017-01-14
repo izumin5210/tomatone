@@ -4,6 +4,10 @@
 
     position: relative;
     align-items: center;
+
+    &:first-child .TaskItem__content {
+      border-top: none;
+    }
   };
 }
 
@@ -76,8 +80,4 @@
   @apply --List__body;
 
   cursor: move;
-}
-
-.TaskItem:first-child .TaskItem__content {
-  border-top: none;
 }

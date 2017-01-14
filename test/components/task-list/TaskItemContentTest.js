@@ -3,12 +3,15 @@
 import { mount } from "enzyme";
 import { spy }   from "sinon";
 
+import { Map } from "immutable";
+
 import TaskItemContent from "../../../src/components/task-list/TaskItemContent";
 /* eslint-disable no-duplicate-imports */
 import type { Props }  from "../../../src/components/task-list/TaskItemContent";
 /* eslint-enable */
 
 import {
+  Category,
   Task,
 } from "../../../src/entities";
 
@@ -22,9 +25,10 @@ describe("<TaskItemContent />", () => {
     const task = new Task({ id: 1, title: "awesome task" });
     props = {
       task,
-      category: undefined,
-      update:   spy(),
-      delete:   spy(),
+      category:   Category.NO_CATEGORY,
+      categories: Map(),
+      update:     spy(),
+      delete:     spy(),
     };
     wrapper = mount(<TaskItemContent {...props} />);
   });

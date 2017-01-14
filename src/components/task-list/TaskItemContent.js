@@ -1,20 +1,24 @@
 /* @flow */
 import React, { Component } from "react";
 
-import {
+import type { Map } from "immutable";
+
+import CategoryPath from "../category-path";
+import TaskItemButton from "./TaskItemButton";
+
+import type {
   Category,
   Task,
 } from "../../entities";
 
-import TaskItemButton from "./TaskItemButton";
-
 // FIXME: I want to add align option to flowtype/space-after-type-colon rule...
 /* eslint-disable no-multi-spaces */
 export type Props = {
-  task:     Task;
-  category: ?Category;
-  update:   (editedTask: Task) => void;
-  delete:   () => void;
+  task:       Task;
+  category:   Category;
+  categories: Map<number, Category>;
+  update:     (editedTask: Task) => void;
+  delete:     () => void;
 };
 
 export type State = {
@@ -59,11 +63,7 @@ export default class TaskItemContent extends Component {
 
   get defaultTitle(): string {
     const { category, task } = this.props;
-    if (category != null) {
-      return `${category.name}/${task.title}`;
-    }
-
-    return task.title;
+    return category.isMeta ? task.title : `${category.name}/${task.title}`;
   }
 
   props: Props;
@@ -114,10 +114,18 @@ export default class TaskItemContent extends Component {
 
   render() {
     const { editing } = this.state;
-    const { task } = this.props;
+    const { task, category, categories } = this.props;
 
     const title = (
-      <span className="TaskItemContent__title">{task.title}</span>
+      <div className="TaskItemContent__heading">
+        { !category.isMeta &&
+          <CategoryPath
+            currentCategory={category}
+            {...{ categories }}
+          />
+        }
+        <h3 className="TaskItemContent__title">{task.title}</h3>
+      </div>
     );
 
     return (

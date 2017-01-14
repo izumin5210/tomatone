@@ -6,12 +6,10 @@ import { List, Map }        from "immutable";
 
 import assert from "power-assert"; // eslint-disable-line
 
-import {
-  Category,
-  Task,
-} from "../../entities";
+import { Category }  from "../../entities";
+import type { Task } from "../../entities"; // eslint-disable-line
 
-import TaskItem              from "./TaskItem";
+import TaskItem from "./TaskItem";
 
 // FIXME: I want to add align option to flowtype/space-after-type-colon rule...
 /* eslint-disable no-multi-spaces */
@@ -89,12 +87,12 @@ export default class TaskList extends Component {
   }
 
   getTaskItem(task: Task, order: number) {
+    const { categories } = this.props;
+    const category = categories.get(task.categoryId, Category.NO_CATEGORY);
     return (
       <TaskItem
         key={task.id}
-        task={task}
-        category={this.props.categories.get(task.categoryId)}
-        order={order}
+        {...{ task, category, categories, order }}
         check={() => this.props.completeTask(task)}
         update={editedTask => this.props.updateTask(editedTask)}
         delete={() => this.props.deleteTask(task)}

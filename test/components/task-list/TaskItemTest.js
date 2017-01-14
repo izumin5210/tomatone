@@ -2,6 +2,8 @@
 import { mount } from "enzyme";
 import { spy }   from "sinon";
 
+import { Map } from "immutable";
+
 import React, { Component } from "react";
 import { DragDropContext }  from "react-dnd";
 import TestBackend          from "react-dnd-test-backend";
@@ -12,6 +14,7 @@ import type { Props } from "../../../src/components/task-list/TaskItem";
 /* eslint-enable */
 
 import {
+  Category,
   Task,
 } from "../../../src/entities";
 
@@ -37,7 +40,8 @@ describe("<TaskItem />", () => {
     const task = new Task({ id: 1, title: "awesome task" });
     props = {
       task,
-      category:          undefined,
+      category:          Category.NO_CATEGORY,
+      categories:        Map(),
       order:             0,
       check:             spy(),
       select:            spy(),

@@ -2,17 +2,20 @@
 import React, { Component }       from "react";
 import { DropTarget, DragSource } from "react-dnd";
 
-import {
+import type { Map } from "immutable";
+
+import TaskItemContent from "./TaskItemContent";
+
+import type {
   Category,
   Task,
 } from "../../entities";
 
-import TaskItemContent from "./TaskItemContent";
-
 /* eslint-disable no-multi-spaces, react/no-unused-prop-types */
 export type Props = {
   task:              Task;
-  category:          ?Category;
+  category:          Category;
+  categories:        Map<number, Category>;
   order:             number;
   check:             () => void;
   update:            (editedTask: Task) => void;
@@ -116,6 +119,7 @@ export default class TaskItem extends Component {
         <TaskItemContent
           task={this.props.task}
           category={this.props.category}
+          categories={this.props.categories}
           delete={this.props.delete}
           update={this.props.update}
         />
