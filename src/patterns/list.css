@@ -26,6 +26,7 @@
 
   --List__body: {
     flex: 1;
+    align-self: stretch;
     padding: calc(2 * var(--spacing)) 0;
     margin-right: calc(2 * var(--spacing));
     border-top: 1px solid var(--gray-light);

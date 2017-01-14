@@ -128,7 +128,8 @@ export default class TaskItem extends Component {
   }
 
   render() {
-    const { task, connectDragSource, connectDropTarget, isDragging, canDrop } = this.props;
+    const { task, selected } = this.props;
+    const { connectDragSource, connectDropTarget, isDragging, canDrop } = this.props;
     const completeId = `TaskItem__complete_${task.id}`;
     const selectId = `TaskItem__select_${task.id}`;
 
@@ -137,6 +138,8 @@ export default class TaskItem extends Component {
       modifier = canDrop ? "_dragging" : "_not-droppable";
     } else if (canDrop) {
       modifier = "_droppable";
+    } else if (selected) {
+      modifier = "_selected";
     }
 
     return connectDragSource(connectDropTarget((

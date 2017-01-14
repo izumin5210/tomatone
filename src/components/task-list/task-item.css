@@ -3,7 +3,6 @@
     @apply --List__item;
 
     position: relative;
-    align-items: center;
 
     &:first-child .TaskItem__content {
       border-top: none;
@@ -13,6 +12,20 @@
 
 .TaskItem {
   @apply --TaskItem;
+}
+
+.TaskItem_selected {
+  @apply --TaskItem;
+
+  background-color: var(--primary-green-light);
+
+  &::before {
+    position: absolute;
+    display: block;
+    content: "";
+    height: 100%;
+    border-left: 4px solid var(--primary-green);
+  }
 }
 
 .TaskItem_dragging,
@@ -54,11 +67,6 @@
   cursor: auto;
 }
 
-.TaskItem__select:checked ~ .TaskItem__content {
-  font-weight: bold;
-  color: var(--primary-green-dark);
-}
-
 .TaskItem__select:checked ~ .TaskItem__content > .TaskItemContent::after {
   display: block;
 }
@@ -66,9 +74,11 @@
 .TaskItem__icon {
   @apply --List__icon;
 
-  width: 16px;
-  height: 16px;
-  line-height: 16px;
+  align-self: center;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  font-size: 16px;
   border-radius: 4px;
   border: 1px solid var(--color-text_dark);
   position: relative;
