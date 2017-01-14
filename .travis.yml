@@ -1,39 +1,30 @@
-osx_image: xcode7.3
-sudo: required
-dist: trusty
-language: c
+language: node_js
+node_js:
+- 6
+sudo: false
 matrix:
+  fast_finish: true
   include:
   - os: osx
-  # - os: linux
-  #   env: CC=clang CXX=clang++ npm_config_clang=1
-  #   compiler: clang
+    osx_image: xcode8.2
+  - os: linux
+    dist: trusty
 cache:
   yarn: true
   directories:
   - node_modules
   - "$HOME/.electron"
   - "$HOME/.cache"
-addons:
-  # apt:
-  #   packages:
-  #   - libgnome-keyring-dev
-  #   - icnsutils
-before_install:
-- nvm install 6
-- nvm use 6
-- curl -o- -L https://yarnpkg.com/install.sh | bash
-- export PATH=$HOME/.yarn/bin:$PATH
-install:
-- yarn
 script:
-- yarn test
-- yarn run build
+- $(npm bin)/npm-run-all --parallel test build
 after_success:
-- ((test "${TRAVIS_TAG}" != "pre-release") && (test "${TRAVIS_BRANCH}" = "master") && (test "${TRAVIS_PULL_REQUEST}" = "false")) &&
+- test "${TRAVIS_OS_NAME}" = "osx" &&
+  (test "${TRAVIS_TAG}" != "pre-release" && test "${TRAVIS_BRANCH}" = "master") &&
+  test "${TRAVIS_PULL_REQUEST}" = "false" &&
   brew tap tcnksm/ghr &&
   brew install ghr &&
   yarn run package &&
   ghr --username $GH_USER --token $GH_TOKEN --recreate --prerelease --debug pre-release release/mac/tomatone-*.dmg
-- (test "${TRAVIS_TAG}" && (test "${TRAVIS_TAG}" != "pre-release")) &&
+- test "${TRAVIS_OS_NAME}" = "osx" &&
+  (test "${TRAVIS_TAG}" && (test "${TRAVIS_TAG}" != "pre-release")) &&
   yarn run package:release

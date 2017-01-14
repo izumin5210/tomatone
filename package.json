@@ -99,6 +99,7 @@
     "json-loader": "^0.5.4",
     "minimist": "^1.2.0",
     "mocha": "^3.1.2",
+    "npm-run-all": "^4.0.0",
     "postcss-apply": "^0.4.0",
     "postcss-color-function": "^2.0.1",
     "postcss-csso": "^1.1.2",
@@ -142,27 +143,27 @@
     "url": "git+https://github.com/izumin5210/tomatone.git"
   },
   "scripts": {
-    "build": "npm run build:main && npm run build:renderer",
+    "build": "npm-run-all --parallel build:*",
     "build:main": "NODE_ENV=production NODE_TARGET=main webpack --profile --colors",
     "build:renderer": "NODE_ENV=production NODE_TARGET=renderer webpack --profile --colors",
     "clean": "rm -rf dist release",
     "dev": "npm run server -- --start-dev",
     "generate:migration": "touch ./src/db/schemata/$(date +'%Y%m%d%H%M%S').js",
-    "lint": "npm run lint:js && npm run lint:css",
+    "lint": "npm-run-all --parallel lint:*",
     "lint:css": "stylelint 'src/**/*.css'",
-    "lint:js": "npm run lint:js:src && npm run lint:js:test",
+    "lint:js": "npm-run-all --parallel lint:js:*",
     "lint:js:src": "eslint src",
     "lint:js:test": "eslint --global assert --global React test",
     "package": "build",
     "package:release": "npm run package -- --publish onTag",
     "prebuild": "npm run clean",
     "prepackage": "npm run build",
-    "pretest": "npm run typecheck && npm run lint",
+    "pretest": "npm-run-all --parallel typecheck lint",
     "server": "NODE_ENV=development node --max_old_space_size=2096 -r babel-register ./scripts/server.js",
     "start": "HOT=1 NODE_ENV=development electron --debug=5858 -r babel-register -r babel-polyfill ./src/main.js",
     "start:production": "electron .",
-    "test": "npm run test:js",
+    "test": "npm-run-all --parallel test:*",
     "test:js": "mocha",
-    "typecheck": "flow src"
+    "typecheck": "flow"
   }
 }
