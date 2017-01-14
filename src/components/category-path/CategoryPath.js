@@ -15,7 +15,7 @@ export type Props = {
 };
 /* eslint-enable */
 
-export default function CategoryBreadcrumbs({ currentCategory, categories }: Props) {
+export default function CategoryPath({ currentCategory, categories }: Props) {
   if (!categories.has(currentCategory.id)) {
     return null;
   }
@@ -24,7 +24,7 @@ export default function CategoryBreadcrumbs({ currentCategory, categories }: Pro
       .filter(cat => cat.isParentOf(currentCategory) || (cat.id === currentCategory.id))
       .sortBy(cat => cat.depth)
       .map(cat => (
-        <li key={`category-${cat.id}`} className="CategoryBreadcrumbs__item">
+        <li key={`category-${cat.id}`} className="CategoryPath__item">
           <Link
             to={{ query: { category: cat.path } }}
             onClick={e => e.stopPropagation()}
@@ -36,7 +36,7 @@ export default function CategoryBreadcrumbs({ currentCategory, categories }: Pro
       .toArray();
 
   return (
-    <ul className="CategoryBreadcrumbs">
+    <ul className="CategoryPath">
       {items}
     </ul>
   );

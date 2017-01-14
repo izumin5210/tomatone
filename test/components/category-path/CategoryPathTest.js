@@ -7,8 +7,8 @@ import { Map }          from "immutable";
 import { Category } from "../../../src/entities";
 
 /* eslint-disable no-duplicate-imports */
-import CategoryBreadcrumbs from "../../../src/components/category-selector/CategoryBreadcrumbs";
-import type { Props }      from "../../../src/components/category-selector/CategoryBreadcrumbs";
+import CategoryPath   from "../../../src/components/category-path/CategoryPath";
+import type { Props } from "../../../src/components/category-path/CategoryPath";
 /* eslint-enable */
 
 function createWrapper(props: Props) {
@@ -20,12 +20,12 @@ function createWrapper(props: Props) {
       onPush={() => {}}
       onReplace={() => {}}
     >
-      <CategoryBreadcrumbs {...props} />
+      <CategoryPath {...props} />
     </StaticRouter>
   ));
 }
 
-describe("<CategoryBreadcrumbs />", () => {
+describe("<CategoryPath />", () => {
   let wrapper;
 
   let currentCategory: Category;
@@ -47,7 +47,7 @@ describe("<CategoryBreadcrumbs />", () => {
     });
 
     it("renders valid anchors", () => {
-      const items = wrapper.find(".CategoryBreadcrumbs__item Link");
+      const items = wrapper.find(".CategoryPath__item Link");
       assert(items.length === 1);
       {
         const href = "href=\"/?category=%2Fcategory1\"";
@@ -64,7 +64,7 @@ describe("<CategoryBreadcrumbs />", () => {
     });
 
     it("renders valid anchors", () => {
-      const items = wrapper.find(".CategoryBreadcrumbs__item Link");
+      const items = wrapper.find(".CategoryPath__item Link");
       assert(items.length === 3);
       {
         const href = "href=\"/?category=%2Fcategory1\"";

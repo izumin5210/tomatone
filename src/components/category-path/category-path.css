@@ -1,12 +1,13 @@
-.CategoryBreadcrumbs {
+.CategoryPath {
   flex: 1 1 auto;
   margin: 0;
   padding: 0;
 }
 
-.CategoryBreadcrumbs__item {
+.CategoryPath__item {
   display: inline-block;
   list-style: none;
+  font-size: 0.9rem;
 
   & > :link,
   & > :visited {
@@ -22,5 +23,6 @@
     display: inline-block;
     content: "/";
     margin: 0 calc(0.5 * var(--spacing));
+    color: var(--gray-light);
   }
 }

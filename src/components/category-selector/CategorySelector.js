@@ -7,7 +7,7 @@ import {
   Task,
 } from "../../entities";
 
-import CategoryBreadcrumbs from "./CategoryBreadcrumbs";
+import CategoryPath from "../category-path";
 import CategoryTree        from "./CategoryTree";
 
 // FIXME: I want to add align option to flowtype/space-after-type-colon rule...
@@ -60,7 +60,7 @@ export default class CategorySelector extends Component {
           className={`CategorySelector__button-open${modifier}`}
           onClick={() => this.setOpened(!opened)}
         >
-          <CategoryBreadcrumbs
+          <CategoryPath
             {...{ currentCategory, categories }}
           />
         </button>
