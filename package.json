@@ -1,7 +1,7 @@
 {
   "name": "tomatone",
   "description": "Pluggable pomodoro timer",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "author": {
     "name": "Masayuki IZUMI",
     "email": "masayuki@izumin.info",
@@ -70,6 +70,7 @@
     "babel-preset-react": "^6.16.0",
     "babel-preset-react-optimize": "^1.0.1",
     "babel-preset-stage-2": "^6.18.0",
+    "conventional-changelog-cli": "^1.2.0",
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.25.0",
     "devtron": "^1.4.0",
@@ -148,6 +149,7 @@
     "build:renderer": "NODE_ENV=production NODE_TARGET=renderer webpack --profile --colors",
     "clean": "rm -rf dist release",
     "dev": "npm run server -- --start-dev",
+    "generate:changelog": "conventional-changelog --preset angular --infile CHANGELOG.md --same--file",
     "generate:migration": "touch ./src/db/schemata/$(date +'%Y%m%d%H%M%S').js",
     "lint": "npm-run-all --parallel lint:*",
     "lint:css": "stylelint 'src/**/*.css'",
@@ -155,15 +157,17 @@
     "lint:js:src": "eslint src",
     "lint:js:test": "eslint --global assert --global React test",
     "package": "build",
-    "package:release": "npm run package -- --publish onTag",
+    "package:release": "npm run package -- --publish onTag --draft=false",
     "prebuild": "npm run clean",
     "prepackage": "npm run build",
     "pretest": "npm-run-all --parallel typecheck lint",
+    "preversion": "npm test",
     "server": "NODE_ENV=development node --max_old_space_size=2096 -r babel-register ./scripts/server.js",
     "start": "HOT=1 NODE_ENV=development electron --debug=5858 -r babel-register -r babel-polyfill ./src/main.js",
     "start:production": "electron .",
     "test": "npm-run-all --parallel test:*",
     "test:js": "mocha",
-    "typecheck": "flow"
+    "typecheck": "flow",
+    "version": "npm run generate:changelog && git add CHANGELOG.md"
   }
 }
