@@ -29,10 +29,13 @@ export default function CategoryTree(
       const childCategories = categories
         .filter(sub => category.isParentOf(sub))
         .filterNot(({ id }) => id === category.id);
+      const taskCount = taskCounts
+        .filter((c, i) => childCategories.has(i) || i === category.id)
+        .reduce((r, c) => r + c, 0);
       return (
         <CategoryNode
           key={`category-tree-item-${category.id}`}
-          {...{ currentCategory, category, taskCounts, close }}
+          {...{ currentCategory, category, taskCount, close }}
         >
           { !childCategories.isEmpty() ? (
             <CategoryTree

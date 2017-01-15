@@ -46,6 +46,16 @@ export default class State extends StateRecord {
     return this.categories.get(this.timer.selectedCategoryId);
   }
 
+  currentCategoryTasks(): Map<number, Task> {
+    const currentCategory = this.currentCategory();
+    return this.tasks
+      .filter((task) => {
+        const category = this.categories.get(task.categoryId);
+        return currentCategory.includes(task)
+          || (category != null && currentCategory.isParentOf(category));
+      });
+  }
+
   hasStarted(): boolean {
     return this.timer.hasStarted();
   }

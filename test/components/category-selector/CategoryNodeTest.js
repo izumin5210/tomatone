@@ -3,7 +3,6 @@ import { mount } from "enzyme";
 import { spy }   from "sinon";
 
 import { StaticRouter } from "react-router";
-import { Map }          from "immutable";
 
 import {
   Category,
@@ -34,7 +33,7 @@ describe("<CategoryNode />", () => {
   let id: number;
   let currentCategory: Category;
   let category: Category;
-  let taskCounts: Map<number, number>;
+  let taskCount: number;
   let closeSpy: spy;
   let props: Props;
 
@@ -43,11 +42,11 @@ describe("<CategoryNode />", () => {
     closeSpy = spy();
     category = new Category({ id: (id += 1), name: "category1" });
     currentCategory = new Category({ id: (id += 1), name: "category2" });
-    taskCounts = Map([[1, 3], [2, 2]]);
+    taskCount = 2;
     props = {
       currentCategory,
       category,
-      taskCounts,
+      taskCount,
       close:    closeSpy,
       children: null,
     };

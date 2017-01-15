@@ -1,9 +1,8 @@
 /* @flow */
 import React, { Component } from "react";
 import { Link }             from "react-router";
-import { Map }              from "immutable";
 
-import {
+import type {
   Category,
 } from "../../entities";
 
@@ -12,7 +11,7 @@ import {
 export type Props = {
   currentCategory: Category;
   category:        Category;
-  taskCounts:      Map<number, number>;
+  taskCount:       number;
   close:           () => void;
   children?:       ?React$Element<*>;
 };
@@ -41,14 +40,11 @@ export default class CategoryNode extends Component {
 
   state: State;
 
-  onLinkClicked(e: { preventDefault: () => void }) {
+  onLinkClicked() {
     if (this.hasChildCategories) {
       this.setState({ opened: !this.state.opened });
     } else {
       this.props.close();
-    }
-    if (!this.hasTasks) {
-      e.preventDefault();
     }
   }
 
@@ -60,15 +56,11 @@ export default class CategoryNode extends Component {
     return this.state.opened && this.hasChildCategories;
   }
 
-  get hasTasks(): boolean {
-    return this.props.taskCounts.has(this.props.category.id);
-  }
-
   props: Props
 
   renderLink({ isActive, onClick, href }: any) {
-    const { category, taskCounts } = this.props;
-    const { id, subName, depth } = category;
+    const { category, taskCount } = this.props;
+    const { subName, depth } = category;
     let modifier = "";
     if (this.hasChildCategories) {
       modifier = `_${this.state.opened ? "opened" : "closed"}`;
@@ -85,10 +77,7 @@ export default class CategoryNode extends Component {
         <span className={`CategoryNode__name${modifier}`}>
           {subName}
         </span>
-        { this.hasTasks &&
-          <span className="CategoryNode__count">{taskCounts.get(id, 0)}</span>
-
-        }
+        <span className="CategoryNode__count">{taskCount}</span>
       </a>
     );
   }
