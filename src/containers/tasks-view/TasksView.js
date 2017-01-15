@@ -6,15 +6,6 @@ import { Map }              from "immutable";
 import assert from "power-assert"; // eslint-disable-line
 
 import {
-  Category,
-  Task,
-} from "../../entities";
-
-import {
-  State,
-} from "../../models";
-
-import {
   TasksActions,
 } from "../../actions";
 
@@ -24,9 +15,18 @@ import {
   TaskList,
 } from "../../components";
 
+import type {
+  Category,
+  Task,
+} from "../../entities";
+
+import type {
+  State,
+} from "../../models";
+
 /* eslint-disable no-multi-spaces */
 type Props = {
-  state:    State;
+  state: State;
 };
 /* eslint-enable */
 
@@ -46,8 +46,7 @@ export default class TasksView extends Component {
   }
 
   get tasks(): Map<number, Task> {
-    return this.props.state.tasks
-      .filter(task => this.currentCategory.includes(task));
+    return this.props.state.currentCategoryTasks();
   }
 
   get activeTasks(): Map<number, Task> {
@@ -60,6 +59,11 @@ export default class TasksView extends Component {
 
   get currentCategory(): Category {
     return this.props.state.currentCategory();
+  }
+
+  get childCategories(): Map<number, Category> {
+    return this.props.state.categories
+      .filter(c => this.currentCategory.isParentOf(c));
   }
 
   createTask(title: string) {
