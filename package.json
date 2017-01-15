@@ -157,7 +157,7 @@
     "lint:js:src": "eslint src",
     "lint:js:test": "eslint --global assert --global React test",
     "package": "build",
-    "package:release": "npm run package -- --publish onTag",
+    "package:release": "npm run package -- --publish onTag --draft=false",
     "prebuild": "npm run clean",
     "prepackage": "npm run build",
     "pretest": "npm-run-all --parallel typecheck lint",
