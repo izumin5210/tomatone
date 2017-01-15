@@ -28,7 +28,7 @@ function createWrapper(props: Props) {
 describe("<CategoryPath />", () => {
   let wrapper;
 
-  let currentCategory: Category;
+  let category: Category;
   let categories: Map<number, Category>;
 
   beforeEach(() => {
@@ -40,10 +40,10 @@ describe("<CategoryPath />", () => {
     ]);
   });
 
-  context("when the currentCategory's depth is 1", () => {
+  context("when the category's depth is 1", () => {
     beforeEach(() => {
-      currentCategory = categories.get(1);
-      wrapper = createWrapper({ currentCategory, categories });
+      category = categories.get(1);
+      wrapper = createWrapper({ category, categories });
     });
 
     it("renders valid anchors", () => {
@@ -57,10 +57,10 @@ describe("<CategoryPath />", () => {
     });
   });
 
-  context("when the currentCategory's depth is 3", () => {
+  context("when the category's depth is 3", () => {
     beforeEach(() => {
-      currentCategory = categories.get(3);
-      wrapper = createWrapper({ currentCategory, categories });
+      category = categories.get(3);
+      wrapper = createWrapper({ category, categories });
     });
 
     it("renders valid anchors", () => {
@@ -86,8 +86,8 @@ describe("<CategoryPath />", () => {
 
   context("when categories has not loaded", () => {
     beforeEach(() => {
-      currentCategory = categories.get(1);
-      wrapper = createWrapper({ currentCategory, categories: Map() });
+      category = categories.get(1);
+      wrapper = createWrapper({ category, categories: Map() });
     });
 
     it("does not render DOMs", () => {

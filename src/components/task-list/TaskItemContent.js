@@ -120,8 +120,7 @@ export default class TaskItemContent extends Component {
       <div className="TaskItemContent__heading">
         { !category.isMeta &&
           <CategoryPath
-            currentCategory={category}
-            {...{ categories }}
+            {...{ category, categories }}
           />
         }
         <h3 className="TaskItemContent__title">{task.title}</h3>

@@ -10,30 +10,30 @@ import {
 // FIXME: I want to add align option to flowtype/space-after-type-colon rule...
 /* eslint-disable no-multi-spaces */
 export type Props = {
-  currentCategory: Category;
-  categories:      Map<number, Category>;
+  category:   Category;
+  categories: Map<number, Category>;
 };
 /* eslint-enable */
 
-export default function CategoryPath({ currentCategory, categories }: Props) {
-  if (!categories.has(currentCategory.id)) {
+export default function CategoryPath({ category, categories }: Props) {
+  if (!categories.has(category.id)) {
     return null;
   }
 
   const items = categories
-      .filter(cat => cat.isParentOf(currentCategory) || (cat.id === currentCategory.id))
-      .sortBy(cat => cat.depth)
-      .map(cat => (
-        <li key={`category-${cat.id}`} className="CategoryPath__item">
-          <Link
-            to={{ query: { category: cat.path } }}
-            onClick={e => e.stopPropagation()}
-          >
-            {cat.subName}
-          </Link>
-        </li>
-      ))
-      .toArray();
+    .filter(cat => cat.isParentOf(category) || (cat.id === category.id))
+    .sortBy(cat => cat.depth)
+    .map(cat => (
+      <li key={`category-${cat.id}`} className="CategoryPath__item">
+        <Link
+          to={{ query: { category: cat.path } }}
+          onClick={e => e.stopPropagation()}
+        >
+          {cat.subName}
+        </Link>
+      </li>
+    ))
+    .toArray();
 
   return (
     <ul className="CategoryPath">

@@ -62,7 +62,7 @@ export default class CategorySelector extends Component {
           onClick={() => this.setOpened(!opened)}
         >
           <CategoryPath
-            {...{ currentCategory, categories }}
+            {...{ category: currentCategory, categories }}
           />
         </button>
         { opened && <CategoryTree
