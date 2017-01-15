@@ -3,6 +3,7 @@
 .*/node_modules/npm/*
 .*/node_modules/electron-packager/*
 .*/node_modules/stylelint/.*
+.*/node_modules/conventional-changelog-*/*
 .*/react/node_modules/.*
 .*/fbjs/node_modules/.*
 
