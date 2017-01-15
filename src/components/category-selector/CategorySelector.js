@@ -45,6 +45,7 @@ export default class CategorySelector extends Component {
     const { opened } = this.state;
     const modifier = opened ? "_opened" : "";
     const taskCounts = tasks
+      .filterNot(task => task.hasCompleted())
       .countBy(task => task.categoryId)
       .set(Category.ALL.id, tasks.size);
 
