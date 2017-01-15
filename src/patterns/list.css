@@ -22,6 +22,7 @@
     border-radius: 50%;
     color: var(--color-text_light);
     margin: calc(2 * var(--spacing));
+    margin-top: calc(3 * var(--spacing));
   }
 
   --List__body: {

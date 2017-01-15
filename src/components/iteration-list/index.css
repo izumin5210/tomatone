@@ -32,6 +32,8 @@
 
 .IterationList__body {
   @apply --List__body;
+
+  line-height: 1;
 }
 
 .IterationList__date + .IterationList__item > .IterationList__body {
@@ -40,8 +42,8 @@
 
 .IterationList__title {
   display: block;
-  line-height: 1;
-  margin-bottom: calc(0.5 * var(--spacing));
+  margin: var(--spacing) 0;
+  font-weight: normal;
 }
 
 .IterationList__metadata {

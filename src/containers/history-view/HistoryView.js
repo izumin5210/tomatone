@@ -26,7 +26,7 @@ export default function HistoryView({ state }: Props) {
         {...{ currentCategory, categories, tasks }}
       />
       <IterationList
-        {...{ iterations, tasks: currentCategoryTasks }}
+        {...{ categories, iterations, tasks: currentCategoryTasks }}
       />
     </div>
   );

@@ -2,6 +2,7 @@
   flex: 1 1 auto;
   margin: 0;
   padding: 0;
+  line-height: 1;
 }
 
 .CategoryPath__item {

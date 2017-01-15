@@ -81,6 +81,8 @@
   font-size: 16px;
   border-radius: 4px;
   border: 1px solid var(--color-text_dark);
+  margin-top: 0;
+  margin-bottom: 0;
   position: relative;
   color: var(--color-text_dark);
   cursor: pointer;

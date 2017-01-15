@@ -64,9 +64,11 @@ export default class Reducer {
     this.reducer.on(":update", state => self.setState({ state }));
 
     subscribe(TimerActions.INIT, async () => {
-      await this.update(getAllTasks);
       await this.update(getAllCategories);
-      await this.update(getAllIterations);
+      await Promise.all([
+        this.update(getAllTasks),
+        this.update(getAllIterations),
+      ]);
       await this.update(deleteUnusedCategories);
     });
 
