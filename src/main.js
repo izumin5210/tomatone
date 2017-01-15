@@ -1,6 +1,6 @@
 /* @flow */
 /* eslint-disable import/no-extraneous-dependencies */
-import { app, ipcMain, powerSaveBlocker } from "electron";
+import { app, Menu, ipcMain, powerSaveBlocker } from "electron";
 /* eslint-enable */
 import menubar from "menubar";
 
@@ -20,6 +20,20 @@ const mb = menubar({
   resizable:     false,
   alwaysOnTop:   (process.env.NODE_ENV === "development"),
 });
+
+const menuTemplate = [
+  {
+    label:   "Edit",
+    submenu: [
+      { label: "Undo", accelerator: "CmdOrCtrl+Z", selector: "undo:" },
+      { label: "Redo", accelerator: "Shift+CmdOrCtrl+Z", selector: "redo:" },
+      { type: "separator" },
+      { label: "Cut", accelerator: "CmdOrCtrl+X", selector: "cut:" },
+      { label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
+      { label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
+    ],
+  },
+];
 
 let powerSaveBlockerId: ?number;
 
@@ -49,6 +63,7 @@ const installExtensions = async () => {
 
 mb.on("ready", async () => {
   await installExtensions();
+  Menu.setApplicationMenu(Menu.buildFromTempalte(menuTemplate));
 });
 
 ipcMain.on(TimerEvents.TIMER_STATE, (event, { started, working }: TimerEvents.TimerState) => {
