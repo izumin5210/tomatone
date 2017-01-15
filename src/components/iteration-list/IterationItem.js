@@ -1,10 +1,16 @@
 /* @flow */
 import React, { Component } from "react";
 import moment from "moment";
+import assert from "power-assert"; // eslint-disable-line
+
+import type { Map } from "immutable";
 
 import { dateTimeProvider } from "../../models";
 
-import {
+import CategoryPath from "../category-path";
+
+import type {
+  Category,
   Iteration,
   Task,
 } from "../../entities";
@@ -15,9 +21,10 @@ import type { DateTimeProvider } from "../../models";
 
 /* eslint-disable no-multi-spaces */
 type Props = {
-   iteration:        Iteration;
-   task:             Task;
-   dateTimeProvider: DateTimeProvider;
+  categories:       Map<number, Category>;
+  iteration:        Iteration;
+  task:             Task;
+  dateTimeProvider: DateTimeProvider;
 };
 /* eslint-enable */
 
@@ -51,7 +58,6 @@ export default class IterationItem extends Component {
     return this.props.iteration.isFinished(now);
   }
 
-
   props: Props;
 
   renderIcon() {
@@ -64,18 +70,25 @@ export default class IterationItem extends Component {
   }
 
   renderBody() {
-    const { iteration, task } = this.props;
-    const { startedAt, totalTimeInMillis, type } = iteration;
-    const title = (task != null) ? task.title : type;
+    const { categories, iteration, task } = this.props;
+    const { startedAt, totalTimeInMillis } = iteration;
     const now = this.props.dateTimeProvider.nowInMilliSeconds();
     let ms = totalTimeInMillis;
     if (!iteration.isFinished(now)) {
       ms -= iteration.remainTimeInMillis(now);
     }
+    const category = categories.get(task.categoryId);
+
+    assert(task != null);
+    assert(category != null);
+
     return (
       <div className="IterationList__body">
+        <CategoryPath
+          {...{ category, categories }}
+        />
         <strong className="IterationList__title">
-          { title }
+          { task.title }
         </strong>
         <div className="IterationList__metadata">
           <time>{IterationItem.getFormattedDate(startedAt)}</time>
