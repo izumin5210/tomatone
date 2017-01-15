@@ -1,8 +1,9 @@
 /* @flow */
 /* eslint-disable import/no-extraneous-dependencies */
-import { app, ipcMain, powerSaveBlocker } from "electron";
+import { app, Menu, ipcMain, powerSaveBlocker } from "electron";
 /* eslint-enable */
-import menubar from "menubar";
+import menubar         from "menubar";
+import openAboutWindow from "about-window";
 
 import { TimerEvents } from "./ipc";
 
@@ -47,8 +48,33 @@ const installExtensions = async () => {
   }
 };
 
+const template = [
+  {
+    label: "About tomatone",
+    click: () => {
+      openAboutWindow({
+        icon_path:      `${__dirname}/assets/images/icon-large.png`,
+        copyright:      "Copyright (c) 2016 Masayuki Izumi",
+        bug_report_url: "https://github.com/izumin5210/tomatone/issues",
+      });
+    },
+  },
+  {
+    type: "separator",
+  },
+  {
+    label:       "Quit tomatone",
+    accelerator: "CmdOrCtrl+Q",
+    selector:    "terminate:",
+  },
+];
+
 mb.on("ready", async () => {
   await installExtensions();
+  const menu = Menu.buildFromTemplate(template);
+  mb.tray.on("right-click", () => {
+    mb.tray.popUpContextMenu(menu);
+  });
 });
 
 ipcMain.on(TimerEvents.TIMER_STATE, (event, { started, working }: TimerEvents.TimerState) => {
