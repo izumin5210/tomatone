@@ -20,9 +20,9 @@ export default class TimerInner extends Component {
 
   remainTime(): string {
     const { remainTimeInMillis } = this.props;
-    const s = ((remainTimeInMillis < 0) ? 0 : remainTimeInMillis) / 1000;
+    const s = Math.round(((remainTimeInMillis < 0) ? 0 : remainTimeInMillis) / 1000);
+    const sec = s % 60;
     const min = Math.floor(s / 60);
-    const sec = Math.round(s) % 60;
     return `${min}:${(`00${sec}`).slice(-2)}`;
   }
 
