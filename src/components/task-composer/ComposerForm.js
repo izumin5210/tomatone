@@ -1,10 +1,11 @@
 /* @flow */
 import React, { Component } from "react";
 import Autocomplete         from "react-autocomplete";
-import { Map }              from "immutable";
 import Fuse                 from "fuse.js";
 
-import { Category } from "../../entities";
+import type { Map } from "immutable";
+
+import type { Category } from "../../entities";
 
 // FIXME: I want to add align option to flowtype/space-after-type-colon rule...
 /* eslint-disable no-multi-spaces */
@@ -14,9 +15,10 @@ type FuseItem = {
 };
 
 export type Props = {
-  categories: Map<number, Category>;
-  createTask: (title: string) => void;
-  close:      () => void;
+  currentCategory: Category;
+  categories:      Map<number, Category>;
+  createTask:      (title: string) => void;
+  close:           () => void;
 };
 
 export type State = {
@@ -51,8 +53,10 @@ export default class ComposerForm extends Component {
       ComposerForm.createListForFuse(props.categories),
       ComposerForm.fuseOptions,
     );
+    const c = this.props.currentCategory;
+    const title = c.isMeta ? "" : `${c.name}/`;
     this.state = {
-      title:            "",
+      title,
       completionResult: this.fuse.search(""),
       focused:          false,
     };

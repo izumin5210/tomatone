@@ -1,17 +1,18 @@
 /* @flow */
 import React, { Component } from "react";
-import { Map }              from "immutable";
-
-import { Category } from "../../entities";
+import type { Map }         from "immutable";
 
 import ComposerModal from "./ComposerModal";
 import ComposerForm  from "./ComposerForm";
 
+import type { Category } from "../../entities";
+
 // FIXME: I want to add align option to flowtype/space-after-type-colon rule...
 /* eslint-disable no-multi-spaces */
 export type Props = {
-  categories: Map<number, Category>;
-  createTask: (title: string) => void;
+  currentCategory: Category;
+  categories:      Map<number, Category>;
+  createTask:      (title: string) => void;
 };
 
 export type State = {
@@ -34,13 +35,13 @@ export default class TaskComposer extends Component {
   }
 
   renderModal() {
+    const { currentCategory, categories, createTask } = this.props;
     return (
       <ComposerModal
         close={() => this.close()}
       >
         <ComposerForm
-          categories={this.props.categories}
-          createTask={this.props.createTask}
+          {...{ currentCategory, categories, createTask }}
           close={() => this.close()}
         />
       </ComposerModal>
