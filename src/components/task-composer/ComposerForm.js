@@ -64,6 +64,10 @@ export default class ComposerForm extends Component {
 
   state: State;
 
+  componentDidMount() {
+    this.autocomplete.refs.input.focus();
+  }
+
   componentWillReceiveProps({ categories }: Props) {
     if (categories.hashCode() !== this.props.categories.hashCode()) {
       this.fuse.set(ComposerForm.createListForFuse(categories));
@@ -101,6 +105,7 @@ export default class ComposerForm extends Component {
 
   props: Props;
   fuse: Fuse;
+  autocomplete: any;
 
   render() {
     const inputTitleId = "ComposerForm__input-title";
@@ -142,6 +147,7 @@ export default class ComposerForm extends Component {
                 {name}
               </li>
             )}
+            ref={c => (this.autocomplete = c)}
           />
           <hr className={`ComposerForm__hr-input-title${modifierFocused}`} />
           <label
