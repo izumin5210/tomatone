@@ -40,11 +40,18 @@ export default class ComposerForm extends Component {
     keys:           ["name"],
   };
 
+  static pregQuotePattern = new RegExp("[.\\\\+*?\\[\\^\\]$(){}=!<>|:\\-]", "g");
+
   static createListForFuse(categories: Map<number, Category>): Array<FuseItem> {
     return categories
       .filterNot(cat => cat.isMeta)
       .map(({ id, name }) => ({ id, name }))
       .toArray();
+  }
+
+  static pregQuote(str: string): string {
+    // https://github.com/kvz/locutus/blob/76ddd02483500a218eae547b68ec8735016bdd47/src/php/pcre/preg_quote.js
+    return str.replace(ComposerForm.pregQuotePattern, "\\$&");
   }
 
   constructor(props: Props) {
@@ -57,7 +64,7 @@ export default class ComposerForm extends Component {
     const title = c.isMeta ? "" : `${c.name}/`;
     this.state = {
       title,
-      completionResult: this.fuse.search(""),
+      completionResult: this.search(""),
       focused:          false,
     };
   }
@@ -71,7 +78,7 @@ export default class ComposerForm extends Component {
   componentWillReceiveProps({ categories }: Props) {
     if (categories.hashCode() !== this.props.categories.hashCode()) {
       this.fuse.set(ComposerForm.createListForFuse(categories));
-      const completionResult = this.fuse.search(this.state.title);
+      const completionResult = this.search(this.state.title);
       this.setState({ completionResult });
     }
   }
@@ -87,7 +94,7 @@ export default class ComposerForm extends Component {
 
   onTitleChange(title: string) {
     if (this.state.title !== title) {
-      const completionResult = this.fuse.search(title);
+      const completionResult = this.search(title);
       this.setState({ title, completionResult });
     }
   }
@@ -101,6 +108,10 @@ export default class ComposerForm extends Component {
       .filter(({ id }) => (id === id1) || (id === id2))
       .map(({ id }) => id);
     return ids.indexOf(id1) > ids.indexOf(id2) ? 1 : -1;
+  }
+
+  search(str: string): Array<FuseItem> {
+    return this.fuse.search(ComposerForm.pregQuote(str));
   }
 
   props: Props;
