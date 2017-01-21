@@ -133,7 +133,7 @@ export default class ComposerForm extends Component {
             shouldItemRender={({ id }) => this.shouldItemRender(id)}
             sortItems={({ id: id1 }, { id: id2 }) => this.sortItems(id1, id2)}
             onChange={(e, v) => this.onTitleChange(v)}
-            onSelect={v => this.onTitleChange(v)}
+            onSelect={v => this.onTitleChange(`${v}/`)}
             renderMenu={(items, v, style) => (
               <ul className="ComposerForm__autocomplete" {...{ style }}>
                 {items}
