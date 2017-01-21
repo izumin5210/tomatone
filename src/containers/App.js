@@ -77,11 +77,11 @@ export default class App extends Component {
   componentDidMount() {
     this.checkUpdates(this.props, this.state);
     this.context.dispatch(TimerActions.INIT);
-    const promise = Promise.all([
-      this.state.tickingSoundPlayer.fetch(),
-      this.state.finishSoundPlayer.fetch(),
-    ]);
-    promise.then(() => this.setState({ soundLoaded: true }));
+    // const promise = Promise.all([
+    //   this.state.tickingSoundPlayer.fetch(),
+    //   this.state.finishSoundPlayer.fetch(),
+    // ]);
+    // promise.then(() => this.setState({ soundLoaded: true }));
     this.context.dispatch(
       TimerActions.RESTART,
       { nowInMilliSeconds: this.nowInMilliSeconds },
@@ -111,24 +111,29 @@ export default class App extends Component {
     return this.props.dateTimeProvider.nowInMilliSeconds();
   }
 
-  checkUpdates({ state }: AppProps, { intervalId }: AppState) {
+  async checkUpdates({ state }: AppProps, { intervalId }: AppState) {
     const itr = state.currentIteration();
     if (intervalId == null && itr != null) {
-      const newIntervalId = setInterval(() => this.playSound(), 1000);
+      const newIntervalId = setInterval(async () => await this.playSound(), 1000);
       this.setState({ intervalId: newIntervalId });
     }
   }
 
-  playSound() {
-    const itr = this.props.state.currentIteration();
+  async playSound() {
+    const { state } = this.props;
+    const { tickingSoundPlayer, finishSoundPlayer } = this.state;
+    const itr = state.currentIteration();
     if (itr != null) {
       if (itr.isWorking()) {
-        this.state.tickingSoundPlayer.play();
+        if (!tickingSoundPlayer.isLoaded()) {
+          await tickingSoundPlayer.load();
+        }
+        tickingSoundPlayer.play();
       }
-      const now = this.props.dateTimeProvider.nowInMilliSeconds();
-      if (itr.isFinished(now)) {
-        this.state.finishSoundPlayer.play();
-        this.stop();
+      if (itr.isFinished(this.nowInMilliSeconds)) {
+        await finishSoundPlayer.load();
+        finishSoundPlayer.play();
+        await this.stop();
       }
       this.context.dispatch(
         TimerActions.REFRESH,
@@ -137,9 +142,18 @@ export default class App extends Component {
     }
   }
 
-  stop() {
-    if (this.state.intervalId != null) {
-      clearInterval(this.state.intervalId);
+  async stop() {
+    const { intervalId, tickingSoundPlayer, finishSoundPlayer } = this.state;
+    if (intervalId != null) {
+      clearInterval(intervalId);
+      if (tickingSoundPlayer.isLoaded()) {
+        await tickingSoundPlayer.close();
+      }
+      setTimeout(async () => {
+        if (finishSoundPlayer.isLoaded()) {
+          await finishSoundPlayer.close();
+        }
+      }, 3000);
       this.setState({ intervalId: undefined });
     }
   }
