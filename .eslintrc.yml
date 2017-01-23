@@ -10,7 +10,7 @@ extends:
 - plugin:flowtype/recommended
 - plugin:import/errors
 - plugin:import/warnings
-# - plugin:jsx-a11y/recommended
+- plugin:jsx-a11y/recommended
 parser: babel-eslint
 parserOptions:
   ecmaFeatures:

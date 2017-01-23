@@ -40,7 +40,8 @@ export default class CategoryNode extends Component {
 
   state: State;
 
-  onLinkClicked () {
+  onLinkClicked (e: MouseEvent) {
+    e.stopPropagation()
     if (this.hasChildCategories) {
       this.setState({ opened: !this.state.opened })
     } else {
@@ -87,12 +88,7 @@ export default class CategoryNode extends Component {
 
     /* eslint-disable jsx-a11y/no-static-element-interactions */
     return (
-      <li
-        className='CategoryNode'
-        onClick={(e) => {
-          e.stopPropagation()
-        }}
-      >
+      <li className='CategoryNode'>
         <Link
           to={{ query: { category: category.path } }}
           onClick={e => this.onLinkClicked(e)}

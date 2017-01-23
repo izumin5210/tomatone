@@ -46,13 +46,14 @@ export default class CategorySelector extends Component {
       .countBy(task => task.categoryId)
       .set(Category.ALL.id, tasks.size)
 
-    /* eslint-disable jsx-a11y/no-static-element-interactions */
+    /* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/onclick-has-focus, jsx-a11y/no-static-element-interactions */
     return (
       <div
         className={`CategorySelector${modifier}`}
         onClick={() => {
           if (opened) { this.setOpened(false) }
         }}
+        role='presentation'
       >
         <button
           className={`CategorySelector__button-open${modifier}`}
