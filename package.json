@@ -86,6 +86,7 @@
     "eslint-config-standard": "^6.2.1",
     "eslint-config-standard-jsx": "^3.2.0",
     "eslint-config-standard-react": "^4.2.0",
+    "eslint-import-resolver-node": "^0.3.0",
     "eslint-loader": "^1.6.1",
     "eslint-plugin-flowtype": "^2.29.1",
     "eslint-plugin-import": "^2.2.0",
@@ -170,7 +171,7 @@
     "start": "HOT=1 NODE_ENV=development electron --debug=5858 -r babel-register -r babel-polyfill ./src/main.js",
     "start:production": "electron .",
     "test": "npm-run-all --parallel test:*",
-    "test:js": "mocha",
+    "test:js": "NODE_PATH=$PWD/src mocha",
     "typecheck": "flow",
     "version": "npm run generate:changelog && git add CHANGELOG.md"
   }

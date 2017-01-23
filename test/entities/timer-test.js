@@ -1,8 +1,6 @@
 /* @flow */
-import {
-  Iteration,
-  Timer,
-} from '../../src/entities'
+import Iteration from 'entities/iteration'
+import Timer     from 'entities/timer'
 
 describe('Timer', () => {
   describe('#hasStarted()', () => {

@@ -1,8 +1,5 @@
 /* @flow */
-
-import {
-  Iteration,
-} from '../../src/entities'
+import Iteration from 'entities/iteration'
 
 const startedAt = Date.now('2016-11-22T15:30:00')
 

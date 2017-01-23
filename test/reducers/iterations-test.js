@@ -3,19 +3,13 @@ import { Map } from 'immutable'
 
 import {
   getAllIterations,
-} from '../../src/reducers/iterations'
+} from 'reducers/iterations'
 
-import {
-  Iteration,
-} from '../../src/entities'
+import Iteration from 'entities/iteration'
 
-import {
-  State,
-} from '../../src/models'
+import State from 'models/state'
 
-import {
-  db,
-} from '../../src/db'
+import { db } from 'db'
 
 describe('iterations reducer', () => {
   // TODO: Should move to test-helper

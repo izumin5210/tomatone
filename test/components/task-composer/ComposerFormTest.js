@@ -1,14 +1,13 @@
 /* @flow */
-
-import { mount }  from 'enzyme'
-import { spy }      from 'sinon'
+import { mount } from 'enzyme'
+import { spy }   from 'sinon'
 
 import { Map } from 'immutable'
 
-import Category from '../../../src/entities/category'
+import Category from 'entities/category'
 
-import ComposerForm   from '../../../src/components/task-composer/ComposerForm'
-import type { Props } from '../../../src/components/task-composer/ComposerForm'
+import ComposerForm   from 'components/task-composer/ComposerForm'
+import type { Props } from 'components/task-composer/ComposerForm'
 
 describe('<ComposerForm />', () => {
   let props: Props

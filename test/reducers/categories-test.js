@@ -4,20 +4,14 @@ import { Map } from 'immutable'
 import {
   getAllCategories,
   deleteUnusedCategories,
-} from '../../src/reducers/categories'
+} from 'reducers/categories'
 
-import {
-  State,
-} from '../../src/models'
+import Category from 'entities/category'
+import Task     from 'entities/task'
 
-import {
-  Category,
-  Task,
-} from '../../src/entities'
+import State from 'models/state'
 
-import {
-  db,
-} from '../../src/db'
+import { db } from 'db'
 
 describe('categories reducer', () => {
   let state: State

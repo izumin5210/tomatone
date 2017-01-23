@@ -1,15 +1,13 @@
 /* @flow */
 import { List } from 'immutable'
 
-import {
-  Category,
-  Task,
-} from '../../../src/entities'
+import Category from 'entities/category'
+import Task     from 'entities/task'
 
 import {
   db,
   taskDao as dao,
-} from '../../../src/db'
+} from 'db'
 
 describe('TaskDao', () => {
   // TODO: Should move to test-helper

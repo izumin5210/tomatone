@@ -10,20 +10,14 @@ import {
   selectTask,
   deleteTask,
   updateTaskOrder,
-} from '../../src/reducers/tasks'
+} from 'reducers/tasks'
 
-import {
-  Category,
-  Task,
-} from '../../src/entities'
+import Category from 'entities/category'
+import Task     from 'entities/task'
 
-import {
-  State,
-} from '../../src/models'
+import State from 'models/state'
 
-import {
-  db,
-} from '../../src/db'
+import { db } from 'db'
 
 describe('tasks reducer', () => {
   let state: State

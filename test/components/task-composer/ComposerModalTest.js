@@ -1,10 +1,9 @@
 /* @flow */
+import { shallow } from 'enzyme'
+import { spy }     from 'sinon'
 
-import { shallow }  from 'enzyme'
-import { spy }      from 'sinon'
-
-import ComposerModal  from '../../../src/components/task-composer/ComposerModal'
-import type { Props } from '../../../src/components/task-composer/ComposerModal'
+import ComposerModal  from 'components/task-composer/ComposerModal'
+import type { Props } from 'components/task-composer/ComposerModal'
 
 describe('<ComposerModal />', () => {
   let props: Props

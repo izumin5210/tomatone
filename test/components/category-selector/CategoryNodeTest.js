@@ -4,12 +4,10 @@ import { spy }   from 'sinon'
 
 import { StaticRouter } from 'react-router'
 
-import {
-  Category,
-} from '../../../src/entities'
+import Category from 'entities/category'
 
-import CategoryNode   from '../../../src/components/category-selector/CategoryNode'
-import type { Props } from '../../../src/components/category-selector/CategoryNode'
+import CategoryNode   from 'components/category-selector/CategoryNode'
+import type { Props } from 'components/category-selector/CategoryNode'
 
 function createWrapper (props: Props) {
   // https://github.com/ReactTraining/react-router/blob/553b56a750072641b532c1113336a706d6f62648/modules/__tests__/Link-test.js#L259-L277
