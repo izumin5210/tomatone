@@ -1,31 +1,31 @@
 /* @flow */
-import React from "react";
-import { Link } from "react-router";
+import React from 'react'
+import { Link } from 'react-router'
 
-import { Category } from "../../entities";
+import { Category } from '../../entities'
 
 type Props = {
-  category: ?Category;
-};
+  category: ?Category,
+}
 
-export default function GlobalNav({ category }: Props) {
-  const query = { category: (category == null) ? null : category.path };
+export default function GlobalNav ({ category }: Props) {
+  const query = { category: (category == null) ? null : category.path }
   const links = [
     {
-      to:   { pathname: "/", query },
-      icon: "clock-o",
+      to:   { pathname: '/', query },
+      icon: 'clock-o',
     },
     {
-      to:   { pathname: "/tasks", query },
-      icon: "tasks",
+      to:   { pathname: '/tasks', query },
+      icon: 'tasks',
     },
     {
-      to:   { pathname: "/history", query },
-      icon: "history",
+      to:   { pathname: '/history', query },
+      icon: 'history',
     },
-  ];
+  ]
   const items = links.map(link => (
-    <li className="GlobalNav__item" key={link.icon} >
+    <li className='GlobalNav__item' key={link.icon} >
       <Link
         to={link.to}
         isActive={({ pathname }, props) => pathname === props.pathname}
@@ -34,19 +34,19 @@ export default function GlobalNav({ category }: Props) {
           <a
             href={href}
             onClick={onClick}
-            className={`GlobalNav__link${isActive ? "_active" : ""}`}
+            className={`GlobalNav__link${isActive ? '_active' : ''}`}
           >
             <i className={`fa fa-${link.icon}`} />
           </a>
         )}
       </Link>
     </li>
-  ));
+  ))
   return (
-    <nav className="GlobalNav">
-      <ul className="GlobalNav__list">
+    <nav className='GlobalNav'>
+      <ul className='GlobalNav__list'>
         { items }
       </ul>
     </nav>
-  );
+  )
 }

@@ -1,4 +1,4 @@
 /* @flow */
-import MessageToast from "./MessageToast";
+import MessageToast from './MessageToast'
 
-export default MessageToast;
+export default MessageToast

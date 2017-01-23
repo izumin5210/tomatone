@@ -1,5 +1,5 @@
 /* @flow */
-import CategorySelector from "./CategorySelector";
+import CategorySelector from './CategorySelector'
 
-export default CategorySelector;
+export default CategorySelector
 

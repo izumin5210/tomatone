@@ -1,23 +1,23 @@
 /* @flow */
 /* eslint-disable import/prefer-default-export */
 
-import { Map } from "immutable";
+import { Map } from 'immutable'
 
 import {
   State,
-} from "../models";
+} from '../models'
 
 import {
   iterationDao as dao,
-} from "../db";
+} from '../db'
 
-export function getAllIterations(state: State): Promise<State> {
+export function getAllIterations (state: State): Promise<State> {
   return dao.getAll()
     .then(itrs => itrs.reduce(
       (map, itr) => map.set(itr.id, itr),
       Map(),
     ))
-    .then(itrs => state.set("iterations", state.iterations.merge(itrs)));
+    .then(itrs => state.set('iterations', state.iterations.merge(itrs)))
 }
 
 /* eslint-enable */

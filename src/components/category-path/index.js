@@ -1,4 +1,4 @@
 /* @flow */
-import CategoryPath from "./CategoryPath";
+import CategoryPath from './CategoryPath'
 
-export default CategoryPath;
+export default CategoryPath

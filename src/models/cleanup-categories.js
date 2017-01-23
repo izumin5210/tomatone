@@ -1,23 +1,23 @@
 /* @flow */
-import { List, Map, Set } from "immutable";
+import { List, Map, Set } from 'immutable'
 
 import {
   Category,
   Task,
-} from "../entities";
+} from '../entities'
 
 import type {
   CategoryDao,
-} from "../db";
+} from '../db'
 
 type Node = {
-  id: number;
-  count: number;
-  childIds: Set<number>;
-  children: Array<Node>;
-};
+  id: number,
+  count: number,
+  childIds: Set<number>,
+  children: Array<Node>,
+}
 
-function createCategoryTrees(
+function createCategoryTrees (
   categories: Map<number, Category>,
   tasks: Map<number, Task>,
   depth: number,
@@ -28,34 +28,34 @@ function createCategoryTrees(
     .map((category) => {
       const childCategories = categories
         .filter(({ name }) => name.startsWith(category.name))
-        .filterNot(({ id }) => id === category.id);
+        .filterNot(({ id }) => id === category.id)
       return {
         id:       category.id,
         count:    tasks.count(t => category.id === t.categoryId),
         childIds: childCategories.map(({ id }) => id).toSet(),
         children: createCategoryTrees(childCategories, tasks, depth + 1),
-      };
+      }
     })
-    .toArray();
+    .toArray()
 }
 
-function searchDeletableNodes({ id, count, childIds, children }: Node): Set<number> {
+function searchDeletableNodes ({ id, count, childIds, children }: Node): Set<number> {
   let deletable = children
-    .reduce((s, n) => s.union(searchDeletableNodes(n)), Set());
+    .reduce((s, n) => s.union(searchDeletableNodes(n)), Set())
   if (childIds.every(i => deletable.has(i)) && count === 0) {
-    deletable = deletable.add(id);
+    deletable = deletable.add(id)
   }
-  return deletable;
+  return deletable
 }
 
-function searchDeletableIds(
+function searchDeletableIds (
   categories: Map<number, Category>,
   tasks: Map<number, Task>,
 ): Set<number> {
-  const nodes = createCategoryTrees(categories, tasks, 1);
+  const nodes = createCategoryTrees(categories, tasks, 1)
   return nodes
     .map(node => searchDeletableNodes(node))
-    .reduce((set, ids) => set.union(ids), Set());
+    .reduce((set, ids) => set.union(ids), Set())
 }
 
 /**
@@ -65,14 +65,14 @@ function searchDeletableIds(
  * @param {TaskDao} - a database access object for accessing to tasks table.
  * @return {Promise<List<number>>} - return deleted category ids.
  */
-export default async function cleanupCategories(
+export default async function cleanupCategories (
   categories: Map<number, Category>,
   tasks: Map<number, Task>,
   dao: CategoryDao,
 ): Promise<List<Category>> {
-  const deletableIds = searchDeletableIds(categories, tasks);
+  const deletableIds = searchDeletableIds(categories, tasks)
   const deletableCategories = categories
     .filter(({ id }) => deletableIds.includes(id))
-    .toList();
-  return dao.deleteAll(deletableCategories);
+    .toList()
+  return dao.deleteAll(deletableCategories)
 }

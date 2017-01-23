@@ -1,30 +1,30 @@
 /* @flow */
-import React from "react";
+import React from 'react'
 
-// FIXME: I want to add align option to flowtype/space-after-type-colon rule...
-/* eslint-disable no-multi-spaces */
 export type Props = {
-  children?: React$Element<*>;
-  close:     () => void;
-};
-/* eslint-enable */
+  children?: React$Element<*>,
+  close: () => void,
+}
 
-export default function ComposerModal(props: Props) {
-  /* eslint-disable jsx-a11y/no-static-element-interactions */
+export default function ComposerModal (props: Props) {
+  /* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/onclick-has-focus, jsx-a11y/no-static-element-interactions */
   return (
     <div
-      className="ComposerModal"
+      className='ComposerModal'
       onClick={props.close}
+      role='presentation'
     >
       <div
-        className="ComposerModal__modal"
+        className='ComposerModal__modal'
         onClick={(e) => {
-          e.stopPropagation();
-          e.preventDefault();
+          e.stopPropagation()
+          e.preventDefault()
         }}
+        role='presentation'
       >
         { props.children }
       </div>
     </div>
-  );
+  )
+  /* eslint-enable */
 }

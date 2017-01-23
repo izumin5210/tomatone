@@ -1,4 +1,4 @@
 /* @flow */
-import IterationList from "./IterationList";
+import IterationList from './IterationList'
 
-export default IterationList;
+export default IterationList

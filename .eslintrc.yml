@@ -5,8 +5,12 @@ env:
   es6: true
   mocha: true
 extends:
-  - airbnb
-  - plugin:flowtype/recommended
+- standard
+- standard-react
+- plugin:flowtype/recommended
+- plugin:import/errors
+- plugin:import/warnings
+# - plugin:jsx-a11y/recommended
 parser: babel-eslint
 parserOptions:
   ecmaFeatures:
@@ -14,40 +18,32 @@ parserOptions:
     jsx: true
   sourceType: module
 plugins:
-  - react
-  - flowtype
+- flowtype
+- import
+- jsx-a11y
 rules:
-  # Override: https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v10.0.1/packages/eslint-config-airbnb-base/rules/style.js#L57-L59
-  quotes:
-    - error
-    - double
-  # Override: https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v10.0.1/packages/eslint-config-airbnb-base/rules/best-practices.js#L136-L137
-  no-multi-spaces:
-    - error
-    - exceptions:
-        Property: true
-        ImportDeclaration: true
-  # Override: https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v10.0.1/packages/eslint-config-airbnb-base/rules/style.js#L62
+  comma-dangle:
+  - error
+  - always-multiline
   key-spacing:
-    - error
-    - beforeColon: false
-      afterColon: true
-      align: value
-  # Override: https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v10.0.1/packages/eslint-config-airbnb-base/rules/style.js#L117-L118
-  new-cap:
-    - error
-    - capIsNew: false
-  # Override: https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v10.0.1/packages/eslint-config-airbnb/rules/react.js#L171-L173
-  # react/require-extension rule is deprecated
-  react/require-extension: off
-  # Override: https://github.com/airbnb/javascript/blob/eslint-config-airbnb-v10.0.1/packages/eslint-config-airbnb/rules/react.js#L226-L228
-  react/jsx-filename-extension:
-    - error
-    - extensions:
-      - js
-  import/extensions:
-    - error
-    - js: never
-      jsx: never
-  flowtype/space-after-type-colon:
-    - off
+  - error
+  - align: value
+  no-multi-spaces:
+  - error
+  - exceptions:
+      VariableDeclarator: true
+      ImportDeclaration: true
+  no-duplicate-imports:
+  - off
+  import/no-duplicates:
+  - error
+  - always
+  flowtype/semi:
+  - error
+  - never
+  flowtype/delimiter-dangle:
+  - error
+  - always-multiline
+  flowtype/object-type-delimiter:
+  - error
+  - comma

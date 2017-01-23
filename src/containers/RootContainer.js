@@ -1,46 +1,46 @@
 /* @flow */
-import React, { Component }  from "react";
-import { HashRouter, Match } from "react-router";
-import { subscriber }        from "react-dispatcher-decorator";
+import React, { Component }  from 'react'
+import { HashRouter, Match } from 'react-router'
+import { subscriber }        from 'react-dispatcher-decorator'
 
 import {
   State,
-} from "../models";
+} from '../models'
 
-import Reducer from "../reducers";
-import App from "./App";
+import Reducer from '../reducers'
+import App from './App'
 
-const reducer = new Reducer();
+const reducer = new Reducer()
 
 type ContainerState = {
-  state: State;
-};
+  state: State,
+}
 
 const initialState: ContainerState = {
   state: reducer.getState(),
-};
+}
 
 @subscriber((self: any, subscribe: any) => {
-  reducer.connect(self, subscribe);
+  reducer.connect(self, subscribe)
 })
 export default class RootContainer extends Component {
 
-  constructor(props: any) {
-    super(props);
-    this.state = initialState;
+  constructor (props: any) {
+    super(props)
+    this.state = initialState
   }
 
   state: ContainerState;
 
-  render() {
-    const { state } = this.state;
+  render () {
+    const { state } = this.state
     return (
       <HashRouter>
         <Match
-          pattern="/"
+          pattern='/'
           render={({ location }) => <App {...{ location, state }} />}
         />
       </HashRouter>
-    );
+    )
   }
 }

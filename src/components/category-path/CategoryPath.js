@@ -1,30 +1,30 @@
 /* @flow */
-import React    from "react";
-import { Link } from "react-router";
-import { Map }  from "immutable";
+import React    from 'react'
+import { Link } from 'react-router'
+import { Map }  from 'immutable'
 
 import {
   Category,
-} from "../../entities";
+} from '../../entities'
 
 // FIXME: I want to add align option to flowtype/space-after-type-colon rule...
 /* eslint-disable no-multi-spaces */
 export type Props = {
-  category:   Category;
-  categories: Map<number, Category>;
-};
+  category: Category,
+  categories: Map<number, Category>,
+}
 /* eslint-enable */
 
-export default function CategoryPath({ category, categories }: Props) {
+export default function CategoryPath ({ category, categories }: Props) {
   if (!categories.has(category.id)) {
-    return null;
+    return null
   }
 
   const items = categories
     .filter(cat => cat.isParentOf(category) || (cat.id === category.id))
     .sortBy(cat => cat.depth)
     .map(cat => (
-      <li key={`category-${cat.id}`} className="CategoryPath__item">
+      <li key={`category-${cat.id}`} className='CategoryPath__item'>
         <Link
           to={{ query: { category: cat.path } }}
           onClick={e => e.stopPropagation()}
@@ -33,11 +33,11 @@ export default function CategoryPath({ category, categories }: Props) {
         </Link>
       </li>
     ))
-    .toArray();
+    .toArray()
 
   return (
-    <ul className="CategoryPath">
+    <ul className='CategoryPath'>
       {items}
     </ul>
-  );
+  )
 }

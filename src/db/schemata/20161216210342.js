@@ -1,15 +1,15 @@
 /* @flow */
 export const tasks = [
-  "++id",
-  "title",
-  "createdAt",
-  "completedAt",
-  "order",
-  "categoryId",
-].join(",");
+  '++id',
+  'title',
+  'createdAt',
+  'completedAt',
+  'order',
+  'categoryId',
+].join(',')
 
 export const categories = [
-  "++id",
-  "name",
-  "createdAt",
-].join(",");
+  '++id',
+  'name',
+  'createdAt',
+].join(',')
