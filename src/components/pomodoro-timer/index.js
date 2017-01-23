@@ -1,4 +1,4 @@
 /* @flow */
-import PomodoroTimer from "./PomodoroTimer";
+import PomodoroTimer from './PomodoroTimer'
 
-export default PomodoroTimer;
+export default PomodoroTimer

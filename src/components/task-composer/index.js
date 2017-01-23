@@ -1,4 +1,4 @@
 /* @flow */
-import TaskComposer from "./TaskComposer";
+import TaskComposer from './TaskComposer'
 
-export default TaskComposer;
+export default TaskComposer

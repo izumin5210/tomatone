@@ -1,84 +1,81 @@
 /* @flow */
-import React, { Component }    from "react";
-import ReactCSSTransitionGroup from "react-addons-css-transition-group";
+import React, { Component }    from 'react'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
-import { List } from "immutable";
+import { List } from 'immutable'
 
-import { Message } from "../../entities";
+import { Message } from '../../entities'
 
-// FIXME: I want to add align option to flowtype/space-after-type-colon rule...
-/* eslint-disable no-multi-spaces */
 export type Props = {
-  messages: List<Message>;
-  dismiss:  () => void;
-};
+  messages: List<Message>,
+  dismiss: () => void,
+}
 
 export type State = {
-  timeoutId: ?number;
-  message:   ?Message;
-};
-/* eslint-enable */
+  timeoutId: ?number,
+  message: ?Message,
+}
 
 export default class MessageToast extends Component {
 
-  constructor(props: Props) {
-    super(props);
+  constructor (props: Props) {
+    super(props)
     this.state = {
       timeoutId: undefined,
       message:   undefined,
-    };
+    }
   }
 
   state: State;
 
-  componentDidUpdate() {
+  componentDidUpdate () {
     if (this.canShow(this.props)) {
-      this.readyToShow();
+      this.readyToShow()
     }
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     if (this.state.timeoutId) {
-      clearTimeout(this.state.timeoutId);
+      clearTimeout(this.state.timeoutId)
     }
   }
 
-  readyToShow() {
-    const timeoutId = setTimeout(() => this.show(), 300);
-    this.setState({ timeoutId });
+  readyToShow () {
+    const timeoutId = setTimeout(() => this.show(), 300)
+    this.setState({ timeoutId })
   }
 
-  show() {
-    clearTimeout(this.state.timeoutId);
-    const message = this.props.messages.first();
-    let timeoutId: ?number;
+  show () {
+    clearTimeout(this.state.timeoutId)
+    const message = this.props.messages.first()
+    let timeoutId: ?number
     if (message != null) {
-      timeoutId = setTimeout(() => this.dismiss(), message.duration);
+      timeoutId = setTimeout(() => this.dismiss(), message.duration)
     }
-    this.setState({ message, timeoutId });
+    this.setState({ message, timeoutId })
   }
 
-  dismiss() {
-    clearTimeout(this.state.timeoutId);
-    this.props.dismiss();
-    this.setState({ timeoutId: undefined, message: undefined });
+  dismiss () {
+    clearTimeout(this.state.timeoutId)
+    this.props.dismiss()
+    this.setState({ timeoutId: undefined, message: undefined })
   }
 
   props: Props;
 
-  canShow(props: Props): boolean {
-    return !props.messages.isEmpty()
-      && this.state.message == null
-      && this.state.timeoutId == null;
+  canShow (props: Props): boolean {
+    return !props.messages.isEmpty() &&
+      this.state.message == null &&
+      this.state.timeoutId == null
   }
 
-  renderMessage() {
-    const { message } = this.state;
+  renderMessage () {
+    const { message } = this.state
     if (message == null) {
-      return null;
+      return null
     }
     return (
-      <div className="MessageToast" key="MessageToast">
+      <div className='MessageToast' key='MessageToast'>
         <button
           onClick={() => this.dismiss()}
           className={`MessageToast__toast_${message.level}`}
@@ -86,18 +83,18 @@ export default class MessageToast extends Component {
           { message.body }
         </button>
       </div>
-    );
+    )
   }
 
-  render() {
+  render () {
     return (
       <ReactCSSTransitionGroup
-        transitionName="MessageToast"
+        transitionName='MessageToast'
         transitionEnterTimeout={300}
         transitionLeaveTimeout={300}
       >
         { this.renderMessage() }
       </ReactCSSTransitionGroup>
-    );
+    )
   }
 }

@@ -1,42 +1,42 @@
 /* @flow */
-import { Set } from "immutable";
+import { Set } from 'immutable'
 
 import {
   cleanupCategories,
   State,
-} from "../models";
+} from '../models'
 
 import {
   categoryDao,
-} from "../db";
+} from '../db'
 
 import type {
   SelectAction,
-} from "../actions/categories";
+} from '../actions/categories'
 
 type Node = {
-  id: number;
-  count: number;
-  childIds: Set<number>;
-  children: Array<Node>;
-};
+  id: number,
+  count: number,
+  childIds: Set<number>,
+  children: Array<Node>,
+}
 
-export function getAllCategories(state: State): Promise<State> {
+export function getAllCategories (state: State): Promise<State> {
   return categoryDao.getAll()
     .then(categories => categories.reduce(
       (map, category) => map.set(category.id, category),
       state.categories,
     ))
-    .then(categories => state.set("categories", categories));
+    .then(categories => state.set('categories', categories))
 }
 
-export async function deleteUnusedCategories(state: State): Promise<State> {
-  const deletedCategories = await cleanupCategories(state.categories, state.tasks, categoryDao);
+export async function deleteUnusedCategories (state: State): Promise<State> {
+  const deletedCategories = await cleanupCategories(state.categories, state.tasks, categoryDao)
   const categories = state.categories
-    .filterNot(({ id }) => deletedCategories.find(c => c.id === id) != null);
-  return state.set("categories", categories);
+    .filterNot(({ id }) => deletedCategories.find(c => c.id === id) != null)
+  return state.set('categories', categories)
 }
 
-export function selectCategory(state: State, { category }: SelectAction): State {
-  return state.set("timer", state.timer.updateCategory(category));
+export function selectCategory (state: State, { category }: SelectAction): State {
+  return state.set('timer', state.timer.updateCategory(category))
 }

@@ -3,15 +3,15 @@
 export default class FakeDateTimeProvider {
   now: number;
 
-  constructor(now: number = Date.now()) {
-    this.now = now;
+  constructor (now: number = Date.now()) {
+    this.now = now
   }
 
-  tick(ms: number) {
-    this.now += ms;
+  tick (ms: number) {
+    this.now += ms
   }
 
-  nowInMilliSeconds(): number {
-    return this.now;
+  nowInMilliSeconds (): number {
+    return this.now
   }
 }

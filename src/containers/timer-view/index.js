@@ -1,4 +1,4 @@
 /* @flow */
-import TimerView from "./TimerView";
+import TimerView from './TimerView'
 
-export default TimerView;
+export default TimerView

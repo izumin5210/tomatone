@@ -1,76 +1,73 @@
 /* @flow */
-import { Record } from "immutable";
+import { Record } from 'immutable'
 
-import { parseCategory } from "../utils";
+import { parseCategory } from '../utils'
 
-import Task from "./task";
+import Task from './task'
 
-// FIXME: I want to add align option to flowtype/space-after-type-colon rule...
-/* eslint-disable no-multi-spaces */
 export type CategoryConfig = {
-  id:          number;
-  name:        string;
-  createdAt:   number;
-};
-/* eslint-enable */
+  id: number,
+  name: string,
+  createdAt: number,
+}
 
 const defaultValues: CategoryConfig = {
   id:        1,
-  name:      "empty task",
+  name:      'empty task',
   createdAt: 0,
-};
+}
 
-const CategoryRecord = Record(defaultValues);
+const CategoryRecord = Record(defaultValues)
 
 export default class Category extends CategoryRecord {
 
-  static get NO_CATEGORY(): Category {
+  static get NO_CATEGORY (): Category {
     return new Category({
       id:        undefined,
-      name:      "(no category)",
+      name:      '(no category)',
       createdAt: 0,
-    });
+    })
   }
 
-  static get ALL(): Category {
+  static get ALL (): Category {
     return new Category({
       id:        0,
-      name:      "(all tasks)",
+      name:      '(all tasks)',
       createdAt: 0,
-    });
+    })
   }
 
-  includes(task: ?Task): boolean {
-    const categoryId = (task == null) ? null : task.categoryId;
-    return (this.name === Category.ALL.name) || (this.id === categoryId);
+  includes (task: ?Task): boolean {
+    const categoryId = (task == null) ? null : task.categoryId
+    return (this.name === Category.ALL.name) || (this.id === categoryId)
   }
 
-  isParentOf(category: Category): boolean {
-    const otherNames = parseCategory(category.name);
-    const selfNames = parseCategory(this.name);
+  isParentOf (category: Category): boolean {
+    const otherNames = parseCategory(category.name)
+    const selfNames = parseCategory(this.name)
     return (otherNames.length > selfNames.length) &&
-      selfNames.reduce((result, name, i) => result && (name === otherNames[i]), true);
+      selfNames.reduce((result, name, i) => result && (name === otherNames[i]), true)
   }
 
-  get depth(): number {
-    return parseCategory(this.name).length;
+  get depth (): number {
+    return parseCategory(this.name).length
   }
 
-  get subName(): string {
-    const names = parseCategory(this.name);
-    return names[names.length - 1];
+  get subName (): string {
+    const names = parseCategory(this.name)
+    return names[names.length - 1]
   }
 
-  get path(): ?string {
+  get path (): ?string {
     if (this.id === Category.NO_CATEGORY.id) {
-      return "/";
+      return '/'
     } else if (this.id === Category.ALL.id) {
-      return undefined;
+      return undefined
     }
-    return `/${this.name}`;
+    return `/${this.name}`
   }
 
-  get isMeta(): boolean {
-    return (this.id === Category.ALL.id) || (this.id === Category.NO_CATEGORY.id);
+  get isMeta (): boolean {
+    return (this.id === Category.ALL.id) || (this.id === Category.NO_CATEGORY.id)
   }
 }

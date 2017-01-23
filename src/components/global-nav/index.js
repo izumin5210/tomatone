@@ -1,4 +1,4 @@
 /* @flow */
-import GlobalNav from "./GlobalNav";
+import GlobalNav from './GlobalNav'
 
-export default GlobalNav;
+export default GlobalNav

@@ -1,43 +1,40 @@
 /* @flow */
-import { mount } from "enzyme";
-import { spy }   from "sinon";
+import { mount } from 'enzyme'
+import { spy }   from 'sinon'
 
-import { Map } from "immutable";
+import { Map } from 'immutable'
 
-import React, { Component } from "react";
-import { DragDropContext }  from "react-dnd";
-import TestBackend          from "react-dnd-test-backend";
+import React, { Component } from 'react'
+import { DragDropContext }  from 'react-dnd'
+import TestBackend          from 'react-dnd-test-backend'
 
-import TaskItem       from "../../../src/components/task-list/TaskItem";
-/* eslint-disable no-duplicate-imports */
-import type { Props } from "../../../src/components/task-list/TaskItem";
-/* eslint-enable */
+import TaskItem       from '../../../src/components/task-list/TaskItem'
+import type { Props } from '../../../src/components/task-list/TaskItem'
 
 import {
   Category,
   Task,
-} from "../../../src/entities";
+} from '../../../src/entities'
 
-function wrapInTestContext(DecoratedComponent) {
-  /* eslint-disable react/prefer-stateless-function */
+function wrapInTestContext (DecoratedComponent) {
+  // eslint-disable-next-line react/prefer-stateless-function
   @DragDropContext(TestBackend)
   class TestContextContainer extends Component {
-    render() {
-      return <DecoratedComponent {...this.props} />;
+    render () {
+      return <DecoratedComponent {...this.props} />
     }
   }
-  /* eslint-enable */
 
-  return TestContextContainer;
+  return TestContextContainer
 }
 
-describe("<TaskItem />", () => {
-  let props: Props;
-  let wrapper;
+describe('<TaskItem />', () => {
+  let props: Props
+  let wrapper
 
   beforeEach(() => {
-    const TaskItemContext = wrapInTestContext(TaskItem);
-    const task = new Task({ id: 1, title: "awesome task" });
+    const TaskItemContext = wrapInTestContext(TaskItem)
+    const task = new Task({ id: 1, title: 'awesome task' })
     props = {
       task,
       category:          Category.NO_CATEGORY,
@@ -54,30 +51,30 @@ describe("<TaskItem />", () => {
       connectDropTarget: spy(),
       isDragging:        false,
       canDrop:           false,
-    };
-    wrapper = mount(<TaskItemContext {...props} />);
-  });
+    }
+    wrapper = mount(<TaskItemContext {...props} />)
+  })
 
-  describe("completeTask", () => {
-    it("calls check() when an icon is clicked", () => {
-      assert(!props.check.called);
-      wrapper.find(".TaskItem__complete")
-        .simulate("change", { target: { value: true } });
-      assert(props.check.calledOnce);
-    });
-  });
+  describe('completeTask', () => {
+    it('calls check() when an icon is clicked', () => {
+      assert(!props.check.called)
+      wrapper.find('.TaskItem__complete')
+        .simulate('change', { target: { value: true } })
+      assert(props.check.calledOnce)
+    })
+  })
 
-  describe("selectTask", () => {
-    it("calls select() when an item body is clicked", () => {
-      assert(!props.select.called);
-      wrapper.find(".TaskItem__select")
-        .simulate("change", { target: { value: true } });
-      assert(props.select.calledOnce);
-    });
-  });
+  describe('selectTask', () => {
+    it('calls select() when an item body is clicked', () => {
+      assert(!props.select.called)
+      wrapper.find('.TaskItem__select')
+        .simulate('change', { target: { value: true } })
+      assert(props.select.calledOnce)
+    })
+  })
 
-  describe("re-order tasks", () => {
-    xit("drags-and-drops a task to above");
-    xit("drags-and-drops a task to below");
-  });
-});
+  describe('re-order tasks', () => {
+    xit('drags-and-drops a task to above')
+    xit('drags-and-drops a task to below')
+  })
+})

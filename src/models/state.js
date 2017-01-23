@@ -1,5 +1,5 @@
 /* @flow */
-import { Record, Map, List } from "immutable";
+import { Record, Map, List } from 'immutable'
 
 import {
   Category,
@@ -7,18 +7,15 @@ import {
   Message,
   Task,
   Timer,
-} from "../entities";
+} from '../entities'
 
-// FIXME: I want to add align option to flowtype/space-after-type-colon rule...
-/* eslint-disable no-multi-spaces */
 type StateConfig = {
-  categories: Map<number, Category>;
-  iterations: Map<number, Iteration>;
-  messages:   List<Message>;
-  tasks:      Map<number, Task>;
-  timer:      Timer;
-};
-/* eslint-enable */
+  categories: Map<number, Category>,
+  iterations: Map<number, Iteration>,
+  messages: List<Message>,
+  tasks: Map<number, Task>,
+  timer: Timer,
+}
 
 const defaultValues: StateConfig = {
   categories: Map([
@@ -29,39 +26,39 @@ const defaultValues: StateConfig = {
   messages:   List(),
   tasks:      Map(),
   timer:      new Timer(),
-};
+}
 
-const StateRecord = Record(defaultValues);
+const StateRecord = Record(defaultValues)
 
 export default class State extends StateRecord {
-  currentIteration(): ?Iteration {
-    return this.iterations.get(this.timer.currentIterationId);
+  currentIteration (): ?Iteration {
+    return this.iterations.get(this.timer.currentIterationId)
   }
 
-  currentTask(): ?Task {
-    return this.tasks.get(this.timer.selectedTaskId);
+  currentTask (): ?Task {
+    return this.tasks.get(this.timer.selectedTaskId)
   }
 
-  currentCategory(): Category {
-    return this.categories.get(this.timer.selectedCategoryId);
+  currentCategory (): Category {
+    return this.categories.get(this.timer.selectedCategoryId)
   }
 
-  currentCategoryTasks(): Map<number, Task> {
-    const currentCategory = this.currentCategory();
+  currentCategoryTasks (): Map<number, Task> {
+    const currentCategory = this.currentCategory()
     return this.tasks
       .filter((task) => {
-        const category = this.categories.get(task.categoryId);
-        return currentCategory.includes(task)
-          || (category != null && currentCategory.isParentOf(category));
-      });
+        const category = this.categories.get(task.categoryId)
+        return currentCategory.includes(task) ||
+          (category != null && currentCategory.isParentOf(category))
+      })
   }
 
-  hasStarted(): boolean {
-    return this.timer.hasStarted();
+  hasStarted (): boolean {
+    return this.timer.hasStarted()
   }
 
-  isWorking(): boolean {
-    const itr = this.currentIteration();
-    return (itr === undefined || itr === null) ? false : itr.isWorking();
+  isWorking (): boolean {
+    const itr = this.currentIteration()
+    return (itr === undefined || itr === null) ? false : itr.isWorking()
   }
 }

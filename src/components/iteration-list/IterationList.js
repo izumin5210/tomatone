@@ -1,57 +1,55 @@
 /* @flow */
-import React, { Component } from "react";
-import moment               from "moment";
-import { Map }              from "immutable";
+import React, { Component } from 'react'
+import moment               from 'moment'
+import { Map }              from 'immutable'
 
-import IterationItem from "./IterationItem";
+import IterationItem from './IterationItem'
 
 import type {
   Category,
   Iteration,
   Task,
-} from "../../entities";
+} from '../../entities'
 
-/* eslint-disable no-multi-spaces */
 type Props = {
-  categories: Map<number, Category>;
-  iterations: Map<number, Iteration>;
-  tasks:      Map<number, Task>;
-};
-/* eslint-enable */
+  categories: Map<number, Category>,
+  iterations: Map<number, Iteration>,
+  tasks: Map<number, Task>,
+}
 
 export default class IterationList extends Component {
 
-  getListItems() {
-    const { categories, iterations, tasks } = this.props;
+  getListItems () {
+    const { categories, iterations, tasks } = this.props
     return iterations
       .sortBy(itr => -itr.id)
-      .groupBy(itr => moment(itr.startedAt).format("YYYY-MM-DD"))
+      .groupBy(itr => moment(itr.startedAt).format('YYYY-MM-DD'))
       .map((itrs, date) => {
-        const arr = [];
+        const arr = []
         arr.push((
-          <li key={date} className="IterationList__date" >
+          <li key={date} className='IterationList__date' >
             {date}
           </li>
-        ));
+        ))
         itrs.forEach((iteration) => {
           arr.push((
             <IterationItem
               {...{ categories, iteration }}
               task={tasks.get(iteration.taskId)}
             />
-          ));
-        });
-        return arr;
-      });
+          ))
+        })
+        return arr
+      })
   }
 
   props: Props;
 
-  render() {
+  render () {
     return (
-      <ul className="IterationList">
+      <ul className='IterationList'>
         {this.getListItems()}
       </ul>
-    );
+    )
   }
 }

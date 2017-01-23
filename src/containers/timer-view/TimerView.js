@@ -1,44 +1,44 @@
 /* @flow */
-import React, { Component } from "react";
-import { dispatcher }       from "react-dispatcher-decorator";
+import React, { Component } from 'react'
+import { dispatcher }       from 'react-dispatcher-decorator'
 
 import {
   State,
-} from "../../models";
+} from '../../models'
 
 import {
   Timer,
-} from "../../entities";
+} from '../../entities'
 
 import {
   PomodoroTimer,
-} from "../../components";
+} from '../../components'
 
 import {
   TimerActions,
-} from "../../actions";
+} from '../../actions'
 
 type Props = {
-  state: State;
-};
+  state: State,
+}
 
 @dispatcher
 export default class TimerView extends Component {
-  onBtnPlayClick() {
-    this.context.dispatch(this.timer.hasStarted() ? TimerActions.STOP : TimerActions.START);
+  onBtnPlayClick () {
+    this.context.dispatch(this.timer.hasStarted() ? TimerActions.STOP : TimerActions.START)
   }
 
   props: Props;
 
-  get timer(): Timer {
-    return this.props.state.timer;
+  get timer (): Timer {
+    return this.props.state.timer
   }
 
-  render() {
-    const { state } = this.props;
+  render () {
+    const { state } = this.props
     return (
-      <div className={`TimerView_${state.isWorking() ? "work" : "break"}`}>
-        <div className="TimerView__wrapper">
+      <div className={`TimerView_${state.isWorking() ? 'work' : 'break'}`}>
+        <div className='TimerView__wrapper'>
           <PomodoroTimer
             timer={this.timer}
             iteration={state.currentIteration()}
@@ -46,6 +46,6 @@ export default class TimerView extends Component {
           />
         </div>
       </div>
-    );
+    )
   }
 }

@@ -1,5 +1,5 @@
 /* @flow */
-import HistoryView from "./HistoryView";
+import HistoryView from './HistoryView'
 
-export default HistoryView;
+export default HistoryView
 
