@@ -7,9 +7,7 @@ import { List } from 'immutable'
 import Message from '../../../src/entities/message'
 
 import MessageToast from '../../../src/components/message-toast/MessageToast'
-/* eslint-disable no-duplicate-imports */
 import type { Props } from '../../../src/components/message-toast/MessageToast'
-/* eslint-enable */
 
 const shallowOpts = {
   lifecycleExperimental: true,

@@ -1,6 +1,4 @@
 /* @flow */
-/* eslint-disable import/prefer-default-export */
-
 import {
   State,
 } from '../models'
@@ -20,5 +18,3 @@ export function pushMessage (state: State, action: MessagesActions.PushMessage):
 export function removeMessage (state: State): State {
   return state.set('messages', state.messages.skip(1))
 }
-
-/* eslint-enable */

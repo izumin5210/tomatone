@@ -7,8 +7,6 @@ import type { Map } from 'immutable'
 
 import type { Category } from '../../entities'
 
-// FIXME: I want to add align option to flowtype/space-after-type-colon rule...
-/* eslint-disable no-multi-spaces */
 type FuseItem = {
   id: number,
   name: string,
@@ -33,9 +31,8 @@ export default class ComposerForm extends Component {
   static fuseOptions = {
     shouldSort:     true,
     tokenize:       true,
-    /* eslint-disable no-useless-escape */
+    // eslint-disable-next-line no-useless-escape
     tokenSeparator: /[\s\/]+/g,
-    /* eslint-enable */
     matchAllTokens: true,
     keys:           ['name'],
   };

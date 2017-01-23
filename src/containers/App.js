@@ -33,12 +33,8 @@ import {
   TimerActions,
 } from '../actions'
 
-/* eslint-disable no-duplicate-imports */
 import type { DateTimeProvider } from '../models'
-/* eslint-enable */
 
-// FIXME: I want to add align option to flowtype/space-after-type-colon rule...
-/* eslint-disable no-multi-spaces */
 type AppProps = {
   state: State,
   location: any,
@@ -51,7 +47,6 @@ type AppState = {
   tickingSoundPlayer: SoundPlayer,
   finishSoundPlayer: SoundPlayer,
 }
-/* eslint-enable */
 
 const initialState: AppState = {
   intervalId:         undefined,

@@ -1,8 +1,6 @@
 /* @flow */
 import React, { Component } from 'react'
 
-// FIXME: I want to add align option to flowtype/space-after-type-colon rule...
-/* eslint-disable no-multi-spaces */
 type Props = {
   started: boolean,
   working: boolean,
@@ -10,7 +8,6 @@ type Props = {
   totalTimeInMillis: number,
   children?: React$Element<*>,
 }
-/* eslint-enable */
 
 export default class TimerWrapper extends Component {
 

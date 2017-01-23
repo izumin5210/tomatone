@@ -8,8 +8,6 @@ import {
 
 import CategoryNode from './CategoryNode'
 
-// FIXME: I want to add align option to flowtype/space-after-type-colon rule...
-/* eslint-disable no-multi-spaces */
 export type Props = {
   currentCategory: Category,
   categories: Map<number, Category>,
@@ -17,7 +15,6 @@ export type Props = {
   close: () => void,
   depth: number,
 }
-/* eslint-enable */
 
 export default function CategoryTree (
   { currentCategory, categories, taskCounts, close, depth }: Props,

@@ -11,8 +11,6 @@ import type {
   Task,
 } from '../../entities'
 
-// FIXME: I want to add align option to flowtype/space-after-type-colon rule...
-/* eslint-disable no-multi-spaces */
 export type Props = {
   task: Task,
   category: Category,
@@ -25,7 +23,6 @@ export type State = {
   editing: boolean,
   title: string,
 }
-/* eslint-enable */
 
 export default class TaskItemContent extends Component {
 

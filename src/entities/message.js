@@ -15,14 +15,11 @@ export type MessageLevel =
   "ERROR" |
   "FATAL"
 
-// FIXME: I want to add align option to flowtype/space-after-type-colon rule...
-/* eslint-disable no-multi-spaces */
 export type MessageConfig = {
   body: string,
   level: MessageLevel,
   durationType: MessageDurationType,
 }
-/* eslint-enable */
 
 const defaultValues: MessageConfig = {
   body:         '',

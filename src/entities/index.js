@@ -1,5 +1,4 @@
 /* @flow */
-/* eslint-disable no-duplicate-imports */
 import Category from './category'
 import type { CategoryConfig } from './category'
 
@@ -21,7 +20,6 @@ import type { TaskConfig } from './task'
 
 import Timer from './timer'
 import type { TimerConfig } from './timer'
-/* eslint-enable */
 
 export {
   Category,

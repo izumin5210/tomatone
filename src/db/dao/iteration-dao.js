@@ -7,11 +7,9 @@ import {
   Task,
 } from '../../entities'
 
-/* eslint-disable no-duplicate-imports */
 import type {
   IterationType,
 } from '../../entities'
-/* eslint-enable */
 
 import type { DateTimeProvider } from '../../models'
 

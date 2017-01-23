@@ -3,8 +3,6 @@ import React, { Component } from 'react'
 
 import BtnStart from './BtnStart'
 
-// FIXME: I want to add align option to flowtype/space-after-type-colon rule...
-/* eslint-disable no-multi-spaces */
 type Props = {
   name: string,
   started: boolean,
@@ -12,7 +10,6 @@ type Props = {
   remainTimeInMillis: number,
   onBtnPlayClick: () => void,
 }
-/* eslint-enable */
 
 export default class TimerInner extends Component {
 

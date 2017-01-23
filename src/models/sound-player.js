@@ -1,6 +1,6 @@
 /* @flow */
 import axios from 'axios'
-import assert from "power-assert"; // eslint-disable-line
+import assert from 'power-assert'
 
 export default class SoundPlayer {
   static AudioContext = window.AudioContext || window.webkitAudioContext;

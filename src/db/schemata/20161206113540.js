@@ -1,5 +1,4 @@
 /* @flow */
-/* eslint-disable import/prefer-default-export */
 
 export const iterations = [
   '++id',
@@ -17,5 +16,3 @@ export const tasks = [
   'completedAt',
   'order',
 ].join(',')
-
-/* eslint-enable */

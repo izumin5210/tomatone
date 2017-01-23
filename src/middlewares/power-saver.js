@@ -1,5 +1,4 @@
 /* @flow */
-/* eslint-disable import/no-extraneous-dependencies */
 import { ipcRenderer } from 'electron'
 
 import { State }       from '../models'
@@ -18,5 +17,3 @@ export default function powerSaver (stateOrPromise: StateOrPromise): StateOrProm
       return state
     })
 }
-
-/* eslint-enable */

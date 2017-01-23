@@ -1,7 +1,7 @@
 /* @flow */
 import React, { Component } from 'react'
 import moment from 'moment'
-import assert from "power-assert"; // eslint-disable-line
+import assert from 'power-assert'
 
 import type { Map } from 'immutable'
 
@@ -15,18 +15,14 @@ import type {
   Task,
 } from '../../entities'
 
-/* eslint-disable no-duplicate-imports */
 import type { DateTimeProvider } from '../../models'
-/* eslint-enable */
 
-/* eslint-disable no-multi-spaces */
 type Props = {
   categories: Map<number, Category>,
   iteration: Iteration,
   task: Task,
   dateTimeProvider: DateTimeProvider,
 }
-/* eslint-enable */
 
 export default class IterationItem extends Component {
   static TIME_FORMAT = 'YYYY/MM/DD HH:mm';

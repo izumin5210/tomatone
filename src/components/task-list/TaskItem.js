@@ -11,7 +11,6 @@ import type {
   Task,
 } from '../../entities'
 
-/* eslint-disable no-multi-spaces, react/no-unused-prop-types */
 export type Props = {
   task: Task,
   category: Category,
@@ -29,7 +28,6 @@ export type Props = {
   isDragging: boolean,
   canDrop: boolean,
 }
-/* eslint-enable */
 
 const getType = (task: Task) => (task.hasCompleted() ? 'completed-tasks' : 'tasks')
 
@@ -45,10 +43,9 @@ const getType = (task: Task) => (task.hasCompleted() ? 'completed-tasks' : 'task
     },
   },
   (connect, monitor) => ({
-    /* eslint-disable no-multi-spaces */
     connectDropTarget: connect.dropTarget(),
+    // eslint-disable-next-line no-multi-spaces
     canDrop:           monitor.canDrop(),
-    /* eslint-enable */
   }),
 )
 @DragSource(
@@ -59,10 +56,9 @@ const getType = (task: Task) => (task.hasCompleted() ? 'completed-tasks' : 'task
     },
   },
   (connect, monitor) => ({
-    /* eslint-disable no-multi-spaces */
     connectDragSource: connect.dragSource(),
+    // eslint-disable-next-line no-multi-spaces
     isDragging:        monitor.isDragging(),
-    /* eslint-enable */
   }),
 )
 export default class TaskItem extends Component {

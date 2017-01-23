@@ -5,8 +5,6 @@ import * as MessagesActions   from './messages'
 import * as TasksActions      from './tasks'
 import * as TimerActions      from './timer'
 
-// TODO: Should remove
-/* eslint-disable import/prefer-default-export */
 export {
   CategoriesActions,
   IterationsActions,
@@ -14,4 +12,3 @@ export {
   TasksActions,
   TimerActions,
 }
-/* eslint-enable */

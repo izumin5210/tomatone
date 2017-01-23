@@ -7,8 +7,6 @@ import ComposerForm  from './ComposerForm'
 
 import type { Category } from '../../entities'
 
-// FIXME: I want to add align option to flowtype/space-after-type-colon rule...
-/* eslint-disable no-multi-spaces */
 export type Props = {
   currentCategory: Category,
   categories: Map<number, Category>,
@@ -18,7 +16,6 @@ export type Props = {
 export type State = {
   opened: boolean,
 }
-/* eslint-enable */
 
 export default class TaskComposer extends Component {
 

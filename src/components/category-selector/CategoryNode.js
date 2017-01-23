@@ -6,8 +6,6 @@ import type {
   Category,
 } from '../../entities'
 
-// FIXME: I want to add align option to flowtype/space-after-type-colon rule...
-/* eslint-disable no-multi-spaces */
 export type Props = {
   currentCategory: Category,
   category: Category,
@@ -19,7 +17,6 @@ export type Props = {
 type State = {
   opened: boolean,
 }
-/* eslint-enable */
 
 export default class CategoryNode extends Component {
 
@@ -86,7 +83,6 @@ export default class CategoryNode extends Component {
   render () {
     const { category, children } = this.props
 
-    /* eslint-disable jsx-a11y/no-static-element-interactions */
     return (
       <li className='CategoryNode'>
         <Link
@@ -99,6 +95,5 @@ export default class CategoryNode extends Component {
         { this.state.opened && children }
       </li>
     )
-    /* eslint-enable */
   }
 }

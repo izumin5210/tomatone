@@ -1,6 +1,4 @@
 /* @flow */
-/* eslint-disable import/prefer-default-export */
-
 import { Map } from 'immutable'
 
 import {
@@ -19,5 +17,3 @@ export function getAllIterations (state: State): Promise<State> {
     ))
     .then(itrs => state.set('iterations', state.iterations.merge(itrs)))
 }
-
-/* eslint-enable */

@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { dispatcher }       from 'react-dispatcher-decorator'
 import { Map }              from 'immutable'
 
-import assert from "power-assert"; // eslint-disable-line
+import assert from 'power-assert'
 
 import {
   TasksActions,
@@ -24,11 +24,9 @@ import type {
   State,
 } from '../../models'
 
-/* eslint-disable no-multi-spaces */
 type Props = {
   state: State,
 }
-/* eslint-enable */
 
 @dispatcher
 export default class TasksView extends Component {

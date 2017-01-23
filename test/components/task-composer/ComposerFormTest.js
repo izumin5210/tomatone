@@ -8,9 +8,7 @@ import { Map } from 'immutable'
 import Category from '../../../src/entities/category'
 
 import ComposerForm   from '../../../src/components/task-composer/ComposerForm'
-/* eslint-disable no-duplicate-imports */
 import type { Props } from '../../../src/components/task-composer/ComposerForm'
-/* eslint-enable */
 
 describe('<ComposerForm />', () => {
   let props: Props

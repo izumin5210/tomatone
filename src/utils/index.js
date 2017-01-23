@@ -1,6 +1,4 @@
 /* @flow */
-/* eslint-disable import/prefer-default-export */
-
 import {
   parseCategory,
   parseTaskCategory,
@@ -10,5 +8,3 @@ export {
   parseCategory,
   parseTaskCategory,
 }
-
-/* eslint-enable */

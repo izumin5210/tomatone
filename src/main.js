@@ -1,7 +1,5 @@
 /* @flow */
-/* eslint-disable import/no-extraneous-dependencies */
 import { app, Menu, ipcMain, powerSaveBlocker } from 'electron'
-/* eslint-enable */
 import menubar from 'menubar'
 
 import { TimerEvents } from './ipc'

@@ -7,13 +7,10 @@ import {
   Category,
 } from '../../entities'
 
-// FIXME: I want to add align option to flowtype/space-after-type-colon rule...
-/* eslint-disable no-multi-spaces */
 export type Props = {
   category: Category,
   categories: Map<number, Category>,
 }
-/* eslint-enable */
 
 export default function CategoryPath ({ category, categories }: Props) {
   if (!categories.has(category.id)) {

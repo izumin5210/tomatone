@@ -1,8 +1,6 @@
 /* @flow */
 import { Task } from '../entities'
 
-// FIXME: I want to add align option to flowtype/space-after-type-colon rule...
-/* eslint-disable no-multi-spaces */
 export const GET_ALL      = 'task:getall'
 export const CREATE       = 'task:create'
 export const UPDATE       = 'task:udpate'
@@ -11,7 +9,6 @@ export const INCOMPLETE   = 'task:incomplete'
 export const SELECT       = 'task:select'
 export const DELETE       = 'task:delete'
 export const UPDATE_ORDER = 'task:update-order'
-/* eslint-enable */
 
 export type CreateAction = {
   title: string,

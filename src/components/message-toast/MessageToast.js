@@ -6,8 +6,6 @@ import { List } from 'immutable'
 
 import { Message } from '../../entities'
 
-// FIXME: I want to add align option to flowtype/space-after-type-colon rule...
-/* eslint-disable no-multi-spaces */
 export type Props = {
   messages: List<Message>,
   dismiss: () => void,
@@ -17,7 +15,6 @@ export type State = {
   timeoutId: ?number,
   message: ?Message,
 }
-/* eslint-enable */
 
 export default class MessageToast extends Component {
 

@@ -5,14 +5,11 @@ import { parseCategory } from '../utils'
 
 import Task from './task'
 
-// FIXME: I want to add align option to flowtype/space-after-type-colon rule...
-/* eslint-disable no-multi-spaces */
 export type CategoryConfig = {
   id: number,
   name: string,
   createdAt: number,
 }
-/* eslint-enable */
 
 const defaultValues: CategoryConfig = {
   id:        1,

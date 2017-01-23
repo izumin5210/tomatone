@@ -1,5 +1,4 @@
 /* @flow */
-/* eslint-disable no-multi-spaces */
 
 export const INIT    = 'timer:init'
 export const START   = 'timer:start'
@@ -14,5 +13,3 @@ export type RefreshAction = {
 export type RestartAction = {
   nowInMilliSeconds: number,
 }
-
-/* eslint-enable */

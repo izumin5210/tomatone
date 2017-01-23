@@ -9,10 +9,8 @@ import {
   Category,
 } from '../../../src/entities'
 
-/* eslint-disable no-duplicate-imports */
 import CategoryTree   from '../../../src/components/category-selector/CategoryTree'
 import type { Props } from '../../../src/components/category-selector/CategoryTree'
-/* eslint-enable */
 
 function createWrapper (props: Props) {
   // https://github.com/ReactTraining/react-router/blob/553b56a750072641b532c1113336a706d6f62648/modules/__tests__/Link-test.js#L259-L277

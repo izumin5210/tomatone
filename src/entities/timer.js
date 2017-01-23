@@ -5,8 +5,6 @@ import Iteration  from './iteration'
 import Category from '../entities/category'
 import Task     from '../entities/task'
 
-// FIXME: I want to add align option to flowtype/space-after-type-colon rule...
-/* eslint-disable no-multi-spaces */
 export type TimerConfig = {
   currentIterationId: ?number,
   selectedCategoryId: ?number,
@@ -14,7 +12,6 @@ export type TimerConfig = {
   totalTimeInMillis: number,
   remainTimeInMillis: number,
 }
-/* eslint-enable */
 
 const defaultValues: TimerConfig = {
   currentIterationId: undefined,

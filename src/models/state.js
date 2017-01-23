@@ -9,8 +9,6 @@ import {
   Timer,
 } from '../entities'
 
-// FIXME: I want to add align option to flowtype/space-after-type-colon rule...
-/* eslint-disable no-multi-spaces */
 type StateConfig = {
   categories: Map<number, Category>,
   iterations: Map<number, Iteration>,
@@ -18,7 +16,6 @@ type StateConfig = {
   tasks: Map<number, Task>,
   timer: Timer,
 }
-/* eslint-enable */
 
 const defaultValues: StateConfig = {
   categories: Map([

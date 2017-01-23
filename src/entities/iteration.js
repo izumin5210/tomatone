@@ -11,8 +11,6 @@ export type IterationType = $Keys<typeof TIMES>
 
 const MAX_ITERATIONS = 4
 
-// FIXME: I want to add align option to flowtype/space-after-type-colon rule...
-/* eslint-disable no-multi-spaces */
 export type IterationConfig = {
   id: number,
   startedAt: number,
@@ -21,7 +19,6 @@ export type IterationConfig = {
   totalTimeInMillis: number,
   taskId: ?number,
 }
-/* eslint-enable */
 
 const defaultValues: IterationConfig = {
   id:                1,

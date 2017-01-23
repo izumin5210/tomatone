@@ -11,13 +11,11 @@ import type {
   Task,
 } from '../../entities'
 
-/* eslint-disable no-multi-spaces */
 type Props = {
   categories: Map<number, Category>,
   iterations: Map<number, Iteration>,
   tasks: Map<number, Task>,
 }
-/* eslint-enable */
 
 export default class IterationList extends Component {
 

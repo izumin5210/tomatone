@@ -1,14 +1,12 @@
 /* @flow */
 import React from 'react'
 
-/* eslint-disable no-multi-spaces */
 type Props = {
   id: string,
   icon: string,
   visible: boolean,
   onClick: (e: any) => void,
 }
-/* eslint-enable */
 
 export default function TaskItemButton ({ id, icon, visible, onClick }: Props) {
   if (!visible) {

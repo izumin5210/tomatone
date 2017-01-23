@@ -9,14 +9,11 @@ import {
 import TimerWrapper from './TimerWrapper'
 import TimerInner   from './TimerInner'
 
-// FIXME: I want to add align option to flowtype/space-after-type-colon rule...
-/* eslint-disable no-multi-spaces */
 type Props = {
   iteration: ?Iteration,
   timer: Timer,
   onBtnPlayClick: () => void,
 }
-/* eslint-enable */
 
 export default class PomodoroTimer extends Component {
 

@@ -6,9 +6,7 @@ import { spy }   from 'sinon'
 import { Map } from 'immutable'
 
 import TaskItemContent from '../../../src/components/task-list/TaskItemContent'
-/* eslint-disable no-duplicate-imports */
 import type { Props }  from '../../../src/components/task-list/TaskItemContent'
-/* eslint-enable */
 
 import {
   Category,

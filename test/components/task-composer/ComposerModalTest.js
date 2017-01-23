@@ -4,9 +4,7 @@ import { shallow }  from 'enzyme'
 import { spy }      from 'sinon'
 
 import ComposerModal  from '../../../src/components/task-composer/ComposerModal'
-/* eslint-disable no-duplicate-imports */
 import type { Props } from '../../../src/components/task-composer/ComposerModal'
-/* eslint-enable */
 
 describe('<ComposerModal />', () => {
   let props: Props

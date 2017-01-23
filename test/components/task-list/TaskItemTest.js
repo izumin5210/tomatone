@@ -9,9 +9,7 @@ import { DragDropContext }  from 'react-dnd'
 import TestBackend          from 'react-dnd-test-backend'
 
 import TaskItem       from '../../../src/components/task-list/TaskItem'
-/* eslint-disable no-duplicate-imports */
 import type { Props } from '../../../src/components/task-list/TaskItem'
-/* eslint-enable */
 
 import {
   Category,
@@ -19,14 +17,13 @@ import {
 } from '../../../src/entities'
 
 function wrapInTestContext (DecoratedComponent) {
-  /* eslint-disable react/prefer-stateless-function */
+  // eslint-disable-next-line react/prefer-stateless-function
   @DragDropContext(TestBackend)
   class TestContextContainer extends Component {
     render () {
       return <DecoratedComponent {...this.props} />
     }
   }
-  /* eslint-enable */
 
   return TestContextContainer
 }

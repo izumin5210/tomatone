@@ -4,15 +4,13 @@ import { DragDropContext }  from 'react-dnd'
 import ReactDndHtml5Backend from 'react-dnd-html5-backend'
 import { List, Map }        from 'immutable'
 
-import assert from "power-assert"; // eslint-disable-line
+import assert from 'power-assert'
 
 import { Category }  from '../../entities'
-import type { Task } from "../../entities"; // eslint-disable-line
+import type { Task } from '../../entities'
 
 import TaskItem from './TaskItem'
 
-// FIXME: I want to add align option to flowtype/space-after-type-colon rule...
-/* eslint-disable no-multi-spaces */
 type Props = {
   tasks: Map<number, Task>,
   categories: Map<number, Category>,
@@ -27,7 +25,6 @@ type Props = {
 type State = {
   orders: List<number>,
 }
-/* eslint-enable */
 
 @DragDropContext(ReactDndHtml5Backend)
 export default class TaskList extends Component {
