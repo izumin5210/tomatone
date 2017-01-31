@@ -1,17 +1,12 @@
 /* @flow */
 import { List, Map } from 'immutable'
 
-import cleanupCategories from '../../src/models/cleanup-categories'
+import cleanupCategories from 'models/cleanup-categories'
 
-import {
-  Category,
-  Task,
-} from '../../src/entities'
+import Category from 'entities/category'
+import Task     from 'entities/task'
 
-import {
-  db,
-  CategoryDao,
-} from '../../src/db'
+import { db, CategoryDao } from 'db'
 
 import { FakeDateTimeProvider }  from '../support'
 

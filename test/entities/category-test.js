@@ -1,8 +1,5 @@
 /* @flow */
-
-import {
-  Category,
-} from '../../src/entities'
+import Category from 'entities/category'
 
 describe('Category', () => {
   let category: Category

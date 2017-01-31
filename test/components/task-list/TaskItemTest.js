@@ -8,13 +8,11 @@ import React, { Component } from 'react'
 import { DragDropContext }  from 'react-dnd'
 import TestBackend          from 'react-dnd-test-backend'
 
-import TaskItem       from '../../../src/components/task-list/TaskItem'
-import type { Props } from '../../../src/components/task-list/TaskItem'
+import TaskItem       from 'components/task-list/TaskItem'
+import type { Props } from 'components/task-list/TaskItem'
 
-import {
-  Category,
-  Task,
-} from '../../../src/entities'
+import Category from 'entities/category'
+import Task     from 'entities/task'
 
 function wrapInTestContext (DecoratedComponent) {
   // eslint-disable-next-line react/prefer-stateless-function

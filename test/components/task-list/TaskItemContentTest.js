@@ -1,17 +1,14 @@
 /* @flow */
-
 import { mount } from 'enzyme'
 import { spy }   from 'sinon'
 
 import { Map } from 'immutable'
 
-import TaskItemContent from '../../../src/components/task-list/TaskItemContent'
-import type { Props }  from '../../../src/components/task-list/TaskItemContent'
+import TaskItemContent from 'components/task-list/TaskItemContent'
+import type { Props }  from 'components/task-list/TaskItemContent'
 
-import {
-  Category,
-  Task,
-} from '../../../src/entities'
+import Category from 'entities/category'
+import Task     from 'entities/task'
 
 describe('<TaskItemContent />', () => {
   let props: Props

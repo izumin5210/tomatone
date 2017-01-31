@@ -23,3 +23,6 @@ esproposal.class_static_fields=enable
 esproposal.decorators=ignore
 suppress_type=$FlowIssue
 suppress_comment=\\(.\\|\n\\)*\\$FlowFixMe\\($\\|[^(]\\|(\\(>=0\\.\\(2[0-8]\\|1[0-9]\\|[0-9]\\).[0-9]\\)? *\\).*\n
+
+module.system.node.resolve_dirname=./node_modules
+module.system.node.resolve_dirname=./src

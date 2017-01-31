@@ -8,21 +8,15 @@ import {
   stopTimer,
   refreshTimer,
   restartTimer,
-} from '../../src/reducers/timer'
+} from 'reducers/timer'
 
-import {
-  Iteration,
-  Task,
-  Timer,
-} from '../../src/entities'
+import Iteration from 'entities/iteration'
+import Timer     from 'entities/timer'
+import Task      from 'entities/task'
 
-import {
-  State,
-} from '../../src/models'
+import State from 'models/state'
 
-import {
-  db,
-} from '../../src/db'
+import { db } from 'db'
 
 describe('timer reducer', () => {
   let state: State

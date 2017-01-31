@@ -1,12 +1,9 @@
 /* @flow */
 import { List } from 'immutable'
-import Category from '../../../src/entities/category'
 
-import {
-  db,
-} from '../../../src/db'
+import Category from 'entities/category'
 
-import CategoryDao from '../../../src/db/dao/category-dao'
+import { db, CategoryDao } from 'db'
 
 import { FakeDateTimeProvider }  from '../../support'
 

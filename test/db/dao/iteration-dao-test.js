@@ -1,11 +1,11 @@
 /* @flow */
-import Iteration from '../../../src/entities/iteration'
-import Task      from '../../../src/entities/task'
+import Iteration from 'entities/iteration'
+import Task      from 'entities/task'
 
 import {
   db,
   iterationDao as dao,
-} from '../../../src/db'
+} from 'db'
 
 describe('IterationDao', () => {
   // TODO: Should move to test-helper

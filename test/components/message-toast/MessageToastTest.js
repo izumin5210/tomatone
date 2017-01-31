@@ -4,10 +4,10 @@ import { useFakeTimers } from 'sinon'
 
 import { List } from 'immutable'
 
-import Message from '../../../src/entities/message'
+import Message from 'entities/message'
 
-import MessageToast from '../../../src/components/message-toast/MessageToast'
-import type { Props } from '../../../src/components/message-toast/MessageToast'
+import MessageToast   from 'components/message-toast/MessageToast'
+import type { Props } from 'components/message-toast/MessageToast'
 
 const shallowOpts = {
   lifecycleExperimental: true,

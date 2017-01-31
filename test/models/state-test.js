@@ -2,14 +2,10 @@
 import { useFakeTimers } from 'sinon'
 import { Map }           from 'immutable'
 
-import {
-  Iteration,
-  Timer,
-} from '../../src/entities'
+import Iteration from 'entities/iteration'
+import Timer     from 'entities/timer'
 
-import {
-  State,
-} from '../../src/models'
+import State from 'models/state'
 
 const now = Date.now('2016-11-22T15:30:00')
 

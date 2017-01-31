@@ -4,15 +4,11 @@ import { List } from 'immutable'
 import {
   pushMessage,
   removeMessage,
-} from '../../src/reducers/messages'
+} from 'reducers/messages'
 
-import {
-  Message,
-} from '../../src/entities'
+import Message from 'entities/message'
 
-import {
-  State,
-} from '../../src/models'
+import State from 'models/state'
 
 describe('messages reducer', () => {
   describe('#pushMessage()', () => {
