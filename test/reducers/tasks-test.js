@@ -127,6 +127,18 @@ describe('tasks reducer', () => {
         assert(await db.categories.count() === 3)
       })
     })
+
+    context('when the new task has an empty category', () => {
+      it('does not create redundant categories', async () => {
+        const action = { title: 'awesome category//nested category//awesome task' }
+        const { categories } = await createTask(state, action)
+        assert(categories.size === 2)
+        assert(categories.get(1).name === 'awesome category')
+        assert(categories.get(2).name === 'awesome category/nested category')
+        assert(await db.tasks.count() === 1)
+        assert(await db.categories.count() === 2)
+      })
+    })
   })
 
   describe('#updateTask()', () => {
