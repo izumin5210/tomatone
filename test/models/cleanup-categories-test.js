@@ -46,15 +46,16 @@ describe('cleanupCategories()', () => {
     await createRecords(
       [
         { name: 'c1' },
-        { name: 'c2' },
+        { name: 'c2' },       // removed
         { name: 'c1/c3' },
-        { name: 'c1/c4' },
+        { name: 'c1/c4' },    // removed
         { name: 'c1/c3/c5' }, // id: 5
-        { name: 'c1/c3/c6' },
+        { name: 'c1/c3/c6' }, // removed
         { name: 'c1/c7' },    // id: 7
-        { name: 'c1/c7/c8' },
-        { name: 'c2/c9' },
-        { name: 'c2/c9/c10' },
+        { name: 'c1/c7/c8' }, // removed
+        { name: 'c2/c9' },    // removed
+        { name: 'c2/c9/c10' }, // removed
+        { name: 'c2/c11/' },   // removed
       ],
       [
         { title: 't1', categoryId: 5 },
@@ -64,8 +65,8 @@ describe('cleanupCategories()', () => {
     deletedCategories = await cleanupCategories(categories, tasks, dao)
   })
 
-  it('remains 5 categories', async () => {
-    assert(deletedCategories.size === 6)
+  it('remains 4 categories', async () => {
+    assert(deletedCategories.size === 7)
     assert((await db.categories.count()) === 4)
   })
 

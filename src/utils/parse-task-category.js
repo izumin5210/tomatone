@@ -1,7 +1,7 @@
 /* @flow */
 
 export function parseCategory (name: string) {
-  return name.split('/')
+  return name.split('/').filter(n => n.length > 0)
 }
 
 export function parseTaskCategory (
