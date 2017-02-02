@@ -32,8 +32,9 @@ import {
 } from '../utils'
 
 function findOrCreateCategories (categoryNames: Array<string>): Promise<Array<Category>> {
-  return Promise.all(Range(0, categoryNames.length).toArray().map((i) => {
-    const name = categoryNames.slice(0, i + 1).join('/')
+  const names = categoryNames.filter(n => n.length > 0)
+  return Promise.all(Range(0, names.length).toArray().map((i) => {
+    const name = names.slice(0, i + 1).join('/')
     return categoryDao.findOrCreateByName(name)
   }))
 }
