@@ -128,6 +128,7 @@ export default class App extends Component {
       if (itr.isFinished(this.nowInMilliSeconds)) {
         await finishSoundPlayer.load()
         finishSoundPlayer.play()
+        this.showNotification()
         await this.stop()
       }
       this.context.dispatch(
@@ -150,6 +151,22 @@ export default class App extends Component {
         }
       }, 3000)
       this.setState({ intervalId: undefined })
+    }
+  }
+
+  showNotification () {
+    const { state } = this.props
+    const itr = state.currentIteration()
+    const task = state.tasks.get(itr.taskId, state.currentTask())
+    if (task != null) {
+      let msg: string
+      if (itr.taskId) {
+        msg = `Iteration finished (${itr.numOfIteration})`
+      } else {
+        msg = `Next iteration will be started (${itr.numOfIteration})`
+      }
+      const body = task.title
+      new Notification(msg, { body }) // eslint-disable-line no-new
     }
   }
 
