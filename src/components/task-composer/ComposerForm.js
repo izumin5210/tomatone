@@ -129,6 +129,14 @@ export default class ComposerForm extends Component {
             value={this.state.title}
             wrapperProps={{
               className: 'ComposerForm__input-title-wrapper',
+              onKeyDown: (e) => {
+                if (e.keyCode === 27) {
+                  e.stopPropagation()
+                  if (this.state.focused && !this.autocomplete.state.isOpen) {
+                    this.props.close()
+                  }
+                }
+              },
             }}
             inputProps={{
               name:      inputTitleId,

@@ -6,13 +6,20 @@ export type Props = {
   close: () => void,
 }
 
-export default function ComposerModal (props: Props) {
+export default function ComposerModal ({ children, close }: Props) {
   /* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/onclick-has-focus, jsx-a11y/no-static-element-interactions */
   return (
     <div
       className='ComposerModal'
-      onClick={props.close}
+      onClick={close}
+      onKeyDown={(e) => {
+        // ESC
+        if (e.keyCode === 27) {
+          close()
+        }
+      }}
       role='presentation'
+      tabIndex={0}
     >
       <div
         className='ComposerModal__modal'
@@ -22,7 +29,7 @@ export default function ComposerModal (props: Props) {
         }}
         role='presentation'
       >
-        { props.children }
+        { children }
       </div>
     </div>
   )
