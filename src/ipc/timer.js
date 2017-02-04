@@ -6,3 +6,5 @@ export type TimerState = {
   started: boolean,
   working: boolean,
 }
+
+export const TIMER_OPEN = 'ipc:timer:open'

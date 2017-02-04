@@ -2,6 +2,7 @@
 import React, { Component } from 'react'
 import { dispatcher }       from 'react-dispatcher-decorator'
 import { Match }            from 'react-router'
+import { ipcRenderer }      from 'electron'
 
 import {
   Category,
@@ -32,6 +33,8 @@ import {
   MessagesActions,
   TimerActions,
 } from '../actions'
+
+import { TimerEvents } from '../ipc'
 
 import type { DateTimeProvider } from '../models'
 
@@ -166,7 +169,8 @@ export default class App extends Component {
         msg = `Next iteration will be started (${itr.numOfIteration})`
       }
       const body = task.title
-      new Notification(msg, { body }) // eslint-disable-line no-new
+      const notification = new Notification(msg, { body }) // eslint-disable-line no-new
+      notification.onclick = () => ipcRenderer.send(TimerEvents.TIMER_OPEN)
     }
   }
 

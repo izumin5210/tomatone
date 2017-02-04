@@ -8,6 +8,7 @@ declare var beforeEach: any;
 declare var afterEach: any;
 
 declare class Notification {
+  onclick: ?Function;
 }
 
 declare module "enzyme" {
