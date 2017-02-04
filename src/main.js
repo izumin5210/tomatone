@@ -75,3 +75,7 @@ ipcMain.on(TimerEvents.TIMER_STATE, (event, { started, working }: TimerEvents.Ti
     powerSaveBlockerId = null
   }
 })
+
+ipcMain.on(TimerEvents.TIMER_OPEN, () => {
+  mb.showWindow()
+})
