@@ -50,6 +50,7 @@ const config = merge.smart(baseConfig, {
           require("postcss-apply"),
           require("postcss-color-function"),
           require("postcss-nesting"),
+          require("autoprefixer"),
           require("postcss-reporter"),
         ],
       },

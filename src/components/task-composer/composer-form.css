@@ -9,6 +9,7 @@
     color: var(--gray-light);
     left: 0;
     top: calc(2.25 * var(--spacing));
+    user-select: none;
   };
 
   --ComposerForm__hr-input-title: {
